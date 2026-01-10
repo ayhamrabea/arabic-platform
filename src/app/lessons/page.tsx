@@ -1,0 +1,117 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabaseClient'
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
+import { ErrorMessage } from '@/components/ui/ErrorMessage'
+import { LessonFilter } from '@/components/lessons/LessonFilter'
+import { LessonCard } from '@/components/lessons/LessonCard'
+import { EmptyState } from '@/components/ui/EmptyState'
+import { CTACard } from '@/components/ui/CTACard'
+
+
+interface Lesson {
+  id: string
+  title: string
+  type: string
+  level: string
+  duration: number | null
+  is_active: boolean
+  description?: string
+}
+
+export default function LessonsPage() {
+  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState('all')
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*')
+        .eq('is_active', true)
+        .order('order_index', { ascending: true })
+
+      if (error) {
+        setError(error.message)
+      } else {
+        setLessons(data as Lesson[])
+      }
+      setLoading(false)
+    }
+
+    fetchLessons()
+  }, [])
+
+  const filteredLessons = filter === 'all' 
+    ? lessons 
+    : lessons.filter(lesson => lesson.level.toLowerCase() === filter)
+
+  if (loading) return <LoadingSpinner message="Loading lessons..." />
+  if (error) return <ErrorMessage message={error}  />
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Language Lessons
+          </h1>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            Master a new language with our carefully designed curriculum. 
+            Start from basics or jump to advanced topics.
+          </p>
+        </div>
+
+        {/* Filters */}
+        <LessonFilter 
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+
+        {/* Lessons Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredLessons.map((lesson) => (
+            <LessonCard 
+              key={lesson.id} 
+              lesson={lesson} 
+              progress={30} // يمكن جلب التقدم من قاعدة البيانات
+            />
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {filteredLessons.length === 0 && (
+          <EmptyState 
+            title="No lessons found"
+            message={`No ${filter !== 'all' ? filter : ''} lessons available`}
+            action={
+              filter !== 'all' && (
+                <button
+                  onClick={() => setFilter('all')}
+                  className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+                >
+                  View all lessons
+                </button>
+              )
+            }
+          />
+        )}
+
+        {/* Call to Action */}
+        <div className="mt-12 text-center">
+          <CTACard 
+            title="Ready to accelerate your learning?"
+            description="Join our premium plan for personalized lessons and AI-powered practice."
+            buttonText="Upgrade Now"
+            onButtonClick={() => console.log('Upgrade clicked')}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
