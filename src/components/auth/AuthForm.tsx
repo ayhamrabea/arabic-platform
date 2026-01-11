@@ -78,7 +78,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 
         if ('error' in res) throw res.error
 
-        dispatch(setUser(res.data))
+        dispatch(setUser(res.data!))
         router.push('/dashboard')
         router.refresh()
       } else {
