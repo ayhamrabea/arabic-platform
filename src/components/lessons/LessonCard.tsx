@@ -1,96 +1,136 @@
-// components/lessons/LessonCard.tsx
+'use client'
+
 import Link from 'next/link'
 import { 
-  AcademicCapIcon, 
-  ClockIcon,
-  VideoCameraIcon,
-  SpeakerWaveIcon,
-  BookOpenIcon 
+  CheckCircleIcon, 
+  ClockIcon, 
+  BookOpenIcon,
+  StarIcon 
 } from '@heroicons/react/24/outline'
+import type { LessonWithProgress } from '@/store/apis/lessonsApi/types'
 
 interface LessonCardProps {
-  lesson: {
-    id: string
-    title: string
-    type: string
-    level: string
-    duration: number | null
-    description?: string
+  lesson: LessonWithProgress
+  progress: number
+  progressData?: any
+  itemStats: {
+    completed: number
+    total: number
+    vocabulary: number
+    grammar: number
   }
-  progress?: number
 }
 
-export function LessonCard({ lesson, progress = 30 }: LessonCardProps) {
+export function LessonCard({ 
+  lesson, 
+  progress, 
+  progressData,
+  itemStats 
+}: LessonCardProps) {
   const getLevelColor = (level: string) => {
-    switch(level.toLowerCase()) {
-      case 'beginner': return 'bg-green-100 text-green-800'
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800'
-      case 'advanced': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+    const colors: Record<string, string> = {
+      'A1': 'bg-green-100 text-green-800',
+      'A2': 'bg-blue-100 text-blue-800',
+      'B1': 'bg-yellow-100 text-yellow-800',
+      'B2': 'bg-orange-100 text-orange-800',
+      'C1': 'bg-red-100 text-red-800',
+      'C2': 'bg-purple-100 text-purple-800'
     }
+    return colors[level] || 'bg-gray-100 text-gray-800'
   }
 
-  const getTypeIcon = (type: string) => {
-    switch(type.toLowerCase()) {
-      case 'video': return <VideoCameraIcon className="h-5 w-5" />
-      case 'audio': return <SpeakerWaveIcon className="h-5 w-5" />
-      default: return <BookOpenIcon className="h-5 w-5" />
+  const getStatusIcon = (status?: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircleIcon className="h-5 w-5 text-green-500" />
+      case 'in_progress':
+        return <ClockIcon className="h-5 w-5 text-blue-500" />
+      default:
+        return <BookOpenIcon className="h-5 w-5 text-gray-400" />
     }
   }
 
   return (
-    <Link
-      href={`/lessons/${lesson.id}`}
-      className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:scale-[1.02]"
-    >
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(lesson.level)}`}>
-                {lesson.level}
-              </span>
-              <div className="flex items-center text-gray-500">
-                {getTypeIcon(lesson.type)}
-                <span className="ml-1 text-sm">{lesson.type}</span>
-              </div>
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors">
-              {lesson.title}
-            </h2>
-            {lesson.description && (
-              <p className="text-gray-600 mb-4 line-clamp-2">{lesson.description}</p>
-            )}
+    <Link href={`/lessons/${lesson.id}`}>
+      <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200 h-full cursor-pointer">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex items-center gap-2">
+            <span className={`px-3 py-1 rounded-full text-xs font-medium ${getLevelColor(lesson.level)}`}>
+              {lesson.level}
+            </span>
+            <span className="text-sm text-gray-500">
+              #{lesson.order_index}
+            </span>
           </div>
-          <div className="p-3 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
-            <AcademicCapIcon className="h-6 w-6 text-indigo-600" />
+          
+          <div className="flex items-center gap-1">
+            {getStatusIcon(progressData?.status)}
+            {progressData?.is_favorite && (
+              <StarIcon className="h-5 w-5 text-yellow-500" />
+            )}
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="flex items-center text-gray-600">
-            <ClockIcon className="h-5 w-5 mr-2" />
-            <span className="text-sm">{lesson.duration || 15} min</span>
+        {/* Title */}
+        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+          {lesson.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+          {typeof lesson.content === 'string' 
+            ? lesson.content.substring(0, 120) + '...' 
+            : 'Interactive language lesson'}
+        </p>
+
+        {/* Stats */}
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              <BookOpenIcon className="h-4 w-4" />
+              <span>{itemStats.vocabulary} words</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span>📝</span>
+              <span>{itemStats.grammar} rules</span>
+            </div>
           </div>
-          <div className="flex items-center">
-            <span className="text-sm font-medium text-indigo-600 group-hover:text-indigo-700">
-              Start Lesson →
+          <div className="flex items-center gap-1">
+            <ClockIcon className="h-4 w-4" />
+            <span>{lesson.duration || 15} min</span>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+
+          <div className="mb-3">
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-gray-600">Progress</span>
+              <span className="font-medium">{progress}%</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  progress === 100 ? 'bg-green-500' : 'bg-indigo-500'
+                }`}
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+
+        {/* Completion Stats */}
+        <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+          <div className="text-sm">
+            <span className="text-gray-600">Completed: </span>
+            <span className="font-semibold">
+              {itemStats.completed}/{itemStats.total} items
             </span>
           </div>
-        </div>
-      </div>
-      
-      {/* Progress Bar */}
-      <div className="px-6 pb-4">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-gray-500">Progress</span>
-          <span className="text-xs font-medium text-indigo-600">{progress}%</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full" 
-            style={{ width: `${progress}%` }}
-          ></div>
+          
+          <div className="flex items-center gap-1 text-sm font-semibold text-green-600">
+            <span>+{lesson.estimated_xp} XP</span>
+          </div>
         </div>
       </div>
     </Link>

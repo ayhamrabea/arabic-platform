@@ -1,49 +1,100 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
-import { BookOpenIcon, ChartBarIcon, ClockIcon } from '@heroicons/react/24/outline'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '@/store/store'
+import { 
+  BookOpenIcon, 
+  ChartBarIcon, 
+  ClockIcon, 
+  TrophyIcon,
+  FireIcon,
+  AcademicCapIcon 
+} from '@heroicons/react/24/outline'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { StatCard } from '@/components/dashboard/StatCard'
 import { GradientCard } from '@/components/dashboard/GradientCard'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard'
-import { LessonCard } from '@/components/lessons/LessonCard'
 import { SimpleLessonCard } from '@/components/lessons/SimpleLessonCard'
+import { fetchDashboardData, startLesson } from '@/store/slices/dashboardSlice'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const [userEmail, setUserEmail] = useState<string>('')
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  
+  const { user, loading: authLoading } = useSelector((state: RootState) => state.auth);
+  const { 
+    stats, 
+    recentLessons, 
+    recommendedLessons,
+    isLoading: dashboardLoading, 
+    error 
+  } = useSelector((state: RootState) => state.dashboard);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) {
-        router.push('/login')
-      } else {
-        setUserEmail(data.user.email || '')
-      }
-      setLoading(false)
-    })
-  }, [router])
+    if (!authLoading && !user) {
+      router.replace('/login');
+      return;
+    }
 
-  if (loading) {
-    return <LoadingSpinner />
+    if (user?.id) {
+      dispatch(fetchDashboardData(user.id) as any);
+    }
+  }, [user, authLoading, dispatch, router]);
+
+  const handleStartLesson = (lessonId: string) => {
+    if (user) {
+      dispatch(startLesson({ userId: user.id, lessonId }) as any);
+      router.push(`/lessons/${lessonId}`);
+    }
+  };
+
+  const isLoading = authLoading || dashboardLoading;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  const lessons = [
-    { title: 'Basic Greetings', duration: '15 min', level: 'Beginner', isActive: true },
-    { title: 'Present Tense', duration: '20 min', level: 'Beginner' },
-    { title: 'Food Vocabulary', duration: '18 min', level: 'Beginner' }
-  ]
+  if (!user) {
+    return null;
+  }
+
+  const formatTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  };
+
+  const getProgressToNextLevel = () => {
+    if (!stats) return 0;
+    const { totalXP, nextLevelXP } = stats;
+    const currentLevelXP = {
+      'A1 Beginner': 0,
+      'A2 Elementary': 100,
+      'B1 Intermediate': 300,
+      'B2 Upper-Intermediate': 600,
+      'C1 Advanced': 1000,
+      'C2 Master': 1500
+    }[stats.currentLevel] || 0;
+    
+    const totalNeeded = nextLevelXP - currentLevelXP;
+    const earned = totalXP - currentLevelXP;
+    return Math.min((earned / totalNeeded) * 100, 100);
+  };
+
   const quickActions = [
     { 
-      title: 'Vocabulary Builder', 
-      description: 'Learn 10 new words',
+      title: 'Continue Learning', 
+      description: 'Pick up where you left off',
       emoji: '📚',
-      href: '/vocabulary',
+      href: recentLessons[0]?.id ? `/lessons/${recentLessons[0].id}` : '/lessons',
       gradientFrom: '#eff6ff',
       gradientTo: '#e0e7ff'
     },
@@ -56,97 +107,194 @@ export default function DashboardPage() {
       gradientTo: '#d1fae5'
     },
     { 
+      title: 'Vocabulary Builder', 
+      description: 'Learn 10 new words',
+      emoji: '🔤',
+      href: '/vocabulary',
+      gradientFrom: '#faf5ff',
+      gradientTo: '#fce7f3'
+    },
+    { 
       title: 'Speaking Practice', 
       description: 'Pronunciation exercises',
       emoji: '🎤',
       href: '/speaking',
-      gradientFrom: '#faf5ff',
-      gradientTo: '#fce7f3'
+      gradientFrom: '#fffbeb',
+      gradientTo: '#fef3c7'
     }
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        <DashboardHeader userEmail={userEmail} />
+        <DashboardHeader 
+          userEmail={user.email || ''} 
+          // userName={user.user_metadata?.name || user.email?.split('@')[0]}
+        />
 
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <div className="flex items-center">
+              <div className="h-5 w-5 text-red-500 mr-2">⚠️</div>
+              <p className="text-red-600">{error}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Level Progress */}
+        <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className="text-2xl font-bold">Current Level</h2>
+              <p className="text-indigo-100">{stats?.currentLevel || 'A1 Beginner'}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-3xl font-bold">{stats?.totalXP || 0} XP</p>
+              <p className="text-indigo-100">
+                {stats?.nextLevelXP ? `${stats.totalXP}/${stats.nextLevelXP} XP to next level` : ''}
+              </p>
+            </div>
+          </div>
+          <div className="w-full bg-white/20 rounded-full h-3">
+            <div 
+              className="bg-white h-3 rounded-full transition-all duration-500" 
+              style={{ width: `${getProgressToNextLevel()}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
-            title="Continue Learning"
-            description="5 lessons pending"
+            title="Lessons Completed"
+            description="Your learning journey"
+            value={`${stats?.completedLessons || 0}/${stats?.totalLessons || 0}`}
             icon={<BookOpenIcon className="h-8 w-8 text-blue-600" />}
             color="blue"
             href="/lessons"
             showProgress
-            progress={65}
+            progress={stats?.totalLessons ? 
+              Math.round(((stats?.completedLessons || 0) / stats.totalLessons) * 100) : 0
+            }
           />
 
           <StatCard
-            title="Progress"
-            description="Your learning journey"
-            icon={<ChartBarIcon className="h-8 w-8 text-green-600" />}
+            title="Current Streak"
+            description="Daily consistency"
+            value={`${stats?.streakDays || 0} days`}
+            icon={<FireIcon className="h-8 w-8 text-orange-600" />}
+            color="orange"
+            // showStreak
+            // streakDays={stats?.streakDays || 0}
+          />
+
+          <StatCard
+            title="Learning Accuracy"
+            description="Average score"
+            value={`${stats?.accuracy || 0}%`}
+            icon={<AcademicCapIcon className="h-8 w-8 text-green-600" />}
             color="green"
+            // showAccuracy
+            // accuracy={stats?.accuracy || 0}
           />
 
           <StatCard
             title="Time Spent"
-            description="This week"
-            value="12h 45m"
-            icon={<ClockIcon className="h-8 w-8 text-yellow-600" />}
-            color="yellow"
-          />
-
-          <GradientCard
-            title="Practice"
-            description="Speaking exercises"
-            iconName="music"
-            href="/practice"
-            gradientFrom="#9333ea"
-            gradientTo="#db2777"
+            description="Total learning"
+            value={formatTime(stats?.timeSpent || 0)}
+            icon={<ClockIcon className="h-8 w-8 text-purple-600" />}
+            color="purple"
           />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
-            <SectionHeader 
-              title="Today's Lessons" 
-              linkText="View all" 
-              linkHref="/lessons" 
-            />
-            
-            <div className="space-y-4">
-              {lessons.map((lesson, index) => (
-                <SimpleLessonCard
-                  key={index}
-                  title={lesson.title}
-                  duration={lesson.duration}
-                  level={lesson.level}
-                  isActive={lesson.isActive}
-                  onStart={() => console.log(`Starting ${lesson.title}`)}
-                />
-              ))}
+          {/* Recent Activity */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Continue Learning */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <SectionHeader 
+                title="Continue Learning" 
+                linkText="View all lessons" 
+                linkHref="/lessons" 
+              />
+              
+              <div className="space-y-4">
+                {recentLessons.length > 0 ? (
+                  recentLessons.slice(0, 3).map((lesson) => (
+                    <SimpleLessonCard
+                      key={lesson.id}
+                      title={lesson.title}
+                      duration={`${lesson.duration} min`}
+                      level={lesson.level}
+                      // status={lesson.status}
+                      // score={lesson.score}
+                      isActive={lesson.status === 'in_progress'}
+                      // progress={lesson.status === 'completed' ? 100 : lesson.status === 'in_progress' ? 50 : 0}
+                      onStart={() => handleStartLesson(lesson.id)}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No lessons started yet.</p>
+                    <button
+                      onClick={() => router.push('/lessons')}
+                      className="mt-2 text-indigo-600 hover:text-indigo-800 font-medium"
+                    >
+                      Browse Lessons →
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Recommended Lessons */}
+            {recommendedLessons.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <SectionHeader 
+                  title="Recommended for You" 
+                  // description="Based on your current level"
+                />
+                
+                <div className="space-y-4">
+                  {recommendedLessons.map((lesson) => (
+                    <SimpleLessonCard
+                      key={lesson.id}
+                      title={lesson.title}
+                      duration={`${lesson.duration} min`}
+                      level={lesson.level}
+                      // difficulty={lesson.difficulty}
+                      // xpReward={lesson.estimated_xp}
+                      isActive={false}
+                      onStart={() => handleStartLesson(lesson.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <SectionHeader title="Quick Actions" />
-            
-            <div className="space-y-4">
-              {quickActions.map((action, index) => (
-                <QuickActionCard
-                  key={index}
-                  title={action.title}
-                  description={action.description}
-                  emoji={action.emoji}
-                  href={action.href}
-                  gradientFrom={action.gradientFrom}
-                  gradientTo={action.gradientTo}
-                />
-              ))}
+          {/* Quick Actions */}
+          <div className="space-y-8">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <SectionHeader title="Quick Actions" />
+              
+              <div className="space-y-4">
+                {quickActions.map((action, index) => (
+                  <QuickActionCard
+                      key={index}
+                      title={action.title}
+                      description={action.description}
+                      emoji={action.emoji}
+                      href={action.href}
+                      gradientFrom={action.gradientFrom}
+                      gradientTo={action.gradientTo}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

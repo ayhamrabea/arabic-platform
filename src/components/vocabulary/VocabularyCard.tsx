@@ -1,18 +1,10 @@
 'use client'
 
 import { SpeakerWaveIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import type { Vocabulary } from '@/store/apis/lessonsApi/types'
 
 interface VocabularyCardProps {
-  word: {
-    id: string
-    word: string
-    translation: string
-    pronunciation?: string
-    example_sentence?: string
-    audio_url?: string | null
-    word_type?: string
-    difficulty_score?: number
-  }
+  word: Vocabulary
   completed?: boolean
   onToggleComplete?: (id: string) => void
 }
@@ -73,7 +65,7 @@ export function VocabularyCard({
             </div>
 
             <div className="flex items-center gap-3">
-              {word.difficulty_score && (
+              {word.difficulty_score !== null && word.difficulty_score !== undefined && (
                 <span
                   className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(
                     word.difficulty_score

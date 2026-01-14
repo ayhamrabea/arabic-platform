@@ -185,6 +185,7 @@ export default function AuthForm({ type }: AuthFormProps) {
               onClick={handleGoogleLogin}
               loading={loading}
             />
+
           </form>
 
           <div className="mt-8 text-center">

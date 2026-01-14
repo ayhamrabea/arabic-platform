@@ -1,57 +1,48 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+import { useState } from 'react'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { LessonFilter } from '@/components/lessons/LessonFilter'
 import { LessonCard } from '@/components/lessons/LessonCard'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { CTACard } from '@/components/ui/CTACard'
+import { useGetLessonsWithProgressQuery } from '@/store/apis/lessonsApi'
 
-
-interface Lesson {
-  id: string
-  title: string
-  type: string
-  level: string
-  duration: number | null
-  is_active: boolean
-  description?: string
+// دالة حساب النسبة المئوية بدقة
+const calculateAccurateProgress = (progress: any, totalItems: number) => {
+  if (!progress) return 0
+  
+  if (progress.status === 'completed') return 100
+  
+  if (progress.status === 'in_progress' && progress.completed_items) {
+    const completedCount = Array.isArray(progress.completed_items) 
+      ? progress.completed_items.length 
+      : 0
+    
+    if (totalItems > 0) {
+      return Math.round((completedCount / totalItems) * 100)
+    }
+  }
+  
+  return 0
 }
 
 export default function LessonsPage() {
-  const [lessons, setLessons] = useState<Lesson[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState('all')
+  const [filter, setFilter] = useState<'all' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'>('all')
+  
+  // استخدام RTK Query مع التقدم
+  const { 
+    data: lessons = [], 
+    isLoading, 
+    isError, 
+    error 
+  } = useGetLessonsWithProgressQuery({ 
+    level: filter !== 'all' ? filter : undefined 
+  })
 
-  useEffect(() => {
-    const fetchLessons = async () => {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('lessons')
-        .select('*')
-        .eq('is_active', true)
-        .order('order_index', { ascending: true })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        setLessons(data as Lesson[])
-      }
-      setLoading(false)
-    }
-
-    fetchLessons()
-  }, [])
-
-  const filteredLessons = filter === 'all' 
-    ? lessons 
-    : lessons.filter(lesson => lesson.level.toLowerCase() === filter)
-
-  if (loading) return <LoadingSpinner message="Loading lessons..." />
-  if (error) return <ErrorMessage message={error}  />
+  if (isLoading) return <LoadingSpinner message="Loading lessons..." />
+  if (isError) return <ErrorMessage message={(error as any).message} />
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 md:p-6">
@@ -75,17 +66,31 @@ export default function LessonsPage() {
 
         {/* Lessons Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLessons.map((lesson) => (
-            <LessonCard 
-              key={lesson.id} 
-              lesson={lesson} 
-              progress={30} // يمكن جلب التقدم من قاعدة البيانات
-            />
-          ))}
+          {lessons.map((lesson) => {
+            const progress = lesson.progress
+            const progressPercentage = calculateAccurateProgress(progress, lesson.total_items)
+            const hasProgress = !!progress && (progress.status === 'in_progress' || progress.status === 'completed')
+            
+            return (
+              <LessonCard 
+                key={lesson.id} 
+                lesson={lesson}
+                progress={progressPercentage}
+                showProgress={hasProgress}
+                progressData={progress}
+                itemStats={{
+                  completed: progress?.completed_items?.length || 0,
+                  total: lesson.total_items,
+                  vocabulary: lesson.vocabulary_count,
+                  grammar: lesson.grammar_count
+                }}
+              />
+            )
+          })}
         </div>
 
         {/* Empty State */}
-        {filteredLessons.length === 0 && (
+        {lessons.length === 0 && (
           <EmptyState 
             title="No lessons found"
             message={`No ${filter !== 'all' ? filter : ''} lessons available`}

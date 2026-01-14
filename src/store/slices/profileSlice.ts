@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabaseClient";
+import { calculateStreak } from "@/utlis/profile";
 
 export interface Profile {
   id: string;
@@ -34,7 +35,6 @@ export const fetchProfile = createAsyncThunk(
   'profile/fetchProfile',
   async (userId: string, { rejectWithValue }) => {
     try {
-      // Get profile
       const { data: profileData, error } = await supabase
         .from('profiles')
         .select('*')
@@ -42,7 +42,6 @@ export const fetchProfile = createAsyncThunk(
         .single();
 
       if (error && error.code === 'PGRST116') {
-        // Create new profile if doesn't exist
         const newProfile = {
           id: userId,
           name: '',
@@ -50,7 +49,9 @@ export const fetchProfile = createAsyncThunk(
           avatar_url: '/default-avatar.png',
           total_xp: 0,
           streak_days: 0,
-          last_active: new Date().toISOString()
+          last_active: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         };
 
         const { data: createdProfile, error: createError } = await supabase
@@ -64,19 +65,30 @@ export const fetchProfile = createAsyncThunk(
       }
 
       if (error) throw error;
-      
-      // Update last_active
-      await supabase
-        .from('profiles')
-        .update({ last_active: new Date().toISOString() })
-        .eq('id', userId);
 
-      return profileData;
+      // حساب streak جديد
+      const newStreak = calculateStreak(profileData.last_active, profileData.streak_days);
+
+      // تحديث last_active و streak_days في DB
+      const { data: updatedProfile, error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          last_active: new Date().toISOString(),
+          streak_days: newStreak,
+        })
+        .eq('id', userId)
+        .select()
+        .single();
+
+      if (updateError) throw updateError;
+
+      return updatedProfile;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 export const updateProfile = createAsyncThunk(
   'profile/updateProfile',

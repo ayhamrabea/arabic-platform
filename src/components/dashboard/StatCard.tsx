@@ -7,7 +7,7 @@ interface StatCardProps {
   value?: string
   percentage?: number
   icon: React.ReactNode
-  color: 'blue' | 'green' | 'yellow' | 'purple'
+  color: 'blue' | 'green' | 'yellow' | 'purple' | 'orange'
   href?: string
   progress?: number
   showProgress?: boolean
@@ -28,7 +28,8 @@ export function StatCard({
     blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-300' },
     green: { bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-300' },
     yellow: { bg: 'bg-yellow-100', text: 'text-yellow-600', border: 'border-yellow-300' },
-    purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-300' }
+    purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-300' },
+    orange: { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-300' },
   }
 
   const content = (

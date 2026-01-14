@@ -1,15 +1,10 @@
 'use client'
 
 import { CheckCircleIcon, AcademicCapIcon } from '@heroicons/react/24/outline'
+import type { GrammarRule } from '@/store/apis/lessonsApi/types'
 
 interface GrammarCardProps {
-  rule: {
-    id: string
-    rule_name: string
-    explanation?: string
-    examples?: any
-    exceptions?: string
-  }
+  rule: GrammarRule
   completed?: boolean
   onToggleComplete?: (id: string) => void
 }

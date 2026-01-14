@@ -27,3 +27,28 @@ export const getStreakStatus = (streakDays: number) => {
     return { text: `${streakDays} day streak 🔥`, color: 'bg-red-100 text-red-800' }
 }
 
+export function calculateStreak(lastActive: string, currentStreak: number) {
+  const today = new Date();
+  const last = new Date(lastActive);
+
+  // تحويل التاريخ إلى YYYY-MM-DD
+  const todayStr = today.toISOString().split('T')[0];
+  const lastStr = last.toISOString().split('T')[0];
+
+  if (todayStr === lastStr) {
+    // المستخدم قام بالفعل بالنشاط اليوم → لا نزيد
+    return currentStreak;
+  }
+
+  // الفرق بالأيام
+  const diffTime = today.getTime() - last.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 1) {
+    // يوم متتالي → +1
+    return currentStreak + 1;
+  } else {
+    // تخطى يوم أو أكثر → إعادة streak إلى 1
+    return 1;
+  }
+}
