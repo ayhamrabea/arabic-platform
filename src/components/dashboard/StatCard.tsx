@@ -10,7 +10,6 @@ interface StatCardProps {
   color: 'blue' | 'green' | 'yellow' | 'purple' | 'orange'
   href?: string
   progress?: number
-  showProgress?: boolean
 }
 
 export function StatCard({ 
@@ -22,15 +21,15 @@ export function StatCard({
   color, 
   href,
   progress,
-  showProgress = false 
 }: StatCardProps) {
   const colors = {
-    blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-300' },
-    green: { bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-300' },
-    yellow: { bg: 'bg-yellow-100', text: 'text-yellow-600', border: 'border-yellow-300' },
-    purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-300' },
-    orange: { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-300' },
+    blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-300', progressBg: 'bg-blue-600' },
+    green: { bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-300', progressBg: 'bg-green-600' },
+    yellow: { bg: 'bg-yellow-100', text: 'text-yellow-600', border: 'border-yellow-300', progressBg: 'bg-yellow-600' },
+    purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-300', progressBg: 'bg-purple-600' },
+    orange: { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-300', progressBg: 'bg-orange-600' },
   }
+
 
   const content = (
     <div className="bg-white group hover:shadow-xl transition-all duration-300 rounded-xl p-6 border border-gray-200 hover:border-indigo-300 hover:scale-[1.02]">
@@ -44,10 +43,10 @@ export function StatCard({
         </div>
       </div>
       
-      {showProgress && progress !== undefined && (
+      {progress !== undefined && (
         <div className="mt-4">
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className={`${colors[color].bg.replace('100', '600')} h-2 rounded-full`} style={{ width: `${progress}%` }}></div>
+            <div className={`${colors[color].progressBg} h-2 rounded-full`} style={{ width: `${progress}%` }}></div>
           </div>
           <p className="text-sm text-gray-500 mt-2">{progress}% completed</p>
         </div>

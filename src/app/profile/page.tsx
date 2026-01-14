@@ -9,7 +9,8 @@ import { RootState } from '@/store/store'
 import { supabase } from '@/lib/supabaseClient'
 import { fetchProfile, setEditing, updateProfile } from '@/store/slices/profileSlice'
 import { clearUser } from '@/store/slices/authSlice'
-import { getAge, getLevel, getStreakStatus } from '@/utlis/profile'
+import { getAge , getStreakStatus } from '@/utils/profile'
+import { getLevel } from '@/utils/levels'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -116,8 +117,15 @@ export default function ProfilePage() {
     )
   }
 
-  const { level: userLevel, color: levelColor, nextXP } = getLevel(profile.total_xp || 0)
-  const progressPercentage = Math.min(((profile.total_xp || 0) / nextXP) * 100, 100)
+  const levelInfo = getLevel(profile.total_xp || 0)
+  const userLevel = levelInfo.level      
+  const levelColor = levelInfo.color      
+  const progressPercentage = levelInfo.progress  
+  const nextLevel = levelInfo.nextLevel  
+  const nextXP = levelInfo.nextXP         
+
+  // const { level: userLevel, color: levelColor, nextXP } = getLevel(profile.total_xp || 0)
+  // const progressPercentage = Math.min(((profile.total_xp || 0) / nextXP) * 100, 100)
   const streakStatus = getStreakStatus(profile.streak_days || 0)
   const age = profile.birth_date ? getAge(profile.birth_date) : null
 

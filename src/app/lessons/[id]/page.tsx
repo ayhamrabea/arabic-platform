@@ -15,13 +15,19 @@ import {
   CheckCircleIcon
 } from '@heroicons/react/24/outline'
 import { useCompleteLessonMutation, useGetLessonByIdQuery, useToggleFavoriteMutation, useUpdateCompletedItemsMutation } from '@/store/apis/lessonsApi'
+import { updateTimeSpent } from '@/store/slices/dashboardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { RootState } from '@/store/store'
 
 
 
 export default function LessonDetailPage() {
   const { id } = useParams()
   const router = useRouter()
-  
+  const dispatch = useDispatch()
+  const { user, loading: authLoading } = useSelector((state: RootState) => state.auth);
+
   // استخدام RTK Query
   const { 
     data: lessonData, 
@@ -34,6 +40,49 @@ export default function LessonDetailPage() {
   const [toggleFavorite] = useToggleFavoriteMutation()
   const [updateCompletedItems] = useUpdateCompletedItemsMutation()
   const [completeLesson] = useCompleteLessonMutation()
+
+  // لحساب الوقت المنقضي في الدرس
+useEffect(() => {
+  if (!user) return;
+
+  let start = Date.now();
+  let accumulated = 0;
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      accumulated += Date.now() - start;
+    } else {
+      start = Date.now();
+    }
+  };
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  const handleBeforeUnload = () => {
+    accumulated += Date.now() - start;
+    const minutes = Math.floor(accumulated / 60000);
+    if (minutes > 0) {
+      dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
+    }
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  return () => {
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+
+    accumulated += Date.now() - start;
+    const minutes = Math.floor(accumulated / 60000);
+    if (minutes > 0) {
+      dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
+    }
+  };
+}, [user, dispatch]);
+
+
+
+
 
   if (isLoading) return <LoadingSpinner />
   
@@ -73,6 +122,7 @@ export default function LessonDetailPage() {
   }
 
   const toggleCompleteItem = async (itemId: string) => {
+    if (progress?.status === 'completed') return
     const completed = !progress?.completed_items?.includes(itemId)
     
     try {

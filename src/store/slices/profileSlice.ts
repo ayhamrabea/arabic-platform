@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabaseClient";
-import { calculateStreak } from "@/utlis/profile";
+import { calculateStreak } from "@/utils/profile";
 
 export interface Profile {
   id: string;

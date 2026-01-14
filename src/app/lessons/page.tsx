@@ -76,7 +76,6 @@ export default function LessonsPage() {
                 key={lesson.id} 
                 lesson={lesson}
                 progress={progressPercentage}
-                showProgress={hasProgress}
                 progressData={progress}
                 itemStats={{
                   completed: progress?.completed_items?.length || 0,

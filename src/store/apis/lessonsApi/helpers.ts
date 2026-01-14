@@ -1,3 +1,5 @@
+// store/apis/lessonsApi/helpers
+
 import { supabase } from '@/lib/supabaseClient'
 
 // مساعدات المصادقة

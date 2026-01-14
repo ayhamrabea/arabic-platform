@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store/store'
@@ -19,7 +19,10 @@ import { GradientCard } from '@/components/dashboard/GradientCard'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { QuickActionCard } from '@/components/dashboard/QuickActionCard'
 import { SimpleLessonCard } from '@/components/lessons/SimpleLessonCard'
-import { fetchDashboardData, startLesson } from '@/store/slices/dashboardSlice'
+import { fetchDashboardData, startLesson, updateTimeSpent } from '@/store/slices/dashboardSlice'
+import { getLevelProgressByXP, LEVELS } from '@/utils/levels'
+import { formatTime } from '@/utils/profile'
+
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -34,6 +37,10 @@ export default function DashboardPage() {
     error 
   } = useSelector((state: RootState) => state.dashboard);
 
+  const [localStats, setLocalStats] = useState(stats);
+  const [progress, setProgress] = useState(getLevelProgressByXP(stats?.totalXP || 0));
+
+
   useEffect(() => {
     if (!authLoading && !user) {
       router.replace('/login');
@@ -45,12 +52,26 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, dispatch, router]);
 
-  const handleStartLesson = (lessonId: string) => {
+
+
+  useEffect(() => {
+  if (stats) {
+    setLocalStats(stats);
+    setProgress(getLevelProgressByXP(stats.totalXP));
+  }
+}, [stats]);
+
+
+  const handleStartLesson = async (lessonId: string) => {
     if (user) {
-      dispatch(startLesson({ userId: user.id, lessonId }) as any);
+      await dispatch(startLesson({ userId: user.id, lessonId }) as any);
       router.push(`/lessons/${lessonId}`);
     }
   };
+
+
+
+
 
   const isLoading = authLoading || dashboardLoading;
 
@@ -66,28 +87,10 @@ export default function DashboardPage() {
     return null;
   }
 
-  const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-  };
 
-  const getProgressToNextLevel = () => {
-    if (!stats) return 0;
-    const { totalXP, nextLevelXP } = stats;
-    const currentLevelXP = {
-      'A1 Beginner': 0,
-      'A2 Elementary': 100,
-      'B1 Intermediate': 300,
-      'B2 Upper-Intermediate': 600,
-      'C1 Advanced': 1000,
-      'C2 Master': 1500
-    }[stats.currentLevel] || 0;
-    
-    const totalNeeded = nextLevelXP - currentLevelXP;
-    const earned = totalXP - currentLevelXP;
-    return Math.min((earned / totalNeeded) * 100, 100);
-  };
+
+
+
 
   const quickActions = [
     { 
@@ -150,15 +153,17 @@ export default function DashboardPage() {
             </div>
             <div className="text-right">
               <p className="text-3xl font-bold">{stats?.totalXP || 0} XP</p>
-              <p className="text-indigo-100">
-                {stats?.nextLevelXP ? `${stats.totalXP}/${stats.nextLevelXP} XP to next level` : ''}
-              </p>
+                {stats && (
+                  <p className="text-indigo-100">
+                    {stats.nextLevelXP - stats.totalXP} XP to next level
+                  </p>
+                )}
             </div>
           </div>
           <div className="w-full bg-white/20 rounded-full h-3">
             <div 
               className="bg-white h-3 rounded-full transition-all duration-500" 
-              style={{ width: `${getProgressToNextLevel()}%` }}
+              style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
@@ -172,9 +177,8 @@ export default function DashboardPage() {
             icon={<BookOpenIcon className="h-8 w-8 text-blue-600" />}
             color="blue"
             href="/lessons"
-            showProgress
-            progress={stats?.totalLessons ? 
-              Math.round(((stats?.completedLessons || 0) / stats.totalLessons) * 100) : 0
+            progress={localStats?.totalLessons ? 
+              Math.round(((localStats?.completedLessons || 0) / localStats.totalLessons) * 100) : 0
             }
           />
 
@@ -191,7 +195,7 @@ export default function DashboardPage() {
           <StatCard
             title="Learning Accuracy"
             description="Average score"
-            value={`${stats?.accuracy || 0}%`}
+            value={`${stats?.completedLessons || 0}%`}
             icon={<AcademicCapIcon className="h-8 w-8 text-green-600" />}
             color="green"
             // showAccuracy
@@ -226,10 +230,8 @@ export default function DashboardPage() {
                       title={lesson.title}
                       duration={`${lesson.duration} min`}
                       level={lesson.level}
-                      // status={lesson.status}
-                      // score={lesson.score}
-                      isActive={lesson.status === 'in_progress'}
-                      // progress={lesson.status === 'completed' ? 100 : lesson.status === 'in_progress' ? 50 : 0}
+                      status={lesson.status as any}
+                      progress={lesson.status === 'completed' ? 100 : lesson.status === 'in_progress' ? 50 : 0}
                       onStart={() => handleStartLesson(lesson.id)}
                     />
                   ))
@@ -258,15 +260,14 @@ export default function DashboardPage() {
                 <div className="space-y-4">
                   {recommendedLessons.map((lesson) => (
                     <SimpleLessonCard
-                      key={lesson.id}
-                      title={lesson.title}
-                      duration={`${lesson.duration} min`}
-                      level={lesson.level}
-                      // difficulty={lesson.difficulty}
-                      // xpReward={lesson.estimated_xp}
-                      isActive={false}
-                      onStart={() => handleStartLesson(lesson.id)}
-                    />
+                        key={lesson.id}
+                        title={lesson.title}
+                        duration={`${lesson.duration} min`}
+                        level={lesson.level}
+                        status={lesson.status as any}
+                        progress={lesson.status === 'completed' ? 100 : lesson.status === 'in_progress' ? 50 : 0}
+                        onStart={() => handleStartLesson(lesson.id)}
+                      />
                   ))}
                 </div>
               </div>
@@ -298,3 +299,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

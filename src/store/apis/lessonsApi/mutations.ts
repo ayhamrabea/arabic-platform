@@ -3,9 +3,10 @@ import {
   getCurrentUserId, 
   getLessonTotalItems, 
   calculateProgressStatus,
-  updateUserXP 
 } from './helpers'
 import type { StudentProgress } from './types'
+import { calculateXP, grantXP } from '@/utils/xp'
+
 
 // عمليات الطفرات
 export const lessonMutations = {
@@ -93,7 +94,11 @@ export const lessonMutations = {
           .single()
 
         if (lessonData?.estimated_xp) {
-          await updateUserXP(userId, lessonData.estimated_xp)
+          const xp = calculateXP({
+            type: 'COMPLETE_LESSON',
+            lessonXP: lessonData.estimated_xp
+          })
+          await grantXP(userId, xp, 'COMPLETE_LESSON')
         }
       }
 
@@ -177,7 +182,12 @@ export const lessonMutations = {
         .single()
 
       if (lessonData?.estimated_xp) {
-        await updateUserXP(userId, lessonData.estimated_xp)
+        const xp = calculateXP({
+          type: 'COMPLETE_LESSON',
+          lessonXP: lessonData.estimated_xp
+        })
+
+        await grantXP(userId, xp, 'COMPLETE_LESSON')
       }
 
       return data

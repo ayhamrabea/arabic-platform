@@ -1,12 +1,13 @@
 // @/store/slices/dashboardSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabaseClient";
+import { CEFRLevel, getLevelByXP, getNextLevel } from "@/utils/levels";
 
 export interface Lesson {
   id: string;
   title: string;
   type: string;
-  level: string;
+  level: CEFRLevel;
   duration: number;
   difficulty: string;
   estimated_xp: number;
@@ -21,12 +22,11 @@ export interface DashboardStats {
   completedLessons: number;
   totalXP: number;
   streakDays: number;
-  timeSpent: number; // في الدقائق
+  timeSpent: number; //
   accuracy: number; // النسبة المئوية
-  currentLevel: string;
+  currentLevel: CEFRLevel;
   nextLevelXP: number;
   dailyGoal: number;
-  dailyGoalProgress: number;
 }
 
 interface DashboardState {
@@ -45,15 +45,7 @@ const initialState: DashboardState = {
   error: null,
 };
 
-// حساب المستوى بناءً على الـ XP
-const calculateLevel = (xp: number) => {
-  if (xp < 100) return { level: 'A1 Beginner', nextXP: 100 };
-  if (xp < 300) return { level: 'A2 Elementary', nextXP: 300 };
-  if (xp < 600) return { level: 'B1 Intermediate', nextXP: 600 };
-  if (xp < 1000) return { level: 'B2 Upper-Intermediate', nextXP: 1000 };
-  if (xp < 1500) return { level: 'C1 Advanced', nextXP: 1500 };
-  return { level: 'C2 Master', nextXP: xp + 500 };
-};
+
 
 // جلب تقدم المستخدم من student_progress
 const fetchUserProgress = async (userId: string) => {
@@ -83,7 +75,7 @@ const fetchRecommendedLessons = async (userLevel: string, completedLessonIds: st
   const { data: lessons, error } = await supabase
     .from('lessons')
     .select('*')
-    .eq('level', userLevel.split(' ')[0]) // أخذ الجزء الأول مثل 'A1'
+    .eq('level', userLevel) // أخذ الجزء الأول مثل 'A1'
     .eq('is_active', true)
     .not('id', 'in', `(${completedLessonIds.join(',') || '00000000-0000-0000-0000-000000000000'})`)
     .order('order_index', { ascending: true })
@@ -101,7 +93,7 @@ export const fetchDashboardData = createAsyncThunk(
       // جلب بيانات البروفايل
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('total_xp, streak_days')
+        .select('total_xp, streak_days , time_spent')
         .eq('id', userId)
         .single();
 
@@ -112,32 +104,31 @@ export const fetchDashboardData = createAsyncThunk(
 
       // حساب الإحصائيات
       const completedLessons = progressData.filter(p => p.status === 'completed');
-      const totalTimeSpent = completedLessons.reduce((acc, p) => {
-        const lesson = p.lessons as Lesson;
-        return acc + (lesson?.duration || 0);
-      }, 0);
+      const totalTimeSpent = profileData.time_spent || 0
+
 
       const averageScore = completedLessons.length > 0 
         ? Math.round(completedLessons.reduce((acc, p) => acc + (p.score || 0), 0) / completedLessons.length)
         : 0;
 
-      const { level: currentLevel, nextXP } = calculateLevel(profileData.total_xp);
+      // const { level: currentLevel, nextXP } = getLevelByXP(profileData.total_xp);
+      const currentLevel = getLevelByXP(profileData.total_xp);
+      const nextLevel = getNextLevel(profileData.total_xp);
       
       // جلب الدروس المقترحة
       const completedLessonIds = completedLessons.map(p => p.lesson_id);
-      const recommendedLessons = await fetchRecommendedLessons(currentLevel, completedLessonIds);
+      const recommendedLessons = await fetchRecommendedLessons(currentLevel.key, completedLessonIds);
 
       const stats: DashboardStats = {
         totalLessons: progressData.length,
         completedLessons: completedLessons.length,
         totalXP: profileData.total_xp || 0,
         streakDays: profileData.streak_days || 0,
-        timeSpent: totalTimeSpent,
         accuracy: averageScore,
-        currentLevel,
-        nextLevelXP: nextXP,
+        currentLevel: currentLevel.key,
+        nextLevelXP: nextLevel?.minXP ?? currentLevel.maxXP,
+        timeSpent: totalTimeSpent,
         dailyGoal: 30, // دقيقة يومياً
-        dailyGoalProgress: Math.min(totalTimeSpent % 1440 / 30 * 100, 100) // احسب نسبة الهدف اليومي
       };
 
       // تحويل progressData إلى Lessons
@@ -191,53 +182,87 @@ export const startLesson = createAsyncThunk(
   }
 );
 
-// إكمال درس
-export const completeLesson = createAsyncThunk(
-  'dashboard/completeLesson',
-  async ({ 
-    userId, 
-    lessonId, 
-    score,
-    xpEarned 
-  }: { 
-    userId: string; 
-    lessonId: string; 
-    score: number;
-    xpEarned: number;
-  }, { rejectWithValue }) => {
+// حساب الوقت
+export const updateTimeSpent = createAsyncThunk(
+  'dashboard/updateTimeSpent',
+  async (
+    { userId, minutes }: { userId: string; minutes: number },
+    { rejectWithValue }
+  ) => {
     try {
-      // تحديث تقدم الطالب
-      const { data: progressData, error: progressError } = await supabase
-        .from('student_progress')
-        .update({
-          status: 'completed',
-          score,
-          completed_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        })
-        .eq('profile_id', userId)
-        .eq('lesson_id', lessonId)
-        .select()
-        .single();
-
-      if (progressError) throw progressError;
-
-      // تحديث الـ XP في البروفايل
-      const { error: profileError } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
-        .update({
-          total_xp: supabase.rpc('increment', { x: xpEarned })
-        })
-        .eq('id', userId);
+        .select('time_spent')
+        .eq('id', userId)
+        .single()
 
-      if (profileError) throw profileError;
+      if (error) throw error
 
-      return { progress: progressData, xpEarned };
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+      const newTime = (data.time_spent || 0) + minutes
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ time_spent: newTime })
+        .eq('id', userId)
+
+      if (updateError) throw updateError
+
+      return minutes
+    } catch (err: any) {
+      return rejectWithValue(err.message)
     }
   }
-);
+)
+
+
+
+// إكمال درس
+// export const completeLesson = createAsyncThunk(
+//   'dashboard/completeLesson',
+//   async ({ 
+//     userId, 
+//     lessonId, 
+//     score,
+//     xpEarned 
+//   }: { 
+//     userId: string; 
+//     lessonId: string; 
+//     score: number;
+//     xpEarned: number;
+//   }, { rejectWithValue }) => {
+//     try {
+//       // تحديث تقدم الطالب
+//       const { data: progressData, error: progressError } = await supabase
+//         .from('student_progress')
+//         .update({
+//           status: 'completed',
+//           score,
+//           completed_at: new Date().toISOString(),
+//           updated_at: new Date().toISOString()
+//         })
+//         .eq('profile_id', userId)
+//         .eq('lesson_id', lessonId)
+//         .select()
+//         .single();
+
+//       if (progressError) throw progressError;
+
+//       // تحديث الـ XP في البروفايل
+//       const { error: profileError } = await supabase
+//         .from('profiles')
+//         .update({
+//           total_xp: supabase.rpc('increment', { x: xpEarned })
+//         })
+//         .eq('id', userId);
+
+//       if (profileError) throw profileError;
+
+//       return { progress: progressData, xpEarned };
+//     } catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 const dashboardSlice = createSlice({
   name: 'dashboard',
@@ -295,29 +320,37 @@ const dashboardSlice = createSlice({
           state.recentLessons = [newLesson, ...state.recentLessons].slice(0, 5);
         }
       })
-      // Complete Lesson
-      .addCase(completeLesson.fulfilled, (state, action) => {
-        // تحديث الـ stats
+      .addCase(updateTimeSpent.fulfilled, (state, action) => {
         if (state.stats) {
-          state.stats.totalXP += action.payload.xpEarned;
-          state.stats.completedLessons += 1;
+          state.stats.timeSpent += action.payload
+        }
+      })
+
+    // // Complete Lesson
+      // .addCase(completeLesson.fulfilled, (state, action) => {
+      //   // تحديث الـ stats
+      //   if (state.stats) {
+      //     state.stats.totalXP += action.payload.xpEarned;
+      //     state.stats.completedLessons += 1;
           
-          // حساب المستوى الجديد
-          const { level: newLevel, nextXP } = calculateLevel(state.stats.totalXP);
-          state.stats.currentLevel = newLevel;
-          state.stats.nextLevelXP = nextXP;
-        }
+      //     // حساب المستوى الجديد
+      //     const level = getLevelByXP(state.stats.totalXP);
+      //     const nextLevel = getNextLevel(state.stats.totalXP);
+
+      //     state.stats.currentLevel = level.key;
+      //     state.stats.nextLevelXP = nextLevel?.minXP ?? level.maxXP;
+      //   }
         
-        // تحديث الدرس في recentLessons
-        const lessonIndex = state.recentLessons.findIndex(
-          lesson => lesson.id === action.payload.progress.lesson_id
-        );
-        if (lessonIndex !== -1) {
-          state.recentLessons[lessonIndex].status = 'completed';
-          state.recentLessons[lessonIndex].score = action.payload.progress.score;
-          state.recentLessons[lessonIndex].completed_at = action.payload.progress.completed_at;
-        }
-      });
+      //   // تحديث الدرس في recentLessons
+      //   const lessonIndex = state.recentLessons.findIndex(
+      //     lesson => lesson.id === action.payload.progress.lesson_id
+      //   );
+      //   if (lessonIndex !== -1) {
+      //     state.recentLessons[lessonIndex].status = 'completed';
+      //     state.recentLessons[lessonIndex].score = action.payload.progress.score;
+      //     state.recentLessons[lessonIndex].completed_at = action.payload.progress.completed_at;
+      //   }
+      // });
   },
 });
 
