@@ -7,17 +7,13 @@ import { BackButton } from '@/components/ui/BackButton'
 import { MediaPlayer } from '@/components/media/MediaPlayer'
 import { VocabularyCard } from '@/components/vocabulary/VocabularyCard'
 import { GrammarCard } from '@/components/grammar/GrammarCard'
-import { 
-  ClockIcon,
-  StarIcon,
-  FireIcon,
-  BookmarkIcon,
-  CheckCircleIcon
-} from '@heroicons/react/24/outline'
-import { useCompleteLessonMutation, useGetLessonByIdQuery, useToggleFavoriteMutation, useUpdateCompletedItemsMutation } from '@/store/apis/lessonsApi'
+import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { useCompleteLessonMutation, useGetLessonByIdQuery, useUpdateCompletedItemsMutation } from '@/store/apis/lessonsApi'
+import { useToggleFavoriteMutation as useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi'
+import { useToggleFavoriteMutation as useToggleWordFavoriteMutation } from '@/store/apis/favoritesApi'
 import { updateTimeSpent } from '@/store/slices/dashboardSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { RootState } from '@/store/store'
 
 
@@ -29,17 +25,77 @@ export default function LessonDetailPage() {
   const { user, loading: authLoading } = useSelector((state: RootState) => state.auth);
 
   // استخدام RTK Query
-  const { 
-    data: lessonData, 
-    isLoading, 
-    isError, 
-    error 
-  } = useGetLessonByIdQuery(id as string)
+  const { data: lessonData, isLoading, isError, error } = useGetLessonByIdQuery(id as string)
 
   // استخدام Mutations
-  const [toggleFavorite] = useToggleFavoriteMutation()
+  const [toggleFavorite] = useToggleLessonFavoriteMutation()
   const [updateCompletedItems] = useUpdateCompletedItemsMutation()
   const [completeLesson] = useCompleteLessonMutation()
+  const [toggleFavoriteWordMutation] = useToggleWordFavoriteMutation()
+
+
+  // لأضافة الكلمات الى المفضلة
+  const [favoriteItems, setFavoriteItems] = useState<{
+    word: Record<string, boolean>
+    grammar: Record<string, boolean>
+    sentence: Record<string, boolean>
+  }>({
+    word: {},
+    grammar: {},
+    sentence: {},
+  });
+
+useEffect(() => {
+  if (!lessonData) return
+
+  const initialWordFavorites: Record<string, boolean> = {}
+  lessonData.vocabulary.forEach(word => {
+    initialWordFavorites[word.id] = false
+  })
+
+  const initialGrammarFavorites: Record<string, boolean> = {}
+  lessonData.grammar.forEach(rule => {
+    initialGrammarFavorites[rule.id] = false
+  })
+
+  // نستخدم setTimeout لتأجيل setState بعد الرندر
+  setTimeout(() => {
+    setFavoriteItems({
+      word: initialWordFavorites,
+      grammar: initialGrammarFavorites,
+      sentence: {} // لاحقًا يمكن إضافة الجمل
+    })
+  }, 0)
+}, [lessonData])
+
+
+
+
+  const toggleFavoriteItem = async (itemId: string, itemType: 'word' | 'grammar' | 'sentence') => {
+  try {
+    // القيمة الجديدة للـ state
+    const newValue = !favoriteItems[itemType][itemId];
+
+    // استدعاء الـ mutation
+    await toggleFavoriteWordMutation({
+      itemId,
+      itemType
+    }).unwrap();
+
+    // تحديث state فورًا لتغيير لون القلب
+    setFavoriteItems(prev => ({
+      ...prev,
+      [itemType]: {
+        ...prev[itemType],
+        [itemId]: newValue
+      }
+    }));
+  } catch (error) {
+    console.error(`Failed to toggle favorite ${itemType}`, error);
+  }
+};
+
+
 
   // لحساب الوقت المنقضي في الدرس
 useEffect(() => {
@@ -309,7 +365,9 @@ useEffect(() => {
                       key={word.id}
                       word={word}
                       completed={progress?.completed_items?.includes(word.id) || false}
+                      isFavorite={favoriteItems.word[word.id] || false}
                       onToggleComplete={() => toggleCompleteItem(word.id)}
+                      onToggleFavorite={() => toggleFavoriteItem(word.id, 'word')}
                     />
                   ))}
                 </div>
@@ -326,7 +384,9 @@ useEffect(() => {
                       key={rule.id}
                       rule={rule}
                       completed={progress?.completed_items?.includes(rule.id) || false}
+                      isFavorite={favoriteItems.grammar[rule.id] || false}
                       onToggleComplete={() => toggleCompleteItem(rule.id)}
+                      onToggleFavorite={() => toggleFavoriteItem(rule.id, 'grammar')}
                     />
                   ))}
                 </div>

@@ -1,22 +1,33 @@
 'use client'
 
-import { CheckCircleIcon, AcademicCapIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, AcademicCapIcon , HeartIcon } from '@heroicons/react/24/outline'
+import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
 
 interface GrammarCardProps {
   rule: GrammarRule
   completed?: boolean
+  isFavorite?: boolean
   onToggleComplete?: (id: string) => void
+  onToggleFavorite?: (id: string) => void
 }
 
 export function GrammarCard({
   rule,
   completed = false,
-  onToggleComplete
+  isFavorite,
+  onToggleComplete,
+  onToggleFavorite
 }: GrammarCardProps) {
 
   const handleClick = () => {
     onToggleComplete?.(rule.id)
+  }
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onToggleFavorite?.(rule.id)
   }
 
   const renderExamples = () => {
@@ -68,6 +79,21 @@ export function GrammarCard({
               <h3 className={`font-bold text-lg ${completed ? 'text-green-800' : 'text-gray-900'}`}>
                 {rule.rule_name}
               </h3>
+
+               <button
+                  onClick={handleFavorite}
+                  className={`p-2 rounded-full transition ${
+                    isFavorite
+                      ? 'bg-red-100 hover:bg-red-200'
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  {isFavorite ? (
+                    <HeartSolid className="h-4 w-4 text-red-500" />
+                  ) : (
+                    <HeartIcon className="h-4 w-4 text-gray-500" />
+                  )}
+                </button>
 
               {completed && (
                 <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">

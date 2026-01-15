@@ -370,41 +370,7 @@ export default function ProfilePage() {
               )}
             </div>
 
-            {/* Recent Activity */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h2>
-              <div className="space-y-4">
-                {[
-                  { activity: 'Completed "Basic Greetings" lesson', time: '2 hours ago', points: '+25 XP', type: 'lesson' },
-                  { activity: 'Learned 15 new vocabulary words', time: 'Yesterday', points: '+15 XP', type: 'vocabulary' },
-                  { activity: 'Practiced pronunciation exercises', time: '2 days ago', points: '+10 XP', type: 'practice' },
-                  { activity: `Achieved ${profile.streak_days || 0}-day streak`, time: 'Today', points: '+50 XP', type: 'streak' },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center">
-                      <div className={`p-2 rounded-lg mr-4 ${
-                        item.type === 'lesson' ? 'bg-blue-100 text-blue-600' :
-                        item.type === 'vocabulary' ? 'bg-green-100 text-green-600' :
-                        item.type === 'practice' ? 'bg-purple-100 text-purple-600' :
-                        'bg-orange-100 text-orange-600'
-                      }`}>
-                        {item.type === 'lesson' && '📚'}
-                        {item.type === 'vocabulary' && '📖'}
-                        {item.type === 'practice' && '🎤'}
-                        {item.type === 'streak' && '🔥'}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{item.activity}</p>
-                        <p className="text-sm text-gray-500">{item.time}</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                      {item.points}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+
           </div>
 
           {/* Right Column - Stats & Actions */}

@@ -1,22 +1,36 @@
 'use client'
 
-import { SpeakerWaveIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
+import { SpeakerWaveIcon, CheckCircleIcon , HeartIcon  } from '@heroicons/react/24/outline'
+import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+
 import type { Vocabulary } from '@/store/apis/lessonsApi/types'
 
 interface VocabularyCardProps {
   word: Vocabulary
   completed?: boolean
+  isFavorite?: boolean
   onToggleComplete?: (id: string) => void
+  onToggleFavorite?: (id: string) => void
+
 }
+
+
 
 export function VocabularyCard({
   word,
   completed = false,
-  onToggleComplete
+  isFavorite,
+  onToggleComplete,
+  onToggleFavorite
 }: VocabularyCardProps) {
 
   const handleClick = () => {
     onToggleComplete?.(word.id)
+  }
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onToggleFavorite?.(word.id)
   }
 
   const playAudio = (e: React.MouseEvent) => {
@@ -25,6 +39,9 @@ export function VocabularyCard({
       new Audio(word.audio_url).play()
     }
   }
+
+  
+
 
   const getDifficultyColor = (score?: number) => {
     if (!score) return 'bg-gray-100 text-gray-800'
@@ -62,6 +79,23 @@ export function VocabularyCard({
                   />
                 </button>
               )}
+
+              {/* زر المفضلة */}
+              <button
+                onClick={handleFavorite}
+                className={`p-2 rounded-full transition ${
+                  isFavorite
+                    ? 'bg-red-100 hover:bg-red-200'
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {isFavorite ? (
+                  <HeartSolid className="h-4 w-4 text-red-500" />
+                ) : (
+                  <HeartIcon className="h-4 w-4 text-gray-500" />
+                )}
+              </button>
+
             </div>
 
             <div className="flex items-center gap-3">

@@ -27,6 +27,7 @@ export interface GrammarRule {
   explanation: string
   created_at: string
   updated_at: string
+  isFavorite?: boolean;
 }
 
 export interface Vocabulary {
@@ -41,6 +42,7 @@ export interface Vocabulary {
   difficulty_score: number
   created_at: string
   updated_at: string
+  isFavorite?: boolean;
 }
 
 export interface StudentProgress {
