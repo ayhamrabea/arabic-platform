@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arabic Platform 🇸🇦📚
 
-## Getting Started
+**Arabic Platform** — это образовательная платформа для изучения арабского языка для носителей других языков.  
+Проект ориентирован на структурированное обучение, отслеживание прогресса и удобную пользовательскую панель.
 
-First, run the development server:
+Платформа разработана с использованием современных веб-технологий и рассчитана на масштабирование и дальнейшее развитие.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Цель проекта
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Многие платформы по изучению арабского языка сталкиваются с проблемами:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Неструктурированный контент  
+- Отсутствие системы прогресса  
+- Слабый пользовательский опыт  
 
-## Learn More
+**Arabic Platform** решает эти проблемы, предлагая:
 
-To learn more about Next.js, take a look at the following resources:
+- Пошаговое обучение  
+- Понятную систему уроков  
+- Визуальный прогресс пользователя  
+- Современный интерфейс
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧠 Основная идея
 
-## Deploy on Vercel
+Пользователь:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Регистрируется или входит в систему  
+2. Выбирает уровень обучения  
+3. Проходит уроки (лексика, грамматика, практика)  
+4. Видит свой прогресс в личном кабинете (Dashboard)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🛠 Используемые технологии
+
+- **Next.js (App Router)** — фронтенд и маршрутизация  
+- **TypeScript** — типизация и надежность кода  
+- **Supabase** — аутентификация и база данных  
+- **Redux Toolkit** — управление состоянием  
+- **PostCSS / CSS** — стилизация интерфейса
+
+---
+
+## 📁 Структура проекта (упрощенно)
+
+```text
+src/
+├── app/
+│   ├── (auth)/        # Аутентификация (login / register)
+│   ├── dashboard/     # Панель пользователя
+│   ├── lessons/       # Уроки и страницы уроков
+│   └── layout.tsx
+│
+├── components/        # UI-компоненты
+├── store/             # Redux store и slices
+├── lib/               # Вспомогательные функции
+└── styles/            # Глобальные стили
