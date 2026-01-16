@@ -2,8 +2,10 @@
 
 import { CheckCircleIcon, AcademicCapIcon , HeartIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+import { useTranslations } from 'next-intl'
 
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
+import { renderExamples } from '../favorites/helpers'
 
 interface GrammarCardProps {
   rule: GrammarRule
@@ -20,6 +22,7 @@ export function GrammarCard({
   onToggleComplete,
   onToggleFavorite
 }: GrammarCardProps) {
+  const t = useTranslations('GrammarCard') // ملف الرسائل GrammarCard.json
 
   const handleClick = () => {
     onToggleComplete?.(rule.id)
@@ -28,33 +31,6 @@ export function GrammarCard({
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation()
     onToggleFavorite?.(rule.id)
-  }
-
-  const renderExamples = () => {
-    if (!rule.examples) return null
-
-    if (typeof rule.examples === 'string') {
-      return rule.examples
-    }
-
-    if (Array.isArray(rule.examples)) {
-      return (
-        <div className="space-y-2">
-          {rule.examples.map((ex: string, index: number) => (
-            <div key={index} className="flex items-start">
-              <span className="text-blue-500 mr-2">•</span>
-              <span className="text-gray-700">{ex}</span>
-            </div>
-          ))}
-        </div>
-      )
-    }
-
-    return (
-      <pre className="text-sm text-gray-600 whitespace-pre-wrap">
-        {JSON.stringify(rule.examples, null, 2)}
-      </pre>
-    )
   }
 
   return (
@@ -80,24 +56,24 @@ export function GrammarCard({
                 {rule.rule_name}
               </h3>
 
-               <button
-                  onClick={handleFavorite}
-                  className={`p-2 rounded-full transition ${
-                    isFavorite
-                      ? 'bg-red-100 hover:bg-red-200'
-                      : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
-                >
-                  {isFavorite ? (
-                    <HeartSolid className="h-4 w-4 text-red-500" />
-                  ) : (
-                    <HeartIcon className="h-4 w-4 text-gray-500" />
-                  )}
-                </button>
+              <button
+                onClick={handleFavorite}
+                className={`p-2 rounded-full transition ${
+                  isFavorite
+                    ? 'bg-red-100 hover:bg-red-200'
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {isFavorite ? (
+                  <HeartSolid className="h-4 w-4 text-red-500" />
+                ) : (
+                  <HeartIcon className="h-4 w-4 text-gray-500" />
+                )}
+              </button>
 
               {completed && (
                 <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
-                  Completed
+                  {t('completed')}
                 </span>
               )}
             </div>
@@ -117,14 +93,14 @@ export function GrammarCard({
                   : 'bg-gray-50 border-gray-100'
               }`}
             >
-              <p className="text-xs font-medium text-gray-500 mb-2">EXAMPLES:</p>
-              <div className="text-sm">{renderExamples()}</div>
+              <p className="text-xs font-medium text-gray-500 mb-2">{t('examples')}</p>
+              <div className="text-sm">{renderExamples(rule)}</div>
             </div>
           )}
 
           {rule.exceptions && (
             <div className="mt-3 p-3 bg-red-50 rounded-lg border border-red-100">
-              <p className="text-xs font-medium text-red-600 mb-1">EXCEPTIONS:</p>
+              <p className="text-xs font-medium text-red-600 mb-1">{t('exceptions')}</p>
               <p className="text-sm text-red-700">{rule.exceptions}</p>
             </div>
           )}

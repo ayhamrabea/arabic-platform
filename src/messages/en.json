@@ -1,0 +1,270 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "dashboard": "Dashboard",
+    "favorites": "Favorites",
+    "profile": "Profile Settings",
+    "settings": "Settings",
+    "signIn": "Sign In",
+    "getStarted": "Get Started Free",
+    "signedInAs": "Signed in as",
+    "welcomeBack": "Welcome back",
+    "myFavorites": "My Favorites"
+  },
+  "General": {
+    "logo": "AR-Learn",
+    "logoAI": "AI",
+    "back": "back",
+    "loading": "Loading .....",
+    "logout": "Logout",
+    "loggingOut": "Logging out..."
+  },
+  "LessonsPage": {
+    "headerTitle": "Language Lessons",
+    "headerDescription": "Master a new language with our carefully designed curriculum. Start from basics or jump to advanced topics.",
+    "noLessons": "No lessons found",
+    "noLessonsMessage": "No {level} lessons available",
+    "viewAllLessons": "View all lessons",
+    "ctaTitle": "Ready to accelerate your learning?",
+    "ctaDescription": "Join our premium plan for personalized lessons and AI-powered practice.",
+    "ctaButton": "Upgrade Now",
+    "error": "Failed to load lessons",
+    "lessonDescription": "Interactive language lesson",
+    "words": "words",
+    "rules": "rules",
+    "minutes": "min",
+    "progress": "Progress",
+    "completed": "Completed",
+    "items": "items"
+  },
+  "LessonFilter": {
+    "all": "All Levels",
+    "A1": "A1 Beginner",
+    "A2": "A2 Elementary",
+    "B1": "B1 Intermediate",
+    "B2": "B2 Upper Intermediate",
+    "C1": "C1 Advanced",
+    "C2": "C2 Proficient"
+  },
+  "LessonDetailPage": {
+    "error": "Failed to load lesson",
+    "lessonNotFound": "Lesson not found",
+    "backToLessons": "Back to Lessons",
+    "minutes": "min",
+    "lessonNumber": "Lesson #{order}",
+    "save": "Save",
+    "saved": "Saved",
+    "progress": "Progress",
+    "pending": "Pending",
+    "of": "of",
+    "items": "items",
+    "completeToEarn": "Complete to earn",
+    "lessonCompleted": "Lesson Completed",
+    "lessonContent": "Lesson Content",
+    "vocabulary": "Vocabulary",
+    "wordsCount": "{count} words",
+    "grammar": "Grammar Rules",
+    "completeLesson": "Complete Lesson",
+    "back": "Back",
+    "videoLesson": "Video Lesson",
+    "audioLesson": "Audio Lesson"
+  },
+  "DashboardPage": {
+    "error": "Failed to load dashboard data",
+    "currentLevel": "Current Level",
+    "levelDefault": "A1 Beginner",
+    "xpToNextLevel": "XP to next level",
+    "lessonsCompleted": "Lessons Completed",
+    "learningJourney": "Your learning journey",
+    "currentStreak": "Current Streak",
+    "dailyConsistency": "Daily consistency",
+    "days": "days",
+    "learningAccuracy": "Learning Accuracy",
+    "averageScore": "Average score",
+    "timeSpent": "Time Spent",
+    "totalLearning": "Total learning",
+    "continueLearning": "Continue Learning",
+    "continueLearningDesc": "Pick up where you left off",
+    "viewAllLessons": "View all lessons",
+    "noLessonsStarted": "No lessons started yet.",
+    "browseLessons": "Browse Lessons →",
+    "recommendedForYou": "Recommended for You",
+    "quickActions": "Quick Actions",
+    "grammarQuiz": "Grammar Quiz",
+    "grammarQuizDesc": "Test your knowledge",
+    "vocabularyBuilder": "Vocabulary Builder",
+    "vocabularyBuilderDesc": "Learn 10 new words",
+    "speakingPractice": "Speaking Practice",
+    "speakingPracticeDesc": "Pronunciation exercises",
+    "minutes": "min",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "continue": "Continue",
+    "start": "Start"
+  },
+  "DashboardHeader" : {
+    "dashboardTitle": "Language Dashboard",
+    "welcomeBack": "Welcome back",
+    "level": "Level",
+    "dailyStreak": "Daily Streak",
+    "days": "days"
+  },
+  "VocabularyCard" : {
+    "translation": "Translation",
+    "pronunciation": "Pronunciation",
+    "type": "Type",
+    "exampleSentence": "Example Sentence",
+    "learned": "Learned",
+    "level": "Level"
+  },
+  "GrammarCard" : {
+    "completed": "Completed",
+    "examples": "Examples:",
+    "exceptions": "Exceptions:"
+  },
+  "FavoritesPage": {
+    "title": "My Favorites",
+    "subtitle": "All your saved words, grammar rules, and sentences in one place",
+    "removeError": "Failed to remove favorite:",
+    "clearConfirmation": "Are you sure you want to remove all favorites?",
+    "clearError": "Failed to clear all favorites:",
+    "loadError": "Error loading favorites",
+    "signInRequired": {
+      "title": "Sign in to view favorites",
+      "description": "Please sign in to see your favorite items",
+      "button": "Sign In"
+    },
+    "refreshButton": "Refresh",
+    "clearAllButton": "Clear All",
+    "stats": {
+      "total": "Total Items",
+      "words": "Words",
+      "grammar": "Grammar",
+      "sentences": "Sentences"
+    },
+    "searchPlaceholder": "Search in favorites...",
+    "filters": {
+      "types": {
+        "all": "All",
+        "word": "Word",
+        "grammar": "Grammar",
+        "sentence": "Sentence"
+      },
+      "levelLabel": "Filter by Level",
+      "clearFilters": "Clear Filters"
+    },
+    "sortOptions": {
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "alphabetical": "A-Z"
+    },
+    "emptyState": {
+      "title": "No favorites yet",
+      "description": "Start saving words, grammar rules, and sentences by clicking the heart icon on any item",
+      "browseButton": "Browse Lessons"
+    },
+    "noResults": {
+      "title": "No results found",
+      "description": "Try changing your search or filter settings"
+    },
+    "sections": {
+      "words": "Favorite Words",
+      "grammar": "Favorite Grammar Rules",
+      "sentences": "Favorite Sentences"
+    },
+    "items": "items",
+    "playAudio": "Play audio",
+    "removeFavorite": "Remove from favorites",
+    "contextLabel": "Context",
+    "viewLesson": "View Lesson"
+  },
+  "favorites": {
+    "play_pronunciation": "Play pronunciation",
+    "remove_from_favorites": "Remove from favorites",
+    "level": "Level",
+    "example": "Example",
+    "view_lesson": "View Lesson",
+    "added": "Added",
+    "exceptions": "Exceptions",
+    "examples": "Examples"
+  },
+  "ProfilePage": {
+    "backButton": "Back to Dashboard",
+    "profileNotFound": {
+      "title": "Profile Not Found",
+      "description": "Unable to load your profile.",
+      "button": "Return to Dashboard"
+    },
+    "status": {
+      "active": "Active"
+    },
+    "defaultName": "User",
+    "xp": "XP",
+    "editButton": {
+      "saving": "Saving...",
+      "cancel": "Cancel Edit",
+      "edit": "Edit Profile"
+    },
+    "progress": {
+      "title": "Learning Progress",
+      "toLevel": "Progress to {level}",
+      "xpEarned": "XP earned from all activities"
+    },
+    "form": {
+      "name": "Display Name",
+      "namePlaceholder": "Enter your display name",
+      "avatarUrl": "Avatar URL",
+      "avatarPlaceholder": "Enter image URL for your avatar",
+      "preview": "Preview",
+      "avatarPreview": "Avatar preview",
+      "country": "Country",
+      "countryPlaceholder": "Enter your country",
+      "birthDate": "Birth Date",
+      "saving": "Saving...",
+      "save": "Save Changes"
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "country": "Country",
+      "notSpecified": "Not specified",
+      "birthDate": "Birth Date",
+      "yearsOld": "years old",
+      "memberSince": "Member Since",
+      "lastActive": "Last Active",
+      "level": "Level"
+    },
+    "stats": {
+      "title": "Learning Statistics",
+      "totalXP": "Total XP",
+      "totalXpDesc": "Earned from all activities",
+      "currentStreak": "Current Streak",
+      "days": "days",
+      "streakDesc": "Daily learning consistency"
+    },
+    "accountInfo": {
+      "title": "Account Information",
+      "email": "Email",
+      "userId": "User ID",
+      "status": "Account Status",
+      "active": "Active",
+      "profileUpdated": "Profile Updated"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "settings": "Account Settings",
+      "achievements": "Achievements",
+      "leaderboard": "Leaderboard"
+    },
+    "levels": {
+      "A1": "Beginner",
+      "A2": "Elementary",
+      "B1": "Intermediate",
+      "B2": "Upper-Intermediate",
+      "C1": "Advanced",
+      "C2": "Mastery"
+    },
+    "signOut": "Sign Out"
+  }
+
+}

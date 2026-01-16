@@ -4,19 +4,18 @@ export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
 
 export interface LevelConfig {
   key: CEFRLevel;
-  label: string;
   minXP: number;
   maxXP: number;
 }
 
 
 export const LEVELS: LevelConfig[] = [
-  { key: 'A1', label: 'Beginner', minXP: 0, maxXP: 99 },
-  { key: 'A2', label: 'Elementary', minXP: 100, maxXP: 299 },
-  { key: 'B1', label: 'Intermediate', minXP: 300, maxXP: 599 },
-  { key: 'B2', label: 'Upper-Intermediate', minXP: 600, maxXP: 999 },
-  { key: 'C1', label: 'Advanced', minXP: 1000, maxXP: 1499 },
-  { key: 'C2', label: 'Mastery', minXP: 1500, maxXP: Infinity },
+  { key: 'A1',  minXP: 0, maxXP: 99 },
+  { key: 'A2',  minXP: 100, maxXP: 299 },
+  { key: 'B1',  minXP: 300, maxXP: 599 },
+  { key: 'B2',  minXP: 600, maxXP: 999 },
+  { key: 'C1',  minXP: 1000, maxXP: 1499 },
+  { key: 'C2',  minXP: 1500, maxXP: Infinity },
 ];
 
 export const LEVEL_COLORS: Record<CEFRLevel, string> = {
@@ -53,16 +52,19 @@ export function getLevelProgress(xp: number) {
 export function getLevel(xp: number) {
   const current = getLevelByXP(xp)
   const next = getNextLevel(xp)
+
   const progress = next
-    ? Math.min(Math.round(((xp - current.minXP) / (next.minXP - current.minXP)) * 100), 100)
+    ? Math.min(
+        Math.round(((xp - current.minXP) / (next.minXP - current.minXP)) * 100),
+        100
+      )
     : 100
 
   return {
-    level: current.label,
     key: current.key,
     color: LEVEL_COLORS[current.key],
     progress,
-    nextLevel: next?.label || null,
+    nextKey: next?.key || null,
     nextXP: next?.minXP || null
   }
 }

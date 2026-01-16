@@ -5,6 +5,9 @@ import { SpeakerWaveIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 import type { Vocabulary } from '@/store/apis/lessonsApi/types'
 import { formatDate, getDifficultyColor, getLevelColor } from '@/components/favorites/helpers'
+import { useAudioPlayer } from '@/hooks/useAudioPlayer'
+import { useTranslations } from 'next-intl'
+
 
 interface FavoriteVocabularyCardProps {
   word: Vocabulary & {
@@ -21,18 +24,8 @@ export function FavoriteVocabularyCard({
   onViewLesson
 }: FavoriteVocabularyCardProps) {
 
-  const playAudio = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (word.audio_url) {
-      new Audio(word.audio_url).play()
-    }
-  }
-
-  
-
-  
-
-  
+  const t = useTranslations('favorites')
+  const { play } = useAudioPlayer()
 
   return (
     <div className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all duration-200 bg-gradient-to-br from-blue-50/50 to-white">
@@ -42,9 +35,9 @@ export function FavoriteVocabularyCard({
             <h3 className="font-bold text-lg text-gray-900">{word.word}</h3>
             {word.audio_url && (
               <button
-                onClick={playAudio}
+                onClick={(e) => play(word.audio_url, e)}
                 className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                title="Play pronunciation"
+                title={t('play_pronunciation')}
               >
                 <SpeakerWaveIcon className="h-4 w-4 text-gray-600" />
               </button>
@@ -55,7 +48,7 @@ export function FavoriteVocabularyCard({
         <button
           onClick={() => onRemoveFavorite(word.id, 'word')}
           className="text-rose-500 hover:text-rose-700 p-1 ml-2 transition-colors"
-          title="Remove from favorites"
+          title={t('remove_from_favorites')}
         >
           <HeartSolid className="h-5 w-5" />
         </button>
@@ -74,14 +67,14 @@ export function FavoriteVocabularyCard({
         )}
         {word.difficulty_score !== undefined && (
           <span className={`px-2 py-1 text-xs rounded-full ${getDifficultyColor(word.difficulty_score)}`}>
-            Level {word.difficulty_score}
+            {t('level')} {word.difficulty_score}
           </span>
         )}
       </div>
 
       {word.example_sentence && (
         <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-100">
-          <p className="text-xs font-medium text-gray-500 mb-1">Example:</p>
+          <p className="text-xs font-medium text-gray-500 mb-1">{t('example')}</p>
           <p className="text-sm text-gray-700 italic">{word.example_sentence}</p>
         </div>
       )}
@@ -91,11 +84,11 @@ export function FavoriteVocabularyCard({
           onClick={() => onViewLesson(word.lesson_id)}
           className="text-sm text-blue-600 hover:text-blue-800 flex items-center transition-colors"
         >
-          View Lesson
+          {t('view_lesson')}
           <ChevronRightIcon className="h-3 w-3 ml-1" />
         </button>
         <span className="text-xs text-gray-500">
-          Added {formatDate(word.created_at)}
+          {t('added')} {formatDate(word.created_at)}
         </span>
       </div>
     </div>

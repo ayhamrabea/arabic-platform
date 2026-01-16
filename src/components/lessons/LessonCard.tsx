@@ -8,6 +8,7 @@ import {
   StarIcon 
 } from '@heroicons/react/24/outline'
 import type { LessonWithProgress } from '@/store/apis/lessonsApi/types'
+import { useTranslations } from 'next-intl'
 
 interface LessonCardProps {
   lesson: LessonWithProgress
@@ -27,6 +28,8 @@ export function LessonCard({
   progressData,
   itemStats 
 }: LessonCardProps) {
+  const t = useTranslations('LessonsPage') // ملف الرسائل الخاص بالصفحة
+
   const getLevelColor = (level: string) => {
     const colors: Record<string, string> = {
       'A1': 'bg-green-100 text-green-800',
@@ -81,7 +84,7 @@ export function LessonCard({
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
           {typeof lesson.content === 'string' 
             ? lesson.content.substring(0, 120) + '...' 
-            : 'Interactive language lesson'}
+            : t('lessonDescription')}
         </p>
 
         {/* Stats */}
@@ -89,42 +92,41 @@ export function LessonCard({
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <BookOpenIcon className="h-4 w-4" />
-              <span>{itemStats.vocabulary} words</span>
+              <span>{itemStats.vocabulary} {t('words')}</span>
             </div>
             <div className="flex items-center gap-1">
               <span>📝</span>
-              <span>{itemStats.grammar} rules</span>
+              <span>{itemStats.grammar} {t('rules')}</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <ClockIcon className="h-4 w-4" />
-            <span>{lesson.duration || 15} min</span>
+            <span>{lesson.duration || 15} {t('minutes')}</span>
           </div>
         </div>
 
         {/* Progress Bar */}
-
-          <div className="mb-3">
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-600">Progress</span>
-              <span className="font-medium">{progress}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  progress === 100 ? 'bg-green-500' : 'bg-indigo-500'
-                }`}
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
+        <div className="mb-3">
+          <div className="flex justify-between text-xs mb-1">
+            <span className="text-gray-600">{t('progress')}</span>
+            <span className="font-medium">{progress}%</span>
           </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full transition-all duration-300 ${
+                progress === 100 ? 'bg-green-500' : 'bg-indigo-500'
+              }`}
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
 
         {/* Completion Stats */}
         <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
           <div className="text-sm">
-            <span className="text-gray-600">Completed: </span>
+            <span className="text-gray-600">{t('completed')}: </span>
             <span className="font-semibold">
-              {itemStats.completed}/{itemStats.total} items
+              {itemStats.completed}/{itemStats.total} {t('items')}
             </span>
           </div>
           

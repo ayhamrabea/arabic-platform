@@ -1,5 +1,7 @@
-// components/dashboard/StatCard.tsx
+'use client'
+
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 interface StatCardProps {
   title: string
@@ -22,6 +24,8 @@ export function StatCard({
   href,
   progress,
 }: StatCardProps) {
+  const t = useTranslations('DashboardPage') 
+
   const colors = {
     blue: { bg: 'bg-blue-100', text: 'text-blue-600', border: 'border-blue-300', progressBg: 'bg-blue-600' },
     green: { bg: 'bg-green-100', text: 'text-green-600', border: 'border-green-300', progressBg: 'bg-green-600' },
@@ -29,7 +33,6 @@ export function StatCard({
     purple: { bg: 'bg-purple-100', text: 'text-purple-600', border: 'border-purple-300', progressBg: 'bg-purple-600' },
     orange: { bg: 'bg-orange-100', text: 'text-orange-600', border: 'border-orange-300', progressBg: 'bg-orange-600' },
   }
-
 
   const content = (
     <div className="bg-white group hover:shadow-xl transition-all duration-300 rounded-xl p-6 border border-gray-200 hover:border-indigo-300 hover:scale-[1.02]">
@@ -48,7 +51,9 @@ export function StatCard({
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div className={`${colors[color].progressBg} h-2 rounded-full`} style={{ width: `${progress}%` }}></div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">{progress}% completed</p>
+          <p className="text-sm text-gray-500 mt-2">
+            {progress}% {t('completed')}
+          </p>
         </div>
       )}
       

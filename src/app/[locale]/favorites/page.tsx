@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { BackButton } from '@/components/ui/BackButton'
@@ -23,7 +24,6 @@ import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import {
   useGetFavoriteItemsQuery,
   useToggleFavoriteMutation,
-  useClearAllFavoritesMutation
 } from '@/store/apis/favoritesApi'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
@@ -47,6 +47,7 @@ interface SentenceItem {
 
 export default function FavoritesPage() {
   const router = useRouter()
+  const t = useTranslations('FavoritesPage')
   const { user, loading: authLoading } = useSelector((state: RootState) => state.auth)
 
   const [selectedType, setSelectedType] = useState<ItemType>('all')
@@ -65,7 +66,6 @@ export default function FavoritesPage() {
   })
 
   const [toggleFavorite] = useToggleFavoriteMutation()
-  const [clearAllFavorites] = useClearAllFavoritesMutation()
 
   const [stats, setStats] = useState({
     total: 0,
@@ -186,30 +186,19 @@ export default function FavoritesPage() {
     try {
       await toggleFavorite({ itemId, itemType }).unwrap()
     } catch (error) {
-      console.error('Failed to remove favorite:', error)
+      console.error(t('removeError'), error)
     }
   }
 
-  const handleClearAll = async () => {
-    if (!confirm('Are you sure you want to remove all favorites?')) return
 
-    try {
-      await clearAllFavorites().unwrap()
-    } catch (error) {
-      console.error('Failed to clear all favorites:', error)
-    }
-  }
 
   const handleRefresh = () => {
     refetch()
   }
 
-  
   const handleViewLesson = (lessonId: string) => {
     router.push(`/lessons/${lessonId}`)
   }
-
-
 
   // دالة الحصول على أيقونة النوع
   const getTypeIcon = (type: ItemType) => {
@@ -249,7 +238,7 @@ export default function FavoritesPage() {
       <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 p-6">
         <div className="max-w-7xl mx-auto">
           <BackButton href="/dashboard" />
-          <ErrorMessage message={error?.toString() || 'Error loading favorites'} />
+          <ErrorMessage messageKey={error?.toString() || t('loadError')} />
         </div>
       </div>
     )
@@ -262,13 +251,13 @@ export default function FavoritesPage() {
           <BackButton href="/" />
           <div className="text-center py-12">
             <HeartIcon className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h2 className="text-2xl font-bold text-gray-700 mb-4">Sign in to view favorites</h2>
-            <p className="text-gray-600 mb-8">Please sign in to see your favorite items</p>
+            <h2 className="text-2xl font-bold text-gray-700 mb-4">{t('signInRequired.title')}</h2>
+            <p className="text-gray-600 mb-8">{t('signInRequired.description')}</p>
             <button
               onClick={() => router.push('/login')}
               className="px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
-              Sign In
+              {t('signInRequired.button')}
             </button>
           </div>
         </div>
@@ -292,10 +281,10 @@ export default function FavoritesPage() {
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center">
                 <HeartIconSolid className="h-10 w-10 text-rose-500 mr-3" />
-                My Favorites
+                {t('title')}
               </h1>
               <p className="text-gray-600">
-                All your saved words, grammar rules, and sentences in one place
+                {t('subtitle')}
               </p>
             </div>
 
@@ -303,21 +292,13 @@ export default function FavoritesPage() {
               <button
                 onClick={handleRefresh}
                 className="flex items-center px-4 py-2 text-sm text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
-                title="Refresh"
+                title={t('refreshButton')}
               >
                 <ArrowPathIcon className="h-4 w-4 mr-2" />
-                Refresh
+                {t('refreshButton')}
               </button>
 
-              {hasItems && (
-                <button
-                  onClick={handleClearAll}
-                  className="flex items-center px-4 py-2 text-sm text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
-                >
-                  <TrashIcon className="h-4 w-4 mr-2" />
-                  Clear All
-                </button>
-              )}
+
             </div>
           </div>
         </div>
@@ -327,7 +308,7 @@ export default function FavoritesPage() {
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Items</p>
+                <p className="text-sm text-gray-600">{t('stats.total')}</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <HeartIconSolid className="h-8 w-8 text-rose-400" />
@@ -337,7 +318,7 @@ export default function FavoritesPage() {
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Words</p>
+                <p className="text-sm text-gray-600">{t('stats.words')}</p>
                 <p className="text-3xl font-bold text-blue-600">{stats.words}</p>
               </div>
               <BookOpenIcon className="h-8 w-8 text-blue-400" />
@@ -347,7 +328,7 @@ export default function FavoritesPage() {
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Grammar</p>
+                <p className="text-sm text-gray-600">{t('stats.grammar')}</p>
                 <p className="text-3xl font-bold text-purple-600">{stats.grammar}</p>
               </div>
               <AcademicCapIcon className="h-8 w-8 text-purple-400" />
@@ -357,7 +338,7 @@ export default function FavoritesPage() {
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Sentences</p>
+                <p className="text-sm text-gray-600">{t('stats.sentences')}</p>
                 <p className="text-3xl font-bold text-green-600">{stats.sentences}</p>
               </div>
               <ChatBubbleLeftRightIcon className="h-8 w-8 text-green-400" />
@@ -373,7 +354,7 @@ export default function FavoritesPage() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search in favorites..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-4 py-3 pl-12 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
@@ -399,7 +380,7 @@ export default function FavoritesPage() {
                       : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}`}
                   >
                     <Icon className="h-4 w-4 mr-2" />
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {t(`filters.types.${type}`)}
                     <span className="ml-2 text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">
                       {count}
                     </span>
@@ -415,9 +396,9 @@ export default function FavoritesPage() {
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent appearance-none pr-10"
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="alphabetical">A-Z</option>
+                <option value="newest">{t('sortOptions.newest')}</option>
+                <option value="oldest">{t('sortOptions.oldest')}</option>
+                <option value="alphabetical">{t('sortOptions.alphabetical')}</option>
               </select>
               <FunnelIcon className="absolute right-3 top-2.5 h-5 w-5 text-gray-400 pointer-events-none" />
             </div>
@@ -425,7 +406,7 @@ export default function FavoritesPage() {
 
           {/* Level Filters */}
           <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">Filter by Level:</p>
+            <p className="text-sm text-gray-600 mb-2">{t('filters.levelLabel')}:</p>
             <div className="flex flex-wrap gap-2">
               {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(level => (
                 <button
@@ -449,7 +430,7 @@ export default function FavoritesPage() {
                   onClick={() => setSelectedLevels([])}
                   className="px-3 py-1 text-sm text-rose-600 hover:text-rose-700"
                 >
-                  Clear Filters
+                  {t('filters.clearFilters')}
                 </button>
               )}
             </div>
@@ -460,23 +441,23 @@ export default function FavoritesPage() {
         {!hasItems ? (
           <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
             <HeartIcon className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-            <h3 className="text-2xl font-bold text-gray-700 mb-4">No favorites yet</h3>
+            <h3 className="text-2xl font-bold text-gray-700 mb-4">{t('emptyState.title')}</h3>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              Start saving words, grammar rules, and sentences by clicking the heart icon on any item
+              {t('emptyState.description')}
             </p>
             <button
               onClick={() => router.push('/lessons')}
               className="px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
-              Browse Lessons
+              {t('emptyState.browseButton')}
             </button>
           </div>
         ) : !hasFilteredItems ? (
           <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
             <HeartIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-700 mb-2">No results found</h3>
+            <h3 className="text-xl font-bold text-gray-700 mb-2">{t('noResults.title')}</h3>
             <p className="text-gray-600">
-              Try changing your search or filter settings
+              {t('noResults.description')}
             </p>
           </div>
         ) : (
@@ -487,9 +468,9 @@ export default function FavoritesPage() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     <BookOpenIcon className="h-6 w-6 text-blue-500 mr-3" />
-                    Favorite Words
+                    {t('sections.words')}
                     <span className="ml-3 text-sm font-normal text-gray-500">
-                      ({filteredItems.words.length} items)
+                      ({filteredItems.words.length} {t('items')})
                     </span>
                   </h2>
                 </div>
@@ -512,9 +493,9 @@ export default function FavoritesPage() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     <AcademicCapIcon className="h-6 w-6 text-purple-500 mr-3" />
-                    Favorite Grammar Rules
+                    {t('sections.grammar')}
                     <span className="ml-3 text-sm font-normal text-gray-500">
-                      ({filteredItems.grammar.length} items)
+                      ({filteredItems.grammar.length} {t('items')})
                     </span>
                   </h2>
                 </div>
@@ -537,9 +518,9 @@ export default function FavoritesPage() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     <ChatBubbleLeftRightIcon className="h-6 w-6 text-green-500 mr-3" />
-                    Favorite Sentences
+                    {t('sections.sentences')}
                     <span className="ml-3 text-sm font-normal text-gray-500">
-                      ({filteredItems.sentences.length} items)
+                      ({filteredItems.sentences.length} {t('items')})
                     </span>
                   </h2>
                 </div>
@@ -559,7 +540,7 @@ export default function FavoritesPage() {
                             <button
                               onClick={() => playAudio(sentence.audio_url)}
                               className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
-                              title="Play audio"
+                              title={t('playAudio')}
                             >
                               <SpeakerWaveIcon className="h-4 w-4 text-gray-600" />
                             </button>
@@ -567,7 +548,7 @@ export default function FavoritesPage() {
                           <button
                             onClick={() => handleRemoveFavorite(sentence.id, 'sentence')}
                             className="text-rose-500 hover:text-rose-700 p-1"
-                            title="Remove from favorites"
+                            title={t('removeFavorite')}
                           >
                             <HeartIconSolid className="h-5 w-5" />
                           </button>
@@ -576,7 +557,7 @@ export default function FavoritesPage() {
 
                       {sentence.context && (
                         <div className="mt-2 p-2 bg-gray-50 rounded">
-                          <p className="text-sm text-gray-600">Context: {sentence.context}</p>
+                          <p className="text-sm text-gray-600">{t('contextLabel')}: {sentence.context}</p>
                         </div>
                       )}
 
@@ -585,7 +566,7 @@ export default function FavoritesPage() {
                           onClick={() => handleViewLesson(sentence.lesson_id)}
                           className="text-sm text-green-600 hover:text-green-800 flex items-center"
                         >
-                          View Lesson
+                          {t('viewLesson')}
                           <ChevronRightIcon className="h-3 w-3 ml-1" />
                         </button>
                       </div>

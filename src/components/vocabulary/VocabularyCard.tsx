@@ -2,8 +2,11 @@
 
 import { SpeakerWaveIcon, CheckCircleIcon , HeartIcon  } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+import { useTranslations } from 'next-intl'
 
 import type { Vocabulary } from '@/store/apis/lessonsApi/types'
+import { useAudioPlayer } from '@/hooks/useAudioPlayer'
+import { getDifficultyColor } from '../favorites/helpers'
 
 interface VocabularyCardProps {
   word: Vocabulary
@@ -11,10 +14,7 @@ interface VocabularyCardProps {
   isFavorite?: boolean
   onToggleComplete?: (id: string) => void
   onToggleFavorite?: (id: string) => void
-
 }
-
-
 
 export function VocabularyCard({
   word,
@@ -23,6 +23,7 @@ export function VocabularyCard({
   onToggleComplete,
   onToggleFavorite
 }: VocabularyCardProps) {
+  const t = useTranslations('VocabularyCard')
 
   const handleClick = () => {
     onToggleComplete?.(word.id)
@@ -33,22 +34,7 @@ export function VocabularyCard({
     onToggleFavorite?.(word.id)
   }
 
-  const playAudio = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (word.audio_url) {
-      new Audio(word.audio_url).play()
-    }
-  }
-
-  
-
-
-  const getDifficultyColor = (score?: number) => {
-    if (!score) return 'bg-gray-100 text-gray-800'
-    if (score <= 3) return 'bg-green-100 text-green-800'
-    if (score <= 6) return 'bg-yellow-100 text-yellow-800'
-    return 'bg-red-100 text-red-800'
-  }
+  const { play } = useAudioPlayer()
 
   return (
     <div
@@ -69,7 +55,7 @@ export function VocabularyCard({
 
               {word.audio_url && (
                 <button
-                  onClick={playAudio}
+                  onClick={(e) => play(word.audio_url, e)}
                   className={`p-2 rounded-full ${
                     completed ? 'bg-blue-100 hover:bg-blue-200' : 'bg-gray-100 hover:bg-gray-200'
                   }`}
@@ -105,13 +91,13 @@ export function VocabularyCard({
                     word.difficulty_score
                   )}`}
                 >
-                  Level {word.difficulty_score}
+                  {t('level')} {word.difficulty_score}
                 </span>
               )}
 
               {completed && (
                 <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                  Learned
+                  {t('learned')}
                 </span>
               )}
             </div>
@@ -119,7 +105,7 @@ export function VocabularyCard({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
             <div>
-              <p className="text-xs text-gray-500 mb-1">TRANSLATION</p>
+              <p className="text-xs text-gray-500 mb-1">{t('translation')}</p>
               <p className={`font-medium ${completed ? 'text-blue-700' : 'text-gray-900'}`}>
                 {word.translation}
               </p>
@@ -127,7 +113,7 @@ export function VocabularyCard({
 
             {word.pronunciation && (
               <div>
-                <p className="text-xs text-gray-500 mb-1">PRONUNCIATION</p>
+                <p className="text-xs text-gray-500 mb-1">{t('pronunciation')}</p>
                 <p className={`font-mono ${completed ? 'text-blue-700' : 'text-gray-700'}`}>
                   {word.pronunciation}
                 </p>
@@ -136,7 +122,7 @@ export function VocabularyCard({
 
             {word.word_type && (
               <div>
-                <p className="text-xs text-gray-500 mb-1">TYPE</p>
+                <p className="text-xs text-gray-500 mb-1">{t('type')}</p>
                 <p className={`font-medium ${completed ? 'text-blue-700' : 'text-gray-700'}`}>
                   {word.word_type}
                 </p>
@@ -150,7 +136,7 @@ export function VocabularyCard({
                 completed ? 'bg-blue-50 border-blue-100' : 'bg-gray-50 border-gray-100'
               }`}
             >
-              <p className="text-xs font-medium text-gray-500 mb-1">EXAMPLE SENTENCE:</p>
+              <p className="text-xs font-medium text-gray-500 mb-1">{t('exampleSentence')}</p>
               <p className={`italic ${completed ? 'text-blue-800' : 'text-gray-700'}`}>
                 {word.example_sentence}
               </p>

@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
@@ -20,10 +19,34 @@ import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import Icon from './icon/Icon'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react'
 
+// استيراد من next-intl - الطريقة الصحيحة
+import { useTranslations, useLocale } from 'next-intl'
+import { useRouter, usePathname } from 'next/navigation'
+
+import Link from 'next/link'
+
 export default function Navbar() {
   const { user, loading } = useSelector((state: RootState) => state.auth)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isProfileOpen, setIsProfileOpen] = useState(false)
+  
+  // استخدام next-intl hooks
+  const t = useTranslations('Navbar')
+  const tGeneral = useTranslations('General')
+  const router = useRouter()
+  const pathname = usePathname()
+  const locale = useLocale()
+
+  const changeLanguage = (newLocale: string) => {
+    const segments = pathname.split('/')
+    segments[1] = newLocale
+    router.replace(segments.join('/'))
+  }
+
+
+  const languageOptions = [
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+  ]
 
   if (loading) {
     return (
@@ -55,8 +78,8 @@ export default function Navbar() {
                 <GlobeAltIcon className="h-6 w-6 text-white" />
               </div>
               <div>
-                <span className="font-bold text-xl text-gray-900">LingoLearn</span>
-                <span className="text-xs text-indigo-600 font-medium ml-1">AI</span>
+                <span className="font-bold text-xl text-gray-900">{tGeneral('logo')}</span>
+                <span className="text-xs text-indigo-600 font-medium ml-1">{tGeneral('logoAI')}</span>
               </div>
             </Link>
           </div>
@@ -68,7 +91,7 @@ export default function Navbar() {
               className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <HomeIcon className="h-5 w-5 mr-2" />
-              Home
+              {t('home')}
             </Link>
             
             <Link 
@@ -76,7 +99,7 @@ export default function Navbar() {
               className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <BookOpenIcon className="h-5 w-5 mr-2" />
-              Lessons
+              {t('lessons')}
             </Link>
             
             <Link 
@@ -84,7 +107,7 @@ export default function Navbar() {
               className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <ChartBarIcon className="h-5 w-5 mr-2" />
-              Dashboard
+              {t('dashboard')}
             </Link>
 
             {/* رابط المفضلة - يظهر فقط للمستخدمين المسجلين */}
@@ -95,11 +118,37 @@ export default function Navbar() {
               >
                 <HeartIcon className="h-5 w-5 mr-2 group-hover:hidden" />
                 <HeartIconSolid className="h-5 w-5 mr-2 hidden group-hover:block text-rose-500" />
-                Favorites
+                {t('favorites')}
                 {/* مؤشر صغير للإشعارات (اختياري) */}
                 <span className="absolute -top-1 -right-1 h-2 w-2 bg-rose-500 rounded-full animate-pulse"></span>
               </Link>
             )}
+
+            {/* Language Switcher */}
+            <Menu as="div" className="relative">
+              <MenuButton className="flex items-center px-3 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all">
+                <GlobeAltIcon className="h-5 w-5 mr-2" />
+                <span className="text-sm font-medium">
+                  {languageOptions.find(lang => lang.code === locale)?.flag}
+                </span>
+                <ChevronDownIcon className="h-4 w-4 ml-1" />
+              </MenuButton>
+              <MenuItems className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                {languageOptions.map((lang) => (
+                  <MenuItem key={lang.code}>
+                    {({ active }) => (
+                      <button
+                        onClick={() => changeLanguage(lang.code)}
+                        className={`${active ? 'bg-gray-50' : ''} ${locale === lang.code ? 'text-indigo-600 font-medium' : 'text-gray-700'} w-full flex items-center px-4 py-2 text-sm transition-colors`}
+                      >
+                        <span className="mr-2 text-lg">{lang.flag}</span>
+                        {lang.name}
+                      </button>
+                    )}
+                  </MenuItem>
+                ))}
+              </MenuItems>
+            </Menu>
 
             {user ? (
               <Menu as="div" className="relative ml-2">
@@ -111,9 +160,9 @@ export default function Navbar() {
                       <ChevronDownIcon className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
                     </MenuButton>
                     
-                    <MenuItems className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 focus:outline-none">
+                    <MenuItems className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 focus:outline-none z-50">
                       <div className="px-4 py-3 border-b border-gray-100">
-                        <p className="text-sm text-gray-500">Signed in as</p>
+                        <p className="text-sm text-gray-500">{t('signedInAs')}</p>
                         <p className="font-medium truncate">{user.email}</p>
                       </div>
                       
@@ -124,7 +173,7 @@ export default function Navbar() {
                             className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
                           >
                             <UserCircleIcon className="h-5 w-5 mr-3" />
-                            Profile Settings
+                            {t('profile')}
                           </Link>
                         )}
                       </MenuItem>
@@ -136,7 +185,7 @@ export default function Navbar() {
                             className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
                           >
                             <HeartIcon className="h-5 w-5 mr-3" />
-                            My Favorites
+                            {t('myFavorites')}
                           </Link>
                         )}
                       </MenuItem>
@@ -148,7 +197,7 @@ export default function Navbar() {
                             className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
                           >
                             <Icon className="h-5 w-5 mr-3" name="settings" />
-                            Settings
+                            {t('settings')}
                           </Link>
                         )}
                       </MenuItem>
@@ -166,20 +215,44 @@ export default function Navbar() {
                   href="/login" 
                   className="px-6 py-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
                 >
-                  Sign In
+                  {t('signIn')}
                 </Link>
                 <Link 
                   href="/register" 
                   className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all font-medium shadow hover:shadow-md"
                 >
-                  Get Started Free
+                  {t('getStarted')}
                 </Link>
               </div>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Language switcher for mobile */}
+            <Menu as="div" className="relative">
+              <MenuButton className="p-2 text-gray-700 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors">
+                <span className="text-lg">
+                  {languageOptions.find(lang => lang.code === locale)?.flag}
+                </span>
+              </MenuButton>
+              <MenuItems className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                {languageOptions.map((lang) => (
+                  <MenuItem key={lang.code}>
+                    {({ active }) => (
+                      <button
+                        onClick={() => changeLanguage(lang.code)}
+                        className={`${active ? 'bg-gray-50' : ''} ${locale === lang.code ? 'text-indigo-600 font-medium' : 'text-gray-700'} w-full flex items-center px-4 py-2 text-sm transition-colors`}
+                      >
+                        <span className="mr-2 text-lg">{lang.flag}</span>
+                        {lang.name}
+                      </button>
+                    )}
+                  </MenuItem>
+                ))}
+              </MenuItems>
+            </Menu>
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-700 hover:text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
@@ -205,7 +278,7 @@ export default function Navbar() {
                       <UserCircleIcon className="h-6 w-6 text-indigo-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Welcome back</p>
+                      <p className="text-sm text-gray-500">{t('welcomeBack')}</p>
                       <p className="font-medium truncate">{user.email}</p>
                     </div>
                   </div>
@@ -217,7 +290,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <HomeIcon className="h-5 w-5 mr-3" />
-                  Home
+                  {t('home')}
                 </Link>
                 
                 <Link 
@@ -226,7 +299,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <BookOpenIcon className="h-5 w-5 mr-3" />
-                  Lessons
+                  {t('lessons')}
                 </Link>
                 
                 <Link 
@@ -235,7 +308,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <ChartBarIcon className="h-5 w-5 mr-3" />
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
                 
                 {/* رابط المفضلة في الموبايل */}
@@ -245,7 +318,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <HeartIcon className="h-5 w-5 mr-3" />
-                  My Favorites
+                  {t('myFavorites')}
                 </Link>
                 
                 <Link 
@@ -254,7 +327,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <UserCircleIcon className="h-5 w-5 mr-3" />
-                  Profile Settings
+                  {t('profile')}
                 </Link>
                 
                 <Link 
@@ -263,7 +336,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Icon className="h-5 w-5 mr-3" name="settings" />
-                  Settings
+                  {t('settings')}
                 </Link>
 
                 <div className="pt-4 border-t">
@@ -280,7 +353,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <HomeIcon className="h-5 w-5 mr-3" />
-                  Home
+                  {t('home')}
                 </Link>
                 
                 <Link 
@@ -289,7 +362,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <BookOpenIcon className="h-5 w-5 mr-3" />
-                  Lessons
+                  {t('lessons')}
                 </Link>
                 
                 <Link 
@@ -298,7 +371,7 @@ export default function Navbar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <ChartBarIcon className="h-5 w-5 mr-3" />
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
                 
                 <Link 
@@ -306,7 +379,7 @@ export default function Navbar() {
                   className="block px-4 py-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Sign In
+                  {t('signIn')}
                 </Link>
                 
                 <Link 
@@ -314,7 +387,7 @@ export default function Navbar() {
                   className="block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 text-center font-medium transition-all"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Get Started Free
+                  {t('getStarted')}
                 </Link>
               </div>
             )}

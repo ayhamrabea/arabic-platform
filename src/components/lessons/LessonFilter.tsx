@@ -1,19 +1,23 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 interface LessonFilterProps {
   filter: 'all' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
   onFilterChange: (filter: 'all' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2') => void
 }
 
 export function LessonFilter({ filter, onFilterChange }: LessonFilterProps) {
-  const filters = [
-    { value: 'all' as const, label: 'All Levels' },
-    { value: 'A1' as const, label: 'A1 Beginner' },
-    { value: 'A2' as const, label: 'A2 Elementary' },
-    { value: 'B1' as const, label: 'B1 Intermediate' },
-    { value: 'B2' as const, label: 'B2 Upper Intermediate' },
-    { value: 'C1' as const, label: 'C1 Advanced' },
-    { value: 'C2' as const, label: 'C2 Proficient' }
+  const t = useTranslations('LessonFilter') // namespace في JSON
+
+  const filters: { value: LessonFilterProps['filter']; label: string }[] = [
+    { value: 'all', label: t('all') },
+    { value: 'A1', label: t('A1') },
+    { value: 'A2', label: t('A2') },
+    { value: 'B1', label: t('B1') },
+    { value: 'B2', label: t('B2') },
+    { value: 'C1', label: t('C1') },
+    { value: 'C2', label: t('C2') }
   ]
 
   return (

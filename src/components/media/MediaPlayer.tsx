@@ -1,5 +1,7 @@
-// components/media/MediaPlayer.tsx
+'use client'
+
 import { PlayIcon, SpeakerWaveIcon } from '@heroicons/react/24/outline'
+import { useTranslations } from 'next-intl'
 
 interface MediaPlayerProps {
   type: 'video' | 'audio'
@@ -8,6 +10,8 @@ interface MediaPlayerProps {
 }
 
 export function MediaPlayer({ type, url, title }: MediaPlayerProps) {
+  const t = useTranslations('LessonDetailPage') 
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
       <div className="p-6">
@@ -17,7 +21,7 @@ export function MediaPlayer({ type, url, title }: MediaPlayerProps) {
           ) : (
             <SpeakerWaveIcon className="h-6 w-6 mr-2 text-indigo-600" />
           )}
-          {type === 'video' ? 'Video Lesson' : 'Audio Lesson'}
+          {type === 'video' ? t('videoLesson') : t('audioLesson')}
         </h2>
         
         {type === 'video' ? (

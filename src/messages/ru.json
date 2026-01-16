@@ -1,0 +1,270 @@
+{
+  "Navbar": {
+    "home": "Главная",
+    "lessons": "Уроки",
+    "dashboard": "Панель",
+    "favorites": "Избранное",
+    "profile": "Настройки профиля",
+    "settings": "Настройки",
+    "signIn": "Войти",
+    "getStarted": "Начать бесплатно",
+    "signedInAs": "Вы вошли как",
+    "welcomeBack": "С возвращением",
+    "myFavorites": "Моё избранное"
+  },
+  "General": {
+    "logo": "AR-Learn",
+    "logoAI": "AI",
+    "back": "Назад",
+    "loading": "Загрузка .....",
+    "logout": "Выйти",
+    "loggingOut": "Выход..."
+  },
+  "LessonsPage": {
+    "headerTitle": "Уроки языков",
+    "headerDescription": "Освойте новый язык с нашим тщательно разработанным курсом. Начните с основ или переходите к продвинутым темам.",
+    "noLessons": "Уроки не найдены",
+    "noLessonsMessage": "Нет уроков уровня {level}",
+    "viewAllLessons": "Показать все уроки",
+    "ctaTitle": "Готовы ускорить обучение?",
+    "ctaDescription": "Присоединяйтесь к нашему премиум-плану для персонализированных уроков и практики с AI.",
+    "ctaButton": "Улучшить сейчас",
+    "error": "Не удалось загрузить уроки",
+    "lessonDescription": "Интерактивный языковой урок",
+    "words": "слов",
+    "rules": "правил",
+    "minutes": "мин",
+    "progress": "Прогресс",
+    "completed": "Выполнено",
+    "items": "элементов"
+    
+  },
+  "LessonFilter": {
+    "all": "Все уровни",
+    "A1": "A1 Начальный",
+    "A2": "A2 Элементарный",
+    "B1": "B1 Средний",
+    "B2": "B2 Выше среднего",
+    "C1": "C1 Продвинутый",
+    "C2": "C2 Профессиональный"
+  },
+   "LessonDetailPage": {
+    "error": "Не удалось загрузить урок",
+    "lessonNotFound": "Урок не найден",
+    "backToLessons": "Назад к урокам",
+    "minutes": "мин",
+    "lessonNumber": "Урок №{order}",
+    "save": "Сохранить",
+    "saved": "Сохранено",
+    "progress": "Прогресс",
+    "pending": "В ожидании",
+    "of": "из",
+    "items": "элементов",
+    "completeToEarn": "Завершите, чтобы заработать",
+    "lessonCompleted": "Урок завершён",
+    "lessonContent": "Содержание урока",
+    "vocabulary": "Словарь",
+    "wordsCount": "{count} слов",
+    "grammar": "Грамматика",
+    "completeLesson": "Завершить урок",
+    "back": "Назад",
+    "videoLesson": "Видеоурок",
+    "audioLesson": "Аудиоурок"
+  },
+  "DashboardPage": {
+    "error": "Не удалось загрузить данные панели",
+    "currentLevel": "Текущий уровень",
+    "levelDefault": "A1 Начальный",
+    "xpToNextLevel": "XP до следующего уровня",
+    "lessonsCompleted": "Пройдено уроков",
+    "learningJourney": "Ваш путь обучения",
+    "currentStreak": "Текущая серия",
+    "dailyConsistency": "Ежедневная последовательность",
+    "days": "дней",
+    "learningAccuracy": "Точность обучения",
+    "averageScore": "Средний балл",
+    "timeSpent": "Потраченное время",
+    "totalLearning": "Общее время обучения",
+    "continueLearning": "Продолжить обучение",
+    "continueLearningDesc": "Продолжайте с того места, где остановились",
+    "viewAllLessons": "Все уроки",
+    "noLessonsStarted": "Уроки ещё не начаты.",
+    "browseLessons": "Просмотреть уроки →",
+    "recommendedForYou": "Рекомендации для вас",
+    "quickActions": "Быстрые действия",
+    "grammarQuiz": "Грамматический тест",
+    "grammarQuizDesc": "Проверьте свои знания",
+    "vocabularyBuilder": "Словарный тренажёр",
+    "vocabularyBuilderDesc": "Выучите 10 новых слов",
+    "speakingPractice": "Практика речи",
+    "speakingPracticeDesc": "Упражнения по произношению",
+    "minutes": "мин",
+    "inProgress": "В процессе",
+    "completed": "Завершено",
+    "continue": "Продолжить",
+    "start": "Начать"
+  },
+  "DashboardHeader" : {
+    "dashboardTitle": "Панель языка",
+    "welcomeBack": "С возвращением",
+    "level": "Уровень",
+    "dailyStreak": "Текущая серия",
+    "days": "дней"
+  },
+  "VocabularyCard" : {
+    "translation": "Перевод",
+    "pronunciation": "Произношение",
+    "type": "Тип",
+    "exampleSentence": "Пример предложения",
+    "learned": "Выучено",
+    "level": "Уровень"
+  },
+  "GrammarCard" : {
+    "completed": "Выполнено",
+    "examples": "Примеры:",
+    "exceptions": "Исключения:"
+  },
+  "FavoritesPage": {
+    "title": "Избранное",
+    "subtitle": "Все ваши сохраненные слова, грамматические правила и предложения в одном месте",
+    "removeError": "Не удалось удалить из избранного:",
+    "clearConfirmation": "Вы уверены, что хотите удалить все избранное?",
+    "clearError": "Не удалось очистить все избранное:",
+    "loadError": "Ошибка загрузки избранного",
+    "signInRequired": {
+      "title": "Войдите, чтобы просмотреть избранное",
+      "description": "Пожалуйста, войдите, чтобы увидеть ваши избранные элементы",
+      "button": "Войти"
+    },
+    "refreshButton": "Обновить",
+    "clearAllButton": "Очистить всё",
+    "stats": {
+      "total": "Всего элементов",
+      "words": "Слова",
+      "grammar": "Грамматика",
+      "sentences": "Предложения"
+    },
+    "searchPlaceholder": "Поиск в избранном...",
+    "filters": {
+      "types": {
+        "all": "Все",
+        "word": "Слова",
+        "grammar": "Грамматика",
+        "sentence": "Предложения"
+      },
+      "levelLabel": "Фильтр по уровню",
+      "clearFilters": "Очистить фильтры"
+    },
+    "sortOptions": {
+      "newest": "Сначала новые",
+      "oldest": "Сначала старые",
+      "alphabetical": "А-Я"
+    },
+    "emptyState": {
+      "title": "Избранное пока пусто",
+      "description": "Начните сохранять слова, грамматические правила и предложения, нажимая на иконку сердца на любом элементе",
+      "browseButton": "Просмотреть уроки"
+    },
+    "noResults": {
+      "title": "Результаты не найдены",
+      "description": "Попробуйте изменить настройки поиска или фильтров"
+    },
+    "sections": {
+      "words": "Избранные слова",
+      "grammar": "Избранные грамматические правила",
+      "sentences": "Избранные предложения"
+    },
+    "items": "элементы",
+    "playAudio": "Воспроизвести аудио",
+    "removeFavorite": "Удалить из избранного",
+    "contextLabel": "Контекст",
+    "viewLesson": "Посмотреть урок"
+  },
+  "favorites": {
+    "play_pronunciation": "Произнести",
+    "remove_from_favorites": "Удалить из избранного",
+    "level": "Уровень",
+    "example": "Пример",
+    "examples": "Примеры",
+    "exceptions": "Исключения",
+    "view_lesson": "Перейти к уроку",
+    "added": "Добавлено"
+  },
+  "ProfilePage": {
+    "backButton": "Назад к панели управления",
+    "profileNotFound": {
+      "title": "Профиль не найден",
+      "description": "Не удалось загрузить ваш профиль.",
+      "button": "Вернуться к панели управления"
+    },
+    "status": {
+      "active": "Активен"
+    },
+    "defaultName": "Пользователь",
+    "xp": "XP",
+    "editButton": {
+      "saving": "Сохранение...",
+      "cancel": "Отменить редактирование",
+      "edit": "Редактировать профиль"
+    },
+    "progress": {
+      "title": "Прогресс обучения",
+      "toLevel": "Прогресс до {level}",
+      "xpEarned": "Очки опыта заработанные от всех активностей"
+    },
+    "form": {
+      "name": "Отображаемое имя",
+      "namePlaceholder": "Введите ваше отображаемое имя",
+      "avatarUrl": "URL аватара",
+      "avatarPlaceholder": "Введите URL изображения для аватара",
+      "preview": "Предпросмотр",
+      "avatarPreview": "Предпросмотр аватара",
+      "country": "Страна",
+      "countryPlaceholder": "Введите вашу страну",
+      "birthDate": "Дата рождения",
+      "saving": "Сохранение...",
+      "save": "Сохранить изменения"
+    },
+    "personalInfo": {
+      "title": "Личная информация",
+      "country": "Страна",
+      "notSpecified": "Не указано",
+      "birthDate": "Дата рождения",
+      "yearsOld": "лет",
+      "memberSince": "Участник с",
+      "lastActive": "Последняя активность",
+      "level": "Уровень"
+    },
+    "stats": {
+      "title": "Статистика обучения",
+      "totalXP": "Всего XP",
+      "totalXpDesc": "Заработано от всех активностей",
+      "currentStreak": "Текущая серия",
+      "days": "дней",
+      "streakDesc": "Ежедневная последовательность обучения"
+    },
+    "accountInfo": {
+      "title": "Информация об аккаунте",
+      "email": "Логин",
+      "userId": "ID пользователя",
+      "status": "Статус аккаунта",
+      "active": "Активен",
+      "profileUpdated": "Профиль обновлен"
+    },
+    "quickActions": {
+      "title": "Быстрые действия",
+      "settings": "Настройки аккаунта",
+      "achievements": "Достижения",
+      "leaderboard": "Таблица лидеров"
+    },
+    "levels": {
+      "A1": "Начальный",
+      "A2": "Элементарный",
+      "B1": "Средний",
+      "B2": "Выше среднего",
+      "C1": "Продвинутый",
+      "C2": "Мастерство"
+    },
+    "signOut": "Выйти"
+  }
+}

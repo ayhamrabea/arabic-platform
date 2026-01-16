@@ -1,3 +1,7 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+
 interface SimpleLessonCardProps {
   title: string
   duration: string
@@ -15,6 +19,7 @@ export function SimpleLessonCard({
   progress = 0,
   onStart 
 }: SimpleLessonCardProps) {
+  const t = useTranslations('DashboardPage') 
 
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -34,12 +39,12 @@ export function SimpleLessonCard({
 
             {status === 'in_progress' && (
               <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded text-xs font-medium">
-                In Progress
+                {t('inProgress')}
               </span>
             )}
             {status === 'completed' && (
               <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
-                Completed
+                {t('completed')}
               </span>
             )}
           </div>
@@ -60,7 +65,7 @@ export function SimpleLessonCard({
           onClick={onStart}
           className="ml-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
-          {status === 'in_progress' ? 'Continue' : 'Start'}
+          {status === 'in_progress' ? t('continue') : t('start')}
         </button>
       </div>
     </div>
