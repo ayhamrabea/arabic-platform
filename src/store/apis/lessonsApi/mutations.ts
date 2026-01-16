@@ -38,7 +38,7 @@ export const lessonMutations = {
           ? currentItems
           : [...currentItems, itemId]
       } else {
-        newItems = currentItems.filter(id => id !== itemId)
+        newItems = currentItems.filter((id: string) => id !== itemId) // إضافة النوع string هنا
       }
 
       // 3. حساب الحالة الجديدة
@@ -117,7 +117,7 @@ export const lessonMutations = {
       const now = new Date().toISOString()
 
       // 1. جلب جميع عناصر الدرس
-      const [vocabRes, grammarRes, existingProgress] = await Promise.all([
+      const [vocabRes, grammarRes] = await Promise.all([
         supabase
           .from('vocabulary')
           .select('id')
@@ -135,8 +135,8 @@ export const lessonMutations = {
       ])
 
       const allItemIds = [
-        ...(vocabRes.data?.map(v => v.id) || []),
-        ...(grammarRes.data?.map(g => g.id) || [])
+        ...(vocabRes.data?.map((v: any) => v.id) || []),
+        ...(grammarRes.data?.map((g: any) => g.id) || [])
       ]
 
       // 2. إعداد بيانات التقدم
@@ -149,22 +149,22 @@ export const lessonMutations = {
         updated_at: now
       }
 
-      if (existingProgress) {
-        upsertData.id = existingProgress.id
-        upsertData.started_at = existingProgress.started_at
-        upsertData.created_at = existingProgress.created_at
-        upsertData.attempts = (existingProgress.attempts || 0) + 1
-        upsertData.is_favorite = existingProgress.is_favorite
-        upsertData.score = existingProgress.score
-        upsertData.notes = existingProgress.notes
-      } else {
-        upsertData.started_at = now
-        upsertData.created_at = now
-        upsertData.attempts = 1
-        upsertData.is_favorite = false
-        upsertData.score = null
-        upsertData.notes = null
-      }
+      // if (existingProgress) {
+      //   upsertData.id = existingProgress.id
+      //   upsertData.started_at = existingProgress.started_at
+      //   upsertData.created_at = existingProgress.created_at
+      //   upsertData.attempts = (existingProgress.attempts || 0) + 1
+      //   upsertData.is_favorite = existingProgress.is_favorite
+      //   upsertData.score = existingProgress.score
+      //   upsertData.notes = existingProgress.notes
+      // } else {
+      //   upsertData.started_at = now
+      //   upsertData.created_at = now
+      //   upsertData.attempts = 1
+      //   upsertData.is_favorite = false
+      //   upsertData.score = null
+      //   upsertData.notes = null
+      // }
 
       // 3. حفظ التقدم
       const { data, error } = await supabase

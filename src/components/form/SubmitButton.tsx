@@ -1,12 +1,29 @@
 // components/form/SubmitButton.tsx
+'use client'
+
+import { useTranslations } from 'next-intl'
 
 interface SubmitButtonProps {
   loading: boolean
   type: 'login' | 'register'
   disabled?: boolean
+  label?: string // إضافة اختياري
+  loadingLabel?: string // إضافة اختياري
 }
 
-export function SubmitButton({ loading, type, disabled }: SubmitButtonProps) {
+export function SubmitButton({ 
+  loading, 
+  type, 
+  disabled,
+  label,
+  loadingLabel 
+}: SubmitButtonProps) {
+  const t = useTranslations('Auth.buttons')
+  
+  // استخدام القيم الممررة أو القيم الافتراضية من الترجمة
+  const buttonLabel = label || (type === 'login' ? t('signIn') : t('signUp'))
+  const buttonLoadingLabel = loadingLabel || (type === 'login' ? t('signingIn') : t('signingUp'))
+  
   return (
     <button
       type="submit"
@@ -16,10 +33,10 @@ export function SubmitButton({ loading, type, disabled }: SubmitButtonProps) {
       {loading ? (
         <div className="flex items-center justify-center">
           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-          {type === 'login' ? 'Signing in...' : 'Creating account...'}
+          {buttonLoadingLabel}
         </div>
       ) : (
-        type === 'login' ? 'Sign In' : 'Create Account'
+        buttonLabel
       )}
     </button>
   )

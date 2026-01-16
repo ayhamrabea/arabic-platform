@@ -1,3 +1,4 @@
+// app/[locale]/layout.tsx
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
@@ -6,14 +7,17 @@ import Navbar from '@/components/Navbar'
 import ReduxProvider from '@/providers/ReduxProvider'
 import AuthProvider from '@/providers/AuthProvider'
 
-export async function generateMetadata({
-  params
-}: {
-  params: Promise<{ locale: 'en' | 'ru' }>
-}) {
-  const { locale } = await params
+// تعريف النوع مع Promise
+type Props = {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}
 
-  const metadata: Record<'en' | 'ru', { title: string; description: string }> = {
+export async function generateMetadata(props: Props) {
+  const params = await props.params
+  const { locale } = params
+
+  const metadata: Record<string, { title: string; description: string }> = {
     en: { title: 'AI Platform', description: 'Advanced AI Platform for your needs' },
     ru: { title: 'AI Платформа', description: 'Продвинутая AI платформа для ваших нужд' }
   }
@@ -21,22 +25,17 @@ export async function generateMetadata({
   return metadata[locale] ?? metadata.en
 }
 
-
 export function generateStaticParams() {
   return locales.map(locale => ({ locale }))
 }
 
+export default async function LocaleLayout(props: Props) {
+  // انتظر Promise للحصول على params
+  const params = await props.params
+  const { locale } = params
+  const { children } = props
 
-export default async function LocaleLayout({
-  children,
-  params
-}: {
-  children: React.ReactNode
-  params: Promise<{ locale: 'en' | 'ru' }>
-}) {
-  const { locale } = await params  // ✅ unwrap the Promise
-
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale as any)) {
     notFound()
   }
 

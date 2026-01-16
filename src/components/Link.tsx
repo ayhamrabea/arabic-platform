@@ -1,6 +1,6 @@
 // components/Link.tsx
-'use client'
+// 'use client'
 
-import { Link as IntlLink } from 'next-intl/link'
+// import { Link as IntlLink } from 'next-intl/link'
 
-export default IntlLink
+// export default IntlLink

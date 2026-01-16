@@ -4,12 +4,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
+import { useTranslations } from 'next-intl'
 
 import {
   EnvelopeIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline'
-
 
 import {
   useSignInMutation,
@@ -32,6 +32,7 @@ interface AuthFormProps {
 export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter()
   const dispatch = useDispatch()
+  const t = useTranslations('Auth')
 
   const [signIn] = useSignInMutation()
   const [signUp] = useSignUpMutation()
@@ -52,19 +53,19 @@ export default function AuthForm({ type }: AuthFormProps) {
     setError(null)
 
     if (!formData.email || !formData.password) {
-      setError('Please fill all required fields')
+      setError(t('validation.requiredFields'))
       setLoading(false)
       return
     }
 
     if (type === 'register' && formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('validation.passwordMismatch'))
       setLoading(false)
       return
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError(t('validation.passwordLength'))
       setLoading(false)
       return
     }
@@ -93,7 +94,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         router.refresh()
       }
     } catch (err: any) {
-      setError(err?.message || 'Authentication error')
+      setError(err?.message || t('errors.authError'))
       setLoading(false)
     }
   }
@@ -112,7 +113,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 
       if (error) throw error
     } catch (err: any) {
-      setError(err?.message || 'Google login error')
+      setError(err?.message || t('errors.googleError'))
       setLoading(false)
     }
   }
@@ -125,6 +126,8 @@ export default function AuthForm({ type }: AuthFormProps) {
     }))
   }
 
+  const isLogin = type === 'login'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -133,11 +136,11 @@ export default function AuthForm({ type }: AuthFormProps) {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <InputField
-              label="Email Address"
+              label={t('form.email')}
               icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder={t('form.emailPlaceholder')}
               value={formData.email}
               onChange={handleChange}
               required
@@ -145,11 +148,11 @@ export default function AuthForm({ type }: AuthFormProps) {
             />
 
             <InputField
-              label="Password"
+              label={t('form.password')}
               icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />}
               name="password"
-              type="password"
-              placeholder="••••••••"
+              type={showPassword ? "text" : "password"}
+              placeholder={t('form.passwordPlaceholder')}
               value={formData.password}
               onChange={handleChange}
               required
@@ -157,15 +160,16 @@ export default function AuthForm({ type }: AuthFormProps) {
               showPasswordToggle
               isPasswordVisible={showPassword}
               onTogglePassword={() => setShowPassword(!showPassword)}
+              autoComplete={isLogin ? "current-password" : "new-password"}
             />
 
-            {type === 'register' && (
+            {!isLogin && (
               <InputField
-                label="Confirm Password"
+                label={t('form.confirmPassword')}
                 icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />}
                 name="confirmPassword"
-                type="password"
-                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                placeholder={t('form.confirmPasswordPlaceholder')}
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
@@ -174,38 +178,42 @@ export default function AuthForm({ type }: AuthFormProps) {
               />
             )}
 
-            {error && <ErrorMessage message={error} />}
+            {error && <ErrorMessage messageKey={error} />}
 
-            <SubmitButton loading={loading} type={type} />
+            <SubmitButton 
+              loading={loading} 
+              type={type}
+              label={isLogin ? t('buttons.signIn') : t('buttons.signUp')}
+              loadingLabel={isLogin ? t('buttons.signingIn') : t('buttons.signingUp')}
+            />
 
-            <FormDivider />
+            <FormDivider text={t('divider.text')} />
 
             <SocialLoginButton
               provider="google"
               onClick={handleGoogleLogin}
               loading={loading}
+              label={t('buttons.googleSignIn')}
             />
 
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-gray-600">
-              {type === 'login'
-                ? "Don't have an account?"
-                : 'Already have an account?'}
+              {isLogin ? t('switch.registerPrompt') : t('switch.loginPrompt')}
 
               <Link
-                href={type === 'login' ? '/register' : '/login'}
+                href={isLogin ? '/register' : '/login'}
                 className="ml-2 text-indigo-600 hover:text-indigo-800 font-medium"
               >
-                {type === 'login' ? 'Sign up' : 'Sign in'}
+                {isLogin ? t('switch.register') : t('switch.login')}
               </Link>
             </p>
           </div>
         </div>
 
         <p className="text-center text-gray-500 text-sm mt-8">
-          By signing up, you agree to our Terms of Service and Privacy Policy
+          {t('terms')}
         </p>
       </div>
     </div>

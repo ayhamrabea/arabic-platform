@@ -266,5 +266,69 @@
       "C2": "Мастерство"
     },
     "signOut": "Выйти"
+  },
+  "Auth": {
+    "header": {
+      "loginTitle": "С возвращением",
+      "loginSubtitle": "Продолжайте изучать любимый язык",
+      "registerTitle": "Начните свой путь",
+      "registerSubtitle": "Присоединяйтесь к тысячам изучающих языки с нами"
+    },
+    "form": {
+      "email": "Email адрес",
+      "emailPlaceholder": "you@example.com",
+      "password": "Пароль",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Подтвердите пароль",
+      "confirmPasswordPlaceholder": "••••••••"
+    },
+    "buttons": {
+      "signIn": "Войти",
+      "signUp": "Создать аккаунт",
+      "signingIn": "Вход...",
+      "signingUp": "Создание аккаунта...",
+      "googleSignIn": "Продолжить с Google",
+      "githubSignIn": "Продолжить с GitHub",
+      "facebookSignIn": "Продолжить с Facebook",
+      "showPassword": "Показать пароль",
+      "hidePassword": "Скрыть пароль"
+    },
+    "social": {
+      "continueWith": "Продолжить с",
+      "google": "Google",
+      "github": "GitHub",
+      "facebook": "Facebook"
+    },
+    "validation": {
+      "requiredFields": "Пожалуйста, заполните все обязательные поля",
+      "passwordMismatch": "Пароли не совпадают",
+      "passwordLength": "Пароль должен быть не менее 6 символов",
+      "invalidEmail": "Пожалуйста, введите корректный email адрес",
+      "emptyEmail": "Email обязателен для заполнения",
+      "emptyPassword": "Пароль обязателен для заполнения"
+    },
+    "errors": {
+      "authError": "Ошибка аутентификации",
+      "googleError": "Ошибка входа через Google",
+      "githubError": "Ошибка входа через GitHub",
+      "facebookError": "Ошибка входа через Facebook",
+      "networkError": "Ошибка сети. Пожалуйста, попробуйте снова.",
+      "serverError": "Ошибка сервера. Пожалуйста, попробуйте позже.",
+      "unknownError": "Произошла непредвиденная ошибка"
+    },
+    "divider": {
+      "text": "Или продолжите с помощью"
+    },
+    "switch": {
+      "registerPrompt": "Нет аккаунта?",
+      "loginPrompt": "Уже есть аккаунт?",
+      "register": "Зарегистрироваться",
+      "login": "Войти"
+    },
+    "terms": "Регистрируясь, вы соглашаетесь с нашими Условиями использования и Политикой конфиденциальности",
+    "success": {
+      "login": "Успешный вход!",
+      "register": "Аккаунт успешно создан! Перенаправляем..."
+    }
   }
 }
