@@ -22,6 +22,7 @@ import { SimpleLessonCard } from '@/components/lessons/SimpleLessonCard'
 import { fetchDashboardData, startLesson, updateTimeSpent } from '@/store/slices/dashboardSlice'
 import { getLevelProgressByXP, LEVELS } from '@/utils/levels'
 import { formatTime } from '@/utils/profile'
+import { updateStreak } from '@/utils/services/streak'
 
 
 export default function DashboardPage() {
@@ -49,6 +50,7 @@ export default function DashboardPage() {
 
     if (user?.id) {
       dispatch(fetchDashboardData(user.id) as any);
+      updateStreak(user.id).catch(console.error)
     }
   }, [user, authLoading, dispatch, router]);
 

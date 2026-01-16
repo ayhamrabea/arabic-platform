@@ -14,7 +14,9 @@ import {
   Bars3Icon,
   XMarkIcon,
   GlobeAltIcon,
+  HeartIcon,
 } from '@heroicons/react/24/outline'
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import Icon from './icon/Icon'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react'
 
@@ -37,7 +39,7 @@ export default function Navbar() {
     )
   }
 
-return (
+  return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -85,6 +87,20 @@ return (
               Dashboard
             </Link>
 
+            {/* رابط المفضلة - يظهر فقط للمستخدمين المسجلين */}
+            {user && (
+              <Link 
+                href="/favorites" 
+                className="flex items-center px-4 py-2 text-gray-700 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all relative group"
+              >
+                <HeartIcon className="h-5 w-5 mr-2 group-hover:hidden" />
+                <HeartIconSolid className="h-5 w-5 mr-2 hidden group-hover:block text-rose-500" />
+                Favorites
+                {/* مؤشر صغير للإشعارات (اختياري) */}
+                <span className="absolute -top-1 -right-1 h-2 w-2 bg-rose-500 rounded-full animate-pulse"></span>
+              </Link>
+            )}
+
             {user ? (
               <Menu as="div" className="relative ml-2">
                 {({ open }) => (
@@ -109,6 +125,18 @@ return (
                           >
                             <UserCircleIcon className="h-5 w-5 mr-3" />
                             Profile Settings
+                          </Link>
+                        )}
+                      </MenuItem>
+                      
+                      <MenuItem>
+                        {({ active }) => (
+                          <Link 
+                            href="/favorites" 
+                            className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
+                          >
+                            <HeartIcon className="h-5 w-5 mr-3" />
+                            My Favorites
                           </Link>
                         )}
                       </MenuItem>
@@ -208,6 +236,16 @@ return (
                 >
                   <ChartBarIcon className="h-5 w-5 mr-3" />
                   Dashboard
+                </Link>
+                
+                {/* رابط المفضلة في الموبايل */}
+                <Link 
+                  href="/favorites" 
+                  className="flex items-center px-4 py-3 text-gray-700 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <HeartIcon className="h-5 w-5 mr-3" />
+                  My Favorites
                 </Link>
                 
                 <Link 

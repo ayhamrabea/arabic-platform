@@ -15,8 +15,8 @@ import { updateTimeSpent } from '@/store/slices/dashboardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { RootState } from '@/store/store'
-
-
+import { supabase } from '@/lib/supabaseClient'
+import { getLevelColor } from '@/components/favorites/helpers'
 
 export default function LessonDetailPage() {
   const { id } = useParams()
@@ -24,15 +24,20 @@ export default function LessonDetailPage() {
   const dispatch = useDispatch()
   const { user, loading: authLoading } = useSelector((state: RootState) => state.auth);
 
-  // استخدام RTK Query
-  const { data: lessonData, isLoading, isError, error } = useGetLessonByIdQuery(id as string)
+  // استخدام RTK Query مع refetch
+  const { 
+    data: lessonData, 
+    isLoading, 
+    isError, 
+    error,
+    refetch // أضف refetch هنا
+  } = useGetLessonByIdQuery(id as string)
 
   // استخدام Mutations
   const [toggleFavorite] = useToggleLessonFavoriteMutation()
   const [updateCompletedItems] = useUpdateCompletedItemsMutation()
   const [completeLesson] = useCompleteLessonMutation()
   const [toggleFavoriteWordMutation] = useToggleWordFavoriteMutation()
-
 
   // لأضافة الكلمات الى المفضلة
   const [favoriteItems, setFavoriteItems] = useState<{
@@ -45,100 +50,95 @@ export default function LessonDetailPage() {
     sentence: {},
   });
 
-useEffect(() => {
-  if (!lessonData) return
+  useEffect(() => {
+    if (!lessonData || !user) return;
 
-  const initialWordFavorites: Record<string, boolean> = {}
-  lessonData.vocabulary.forEach(word => {
-    initialWordFavorites[word.id] = false
-  })
+    // تهيئة كلمات المفضلة
+    const initialWordFavorites: Record<string, boolean> = {};
+    lessonData.vocabulary.forEach(word => {
+      const isFavorite = lessonData.favorite_words?.includes(word.id) || false;
+      initialWordFavorites[word.id] = isFavorite;
+    });
 
-  const initialGrammarFavorites: Record<string, boolean> = {}
-  lessonData.grammar.forEach(rule => {
-    initialGrammarFavorites[rule.id] = false
-  })
+    // تهيئة قواعد المفضلة
+    const initialGrammarFavorites: Record<string, boolean> = {};
+    lessonData.grammar.forEach(rule => {
+      const isFavorite = lessonData.favorite_grammar?.includes(rule.id) || false;
+      initialGrammarFavorites[rule.id] = isFavorite;
+    });
 
-  // نستخدم setTimeout لتأجيل setState بعد الرندر
-  setTimeout(() => {
     setFavoriteItems({
       word: initialWordFavorites,
       grammar: initialGrammarFavorites,
-      sentence: {} // لاحقًا يمكن إضافة الجمل
-    })
-  }, 0)
-}, [lessonData])
-
-
-
+      sentence: {}
+    });
+  }, [lessonData, user]);
 
   const toggleFavoriteItem = async (itemId: string, itemType: 'word' | 'grammar' | 'sentence') => {
-  try {
-    // القيمة الجديدة للـ state
-    const newValue = !favoriteItems[itemType][itemId];
+    try {
+      // القيمة الجديدة للـ state
+      const newValue = !favoriteItems[itemType][itemId];
 
-    // استدعاء الـ mutation
-    await toggleFavoriteWordMutation({
-      itemId,
-      itemType
-    }).unwrap();
+      // استدعاء الـ mutation
+      await toggleFavoriteWordMutation({
+        itemId,
+        itemType
+      }).unwrap();
 
-    // تحديث state فورًا لتغيير لون القلب
-    setFavoriteItems(prev => ({
-      ...prev,
-      [itemType]: {
-        ...prev[itemType],
-        [itemId]: newValue
-      }
-    }));
-  } catch (error) {
-    console.error(`Failed to toggle favorite ${itemType}`, error);
-  }
-};
+      // تحديث state فورًا لتغيير لون القلب
+      setFavoriteItems(prev => ({
+        ...prev,
+        [itemType]: {
+          ...prev[itemType],
+          [itemId]: newValue
+        }
+      }));
 
 
+
+    } catch (error) {
+      console.error(`Failed to toggle favorite ${itemType}`, error);
+    }
+  };
 
   // لحساب الوقت المنقضي في الدرس
-useEffect(() => {
-  if (!user) return;
+  useEffect(() => {
+    if (!user) return;
 
-  let start = Date.now();
-  let accumulated = 0;
+    let start = Date.now();
+    let accumulated = 0;
 
-  const handleVisibilityChange = () => {
-    if (document.hidden) {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        accumulated += Date.now() - start;
+      } else {
+        start = Date.now();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    const handleBeforeUnload = () => {
       accumulated += Date.now() - start;
-    } else {
-      start = Date.now();
-    }
-  };
+      const minutes = Math.floor(accumulated / 60000);
+      if (minutes > 0) {
+        dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
+      }
+    };
 
-  document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-  const handleBeforeUnload = () => {
-    accumulated += Date.now() - start;
-    const minutes = Math.floor(accumulated / 60000);
-    if (minutes > 0) {
-      dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
-    }
-  };
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
 
-  window.addEventListener('beforeunload', handleBeforeUnload);
-
-  return () => {
-    document.removeEventListener('visibilitychange', handleVisibilityChange);
-    window.removeEventListener('beforeunload', handleBeforeUnload);
-
-    accumulated += Date.now() - start;
-    const minutes = Math.floor(accumulated / 60000);
-    if (minutes > 0) {
-      dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
-    }
-  };
-}, [user, dispatch]);
-
-
-
-
+      accumulated += Date.now() - start;
+      const minutes = Math.floor(accumulated / 60000);
+      if (minutes > 0) {
+        dispatch(updateTimeSpent({ userId: user.id, minutes }) as any);
+      }
+    };
+  }, [user, dispatch]);
 
   if (isLoading) return <LoadingSpinner />
   
@@ -172,10 +172,14 @@ useEffect(() => {
         lessonId: lesson.id, 
         isFavorite: !progress?.is_favorite 
       }).unwrap()
+      // إعادة جلب البيانات بعد التحديث
+      refetch()
     } catch (error) {
       console.error('Failed to toggle favorite:', error)
     }
   }
+
+
 
   const toggleCompleteItem = async (itemId: string) => {
     if (progress?.status === 'completed') return
@@ -192,6 +196,8 @@ useEffect(() => {
     }
   }
 
+
+
   const handleCompleteLesson = async () => {
     if (progress?.status === 'completed') return
 
@@ -204,17 +210,7 @@ useEffect(() => {
     }
   }
 
-  const getLevelColor = (level: string) => {
-    const colors: Record<string, string> = {
-      'A1': 'bg-green-100 text-green-800',
-      'A2': 'bg-blue-100 text-blue-800',
-      'B1': 'bg-yellow-100 text-yellow-800',
-      'B2': 'bg-orange-100 text-orange-800',
-      'C1': 'bg-red-100 text-red-800',
-      'C2': 'bg-purple-100 text-purple-800'
-    }
-    return colors[level] || 'bg-gray-100 text-gray-800'
-  }
+  
 
   const getDifficultyColor = (difficulty: string) => {
     const colors: Record<string, string> = {

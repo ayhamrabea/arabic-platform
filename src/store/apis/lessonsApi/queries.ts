@@ -86,6 +86,9 @@ export const lessonQueries = {
   // جلب درس مفصل
   getLessonById: async (lessonId: string): Promise<LessonDetailResponse> => {
     try {
+      const userId = await getCurrentUserId()
+      
+      // جلب جميع البيانات في وقت واحد
       const [lessonRes, grammarRes, vocabRes, progressRes] = await Promise.all([
         supabase
           .from('lessons')
@@ -104,30 +107,55 @@ export const lessonQueries = {
           .eq('lesson_id', lessonId)
           .order('difficulty_score'),
         // جلب التقدم
-        (async () => {
-          try {
-            const userId = await getCurrentUserId()
-            const { data } = await supabase
-              .from('student_progress')
-              .select('*')
-              .eq('lesson_id', lessonId)
-              .eq('profile_id', userId)
-              .maybeSingle()
-            return data
-          } catch {
-            return null
-          }
-        })()
+        userId ? supabase
+          .from('student_progress')
+          .select('*')
+          .eq('lesson_id', lessonId)
+          .eq('profile_id', userId)
+          .maybeSingle() : Promise.resolve({ data: null, error: null })
       ])
 
       if (lessonRes.error) throw lessonRes.error
+
+      // جلب حالة المفضلة إذا كان المستخدم مسجل الدخول
+      let favoriteWords: string[] = []
+      let favoriteGrammar: string[] = []
+      
+      if (userId) {
+        const [wordFavoritesRes, grammarFavoritesRes] = await Promise.all([
+          supabase
+            .from('favorites')
+            .select('item_id')
+            .eq('user_id', userId)
+            .eq('item_type', 'word')
+            .in('item_id', vocabRes.data?.map(v => v.id) || []),
+          supabase
+            .from('favorites')
+            .select('item_id')
+            .eq('user_id', userId)
+            .eq('item_type', 'grammar')
+            .in('item_id', grammarRes.data?.map(g => g.id) || [])
+        ])
+
+        if (wordFavoritesRes.data) {
+          favoriteWords = wordFavoritesRes.data.map(f => f.item_id)
+        }
+
+        if (grammarFavoritesRes.data) {
+          favoriteGrammar = grammarFavoritesRes.data.map(f => f.item_id)
+        }
+      }
+
+      const total_items = (vocabRes.data?.length || 0) + (grammarRes.data?.length || 0)
 
       return {
         lesson: lessonRes.data,
         grammar: grammarRes.data || [],
         vocabulary: vocabRes.data || [],
-        progress: progressRes,
-        total_items: (vocabRes.data?.length || 0) + (grammarRes.data?.length || 0)
+        progress: progressRes.data,
+        total_items,
+        favorite_words: favoriteWords,
+        favorite_grammar: favoriteGrammar
       }
     } catch (error) {
       console.error('Error in getLessonById:', error)

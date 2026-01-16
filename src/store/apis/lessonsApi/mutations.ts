@@ -6,6 +6,7 @@ import {
 } from './helpers'
 import type { StudentProgress } from './types'
 import { calculateXP, grantXP } from '@/utils/xp'
+import { updateStreak } from '@/utils/services/streak'
 
 
 // عمليات الطفرات
@@ -173,6 +174,9 @@ export const lessonMutations = {
         .single()
 
       if (error) throw error
+
+       // ✅ تحديث streak 
+      await updateStreak(userId)  
 
       // 4. تحديث XP
       const { data: lessonData } = await supabase

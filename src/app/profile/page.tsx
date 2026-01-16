@@ -11,6 +11,7 @@ import { fetchProfile, setEditing, updateProfile } from '@/store/slices/profileS
 import { clearUser } from '@/store/slices/authSlice'
 import { getAge , getStreakStatus } from '@/utils/profile'
 import { getLevel } from '@/utils/levels'
+import { updateStreak } from '@/utils/services/streak'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -63,6 +64,7 @@ export default function ProfilePage() {
 
     if (user?.id && !profile) {
       dispatch(fetchProfile(user.id) as any)
+      updateStreak(user.id).catch(console.error)
     }
   }, [user, authLoading, profile, dispatch, router])
 

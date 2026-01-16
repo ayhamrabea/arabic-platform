@@ -74,6 +74,8 @@ export interface LessonDetailResponse {
   vocabulary: Vocabulary[]
   progress: StudentProgress | null
   total_items: number
+  favorite_words?: string[]
+  favorite_grammar?: string[]
 }
 
 export interface ProgressPercentage {
