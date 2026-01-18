@@ -36,7 +36,8 @@
     "minutes": "мин",
     "progress": "Прогресс",
     "completed": "Выполнено",
-    "items": "элементов"
+    "items": "элементов",
+    "lessonNotFound": "Урок не найден"
     
   },
   "LessonFilter": {

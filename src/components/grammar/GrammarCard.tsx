@@ -5,7 +5,7 @@ import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 import { useTranslations } from 'next-intl'
 
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
-import { renderExamples } from '../favorites/helpers'
+import { renderExamples } from './RenderExamples'
 
 interface GrammarCardProps {
   rule: GrammarRule

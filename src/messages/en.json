@@ -36,7 +36,8 @@
     "minutes": "min",
     "progress": "Progress",
     "completed": "Completed",
-    "items": "items"
+    "items": "items",
+    "lessonNotFound": "Lesson not found"
   },
   "LessonFilter": {
     "all": "All Levels",

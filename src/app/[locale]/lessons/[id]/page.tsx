@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { supabase } from '@/lib/supabaseClient'
 
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
@@ -15,8 +14,7 @@ import { VocabularyCard } from '@/components/vocabulary/VocabularyCard'
 import { GrammarCard } from '@/components/grammar/GrammarCard'
 
 import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
-import { updateTimeSpent } from '@/store/slices/dashboardSlice'
-import { getLevelColor } from '@/components/favorites/helpers'
+import { getDifficultyColor, getLevelColor } from '@/components/favorites/helpers'
 
 import {
   useGetLessonByIdQuery,
@@ -26,6 +24,7 @@ import {
 } from '@/store/apis/lessonsApi'
 
 import { useToggleFavoriteMutation as useToggleWordFavoriteMutation } from '@/store/apis/favoritesApi'
+import { useLessonTimeTracker } from '@/hooks/useLessonTimeTracker'
 
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
@@ -93,57 +92,22 @@ export default function LessonDetailPage() {
     }
   }
 
-  useEffect(() => {
-    if (!user) return
-    let start = Date.now()
-    let accumulated = 0
+  // حساب الوقت المنقضي 
+  useLessonTimeTracker(user?.id)
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) accumulated += Date.now() - start
-      else start = Date.now()
-    }
-
-    const handleBeforeUnload = () => {
-      accumulated += Date.now() - start
-      const minutes = Math.floor(accumulated / 60000)
-      if (minutes > 0) dispatch(updateTimeSpent({ userId: user.id, minutes }) as any)
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      accumulated += Date.now() - start
-      const minutes = Math.floor(accumulated / 60000)
-      if (minutes > 0) dispatch(updateTimeSpent({ userId: user.id, minutes }) as any)
-    }
-  }, [user, dispatch])
 
   if (isLoading) return <LoadingSpinner messageKey={'loading'} />
 
-  if (isError) {
+
+  if (isError || !lessonData?.lesson) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto">
           <BackButton href="/lessons" textKey={'back'} />
           <ErrorMessage messageKey={t('error')} />
         </div>
-      </div>
     )
   }
 
-  if (!lessonData?.lesson) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-        <div className="max-w-4xl mx-auto">
-          <BackButton href="/lessons" textKey={'back'} />
-          <ErrorMessage messageKey={t('lessonNotFound')} />
-        </div>
-      </div>
-    )
-  }
 
   const { lesson, grammar, vocabulary, progress } = lessonData
 
@@ -175,14 +139,7 @@ export default function LessonDetailPage() {
     }
   }
 
-  const getDifficultyColor = (difficulty: string) => {
-    const colors: Record<string, string> = {
-      'easy': 'bg-green-100 text-green-800',
-      'medium': 'bg-yellow-100 text-yellow-800',
-      'hard': 'bg-red-100 text-red-800'
-    }
-    return colors[difficulty] || 'bg-gray-100 text-gray-800'
-  }
+
 
   const totalItems = lessonData.total_items
   const completedItems = progress?.completed_items?.length || 0
@@ -202,7 +159,7 @@ export default function LessonDetailPage() {
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getLevelColor(lesson.level)}`}>
                   {lesson.level}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(lesson.difficulty)}`}>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(lesson.difficulty?.toLowerCase())}`}>
                   {lesson.difficulty}
                 </span>
                 {lesson.tags?.map(tag => (

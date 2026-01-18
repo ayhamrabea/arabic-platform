@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 import Icon from './icon/Icon'
 
 interface LogoutButtonProps {
-  variant?: 'default' | 'menu' | 'mobile'
+  variant?: 'default' | 'menu' | 'mobile' | 'profile'
 }
 
 export function LogoutButton({ variant = 'default' }: LogoutButtonProps) {
@@ -30,7 +30,8 @@ export function LogoutButton({ variant = 'default' }: LogoutButtonProps) {
   const buttonStyles = {
     default: 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition font-medium',
     menu: 'block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-gray-50 hover:text-red-700',
-    mobile: 'block w-full text-left text-red-600 py-2 hover:text-red-700'
+    mobile: 'block w-full text-left text-red-600 py-2 hover:text-red-700',
+    profile: 'w-full flex items-center justify-center p-4 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 text-red-600 rounded-xl font-bold hover:from-red-100 hover:to-pink-100 hover:border-red-300 transition-all'
   }
 
   return (

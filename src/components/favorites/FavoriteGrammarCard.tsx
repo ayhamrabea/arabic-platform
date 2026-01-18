@@ -3,8 +3,9 @@
 import { AcademicCapIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
-import { formatDate, getLevelColor, renderExamples } from './helpers'
+import { formatDate, getLevelColor } from './helpers'
 import { useTranslations } from 'next-intl'
+import { renderExamples } from '../grammar/RenderExamples'
 
 interface FavoriteGrammarCardProps {
   rule: GrammarRule & {

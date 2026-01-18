@@ -51,5 +51,4 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   }
 )
 
-// أضف هذه السطر ⬇️
 InputField.displayName = 'InputField'

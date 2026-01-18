@@ -1,5 +1,3 @@
-import { GrammarRule } from "@/store/apis/lessonsApi"
-
 export const getLevelColor = (level?: string) => {
     if (!level) return 'bg-gray-100 text-gray-800'
     
@@ -15,12 +13,22 @@ export const getLevelColor = (level?: string) => {
 }
 
 
-export const getDifficultyColor = (score?: number) => {
-    if (!score) return 'bg-gray-100 text-gray-800'
-    if (score <= 3) return 'bg-green-100 text-green-800'
-    if (score <= 6) return 'bg-yellow-100 text-yellow-800'
+export const getDifficultyColor = (value?: number | string) => {
+  if (typeof value === 'number') {
+    if (value <= 3) return 'bg-green-100 text-green-800'
+    if (value <= 6) return 'bg-yellow-100 text-yellow-800'
     return 'bg-red-100 text-red-800'
+  }
+
+  return {
+    easy: 'bg-green-100 text-green-800',
+    medium: 'bg-yellow-100 text-yellow-800',
+    hard: 'bg-red-100 text-red-800'
+  }[value!] || 'bg-gray-100 text-gray-800'
 }
+
+
+
 
 export const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -32,29 +40,5 @@ export const formatDate = (dateString: string) => {
 }
 
 
-export const renderExamples = (rule:GrammarRule) => {
-    if (!rule.examples) return null
 
-    if (typeof rule.examples === 'string') {
-      return rule.examples
-    }
 
-    if (Array.isArray(rule.examples)) {
-      return (
-        <div className="space-y-2">
-          {rule.examples.map((ex: string, index: number) => (
-            <div key={index} className="flex items-start">
-              <span className="text-blue-500 mr-2">•</span>
-              <span className="text-gray-700">{ex}</span>
-            </div>
-          ))}
-        </div>
-      )
-    }
-
-    return (
-      <pre className="text-sm text-gray-600 whitespace-pre-wrap">
-        {JSON.stringify(rule.examples, null, 2)}
-      </pre>
-    )
-  }
