@@ -1,0 +1,432 @@
+{
+  "Navbar": {
+    "home": "الرئيسية",
+    "lessons": "الدروس",
+    "dashboard": "لوحة التحكم",
+    "favorites": "المفضلة",
+    "profile": "إعدادات الملف",
+    "settings": "الإعدادات",
+    "signIn": "تسجيل الدخول",
+    "getStarted": "ابدأ مجاناً",
+    "signedInAs": "مسجل الدخول كـ",
+    "welcomeBack": "مرحباً بعودتك",
+    "myFavorites": "مفضلتي"
+  },
+  "General": {
+    "logo": "تعلم-العربية",
+    "logoAI": "ذكاء اصطناعي",
+    "back": "رجوع",
+    "loading": "جاري التحميل .....",
+    "logout": "تسجيل الخروج",
+    "loggingOut": "جاري تسجيل الخروج..."
+  },
+  "LessonsPage": {
+    "headerTitle": "دروس اللغة",
+    "headerDescription": "أتقن لغة جديدة مع مناهجنا المصممة بعناية. ابدأ من الأساسيات أو انتقل إلى المواضيع المتقدمة.",
+    "noLessons": "لم يتم العثور على دروس",
+    "noLessonsMessage": "لا توجد دروس متاحة لمستوى {level}",
+    "viewAllLessons": "عرض جميع الدروس",
+    "ctaTitle": "هل أنت مستعد لتسريع تعلمك؟",
+    "ctaDescription": "انضم إلى خطتنا المميزة للحصول على دروس مخصصة وممارسة مدعومة بالذكاء الاصطناعي.",
+    "ctaButton": "الترقية الآن",
+    "error": "فشل في تحميل الدروس",
+    "lessonDescription": "درس لغة تفاعلي",
+    "words": "كلمات",
+    "rules": "قواعد",
+    "minutes": "دقيقة",
+    "progress": "التقدم",
+    "completed": "مكتمل",
+    "items": "عناصر",
+    "lessonNotFound": "الدرس غير موجود"
+  },
+  "LessonFilter": {
+    "all": "جميع المستويات",
+    "A1": "A1 مبتدئ",
+    "A2": "A2 مبتدئ متقدم",
+    "B1": "B1 متوسط",
+    "B2": "B2 فوق المتوسط",
+    "C1": "C1 متقدم",
+    "C2": "C2 إتقان"
+  },
+  "LessonDetailPage": {
+    "error": "فشل في تحميل الدرس",
+    "lessonNotFound": "الدرس غير موجود",
+    "backToLessons": "العودة إلى الدروس",
+    "minutes": "دقيقة",
+    "lessonNumber": "الدرس رقم {order}",
+    "save": "حفظ",
+    "saved": "تم الحفظ",
+    "progress": "التقدم",
+    "pending": "قيد الانتظار",
+    "of": "من",
+    "items": "عناصر",
+    "completeToEarn": "أكمل لتربح",
+    "lessonCompleted": "اكتمل الدرس",
+    "lessonContent": "محتوى الدرس",
+    "vocabulary": "المفردات",
+    "wordsCount": "{count} كلمات",
+    "grammar": "قواعد النحو",
+    "completeLesson": "إكمال الدرس",
+    "back": "رجوع",
+    "videoLesson": "درس فيديو",
+    "audioLesson": "درس صوتي"
+  },
+  "DashboardPage": {
+    "error": "فشل في تحميل بيانات لوحة التحكم",
+    "currentLevel": "المستوى الحالي",
+    "levelDefault": "A1 مبتدئ",
+    "xpToNextLevel": "نقاط الخبرة للوصول للمستوى التالي",
+    "lessonsCompleted": "الدروس المكتملة",
+    "learningJourney": "رحلة تعلمك",
+    "currentStreak": "التتابع الحالي",
+    "dailyConsistency": "الانتظام اليومي",
+    "days": "أيام",
+    "learningAccuracy": "دقة التعلم",
+    "averageScore": "متوسط النقاط",
+    "timeSpent": "الوقت المستغرق",
+    "totalLearning": "إجمالي وقت التعلم",
+    "continueLearning": "استمر في التعلم",
+    "continueLearningDesc": "استكمل من حيث توقفت",
+    "viewAllLessons": "عرض جميع الدروس",
+    "noLessonsStarted": "لم تبدأ أي دروس بعد.",
+    "browseLessons": "تصفح الدروس →",
+    "recommendedForYou": "موصى به لك",
+    "quickActions": "إجراءات سريعة",
+    "grammarQuiz": "اختبار القواعد",
+    "grammarQuizDesc": "اختبر معرفتك",
+    "vocabularyBuilder": "باني المفردات",
+    "vocabularyBuilderDesc": "تعلم 10 كلمات جديدة",
+    "speakingPractice": "ممارسة التحدث",
+    "speakingPracticeDesc": "تمارين النطق",
+    "minutes": "دقيقة",
+    "inProgress": "قيد التقدم",
+    "completed": "مكتمل",
+    "continue": "استمر",
+    "start": "ابدأ"
+  },
+  "DashboardHeader": {
+    "dashboardTitle": "لوحة تحكم اللغة",
+    "welcomeBack": "مرحباً بعودتك",
+    "level": "المستوى",
+    "dailyStreak": "التتابع اليومي",
+    "days": "أيام"
+  },
+  "VocabularyCard": {
+    "translation": "الترجمة",
+    "pronunciation": "النطق",
+    "type": "النوع",
+    "exampleSentence": "مثال جملة",
+    "learned": "تم تعلمه",
+    "level": "المستوى"
+  },
+  "GrammarCard": {
+    "completed": "مكتمل",
+    "examples": "أمثلة:",
+    "exceptions": "استثناءات:"
+  },
+  "FavoritesPage": {
+    "title": "مفضلتي",
+    "subtitle": "جميع الكلمات والقواعد النحوية والجمل والدروس المحفوظة في مكان واحد",
+    "removeError": "فشل في إزالة المفضلة:",
+    "clearConfirmation": "هل أنت متأكد من إزالة جميع المفضلات؟",
+    "clearError": "فشل في مسح جميع المفضلات:",
+    "loadError": "خطأ في تحميل المفضلات",
+    "signInRequired": {
+      "title": "سجل الدخول لعرض المفضلات",
+      "description": "يرجى تسجيل الدخول لرؤية العناصر المفضلة لديك",
+      "button": "تسجيل الدخول"
+    },
+    "refreshButton": "تحديث",
+    "clearAllButton": "مسح الكل",
+    "stats": {
+      "total": "إجمالي العناصر",
+      "words": "كلمات",
+      "grammar": "قواعد",
+      "sentences": "جمل",
+      "lessons": "دروس"
+    },
+    "searchPlaceholder": "البحث في المفضلات...",
+    "filters": {
+      "types": {
+        "all": "الكل",
+        "word": "كلمات",
+        "grammar": "قواعد",
+        "sentence": "جمل",
+        "lesson": "دروس"
+      },
+      "levelLabel": "تصفية حسب المستوى",
+      "clearFilters": "مسح الفلاتر"
+    },
+    "sortOptions": {
+      "newest": "الأحدث أولاً",
+      "oldest": "الأقدم أولاً",
+      "alphabetical": "أ-ي"
+    },
+    "progressStatus": {
+      "pending": "لم يبدأ",
+      "in_progress": "قيد التقدم",
+      "completed": "مكتمل"
+    },
+    "emptyState": {
+      "title": "لا توجد مفضلات بعد",
+      "description": "ابدأ بحفظ الكلمات والقواعد النحوية والجمل والدروس بالنقر على أيقونة القلب في أي عنصر",
+      "browseButton": "تصفح الدروس"
+    },
+    "noResults": {
+      "title": "لم يتم العثور على نتائج",
+      "description": "حاول تغيير إعدادات البحث أو التصفية"
+    },
+    "sections": {
+      "words": "الكلمات المفضلة",
+      "grammar": "القواعد النحوية المفضلة",
+      "sentences": "الجمل المفضلة",
+      "lessons": "الدروس المفضلة"
+    },
+    "items": "عناصر",
+    "playAudio": "تشغيل الصوت",
+    "removeFavorite": "إزالة من المفضلة",
+    "contextLabel": "السياق",
+    "viewLesson": "عرض الدرس"
+  },
+  "favorites": {
+    "play_pronunciation": "تشغيل النطق",
+    "remove_from_favorites": "إزالة من المفضلة",
+    "level": "المستوى",
+    "example": "مثال",
+    "view_lesson": "عرض الدرس",
+    "added": "تمت الإضافة",
+    "exceptions": "استثناءات",
+    "examples": "أمثلة"
+  },
+  "ProfilePage": {
+    "backButton": "العودة إلى لوحة التحكم",
+    "profileNotFound": {
+      "title": "الملف الشخصي غير موجود",
+      "description": "تعذر تحميل ملفك الشخصي.",
+      "button": "العودة إلى لوحة التحكم"
+    },
+    "status": {
+      "active": "نشط"
+    },
+    "defaultName": "مستخدم",
+    "xp": "نقاط الخبرة",
+    "editButton": {
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء التعديل",
+      "edit": "تعديل الملف الشخصي"
+    },
+    "progress": {
+      "title": "تقدم التعلم",
+      "toLevel": "التقدم نحو {level}",
+      "xpEarned": "نقاط الخبرة المكتسبة من جميع الأنشطة"
+    },
+    "form": {
+      "name": "اسم العرض",
+      "namePlaceholder": "أدخل اسم العرض الخاص بك",
+      "avatarUrl": "رابط الصورة الشخصية",
+      "avatarPlaceholder": "أدخل رابط الصورة لصورتك الشخصية",
+      "preview": "معاينة",
+      "avatarPreview": "معاينة الصورة الشخصية",
+      "country": "البلد",
+      "countryPlaceholder": "أدخل بلدك",
+      "birthDate": "تاريخ الميلاد",
+      "saving": "جاري الحفظ...",
+      "save": "حفظ التغييرات"
+    },
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "country": "البلد",
+      "notSpecified": "غير محدد",
+      "birthDate": "تاريخ الميلاد",
+      "yearsOld": "سنة",
+      "memberSince": "عضو منذ",
+      "lastActive": "آخر نشاط",
+      "level": "المستوى"
+    },
+    "stats": {
+      "title": "إحصائيات التعلم",
+      "totalXP": "إجمالي نقاط الخبرة",
+      "totalXpDesc": "المكتسبة من جميع الأنشطة",
+      "currentStreak": "التتابع الحالي",
+      "days": "أيام",
+      "streakDesc": "انتظام التعلم اليومي"
+    },
+    "accountInfo": {
+      "title": "معلومات الحساب",
+      "email": "البريد الإلكتروني",
+      "userId": "معرف المستخدم",
+      "status": "حالة الحساب",
+      "active": "نشط",
+      "profileUpdated": "تم تحديث الملف الشخصي"
+    },
+    "quickActions": {
+      "title": "إجراءات سريعة",
+      "settings": "إعدادات الحساب",
+      "achievements": "الإنجازات",
+      "leaderboard": "لوحة المتصدرين"
+    },
+    "levels": {
+      "A1": "مبتدئ",
+      "A2": "مبتدئ متقدم",
+      "B1": "متوسط",
+      "B2": "فوق المتوسط",
+      "C1": "متقدم",
+      "C2": "إتقان"
+    },
+    "signOut": "تسجيل الخروج"
+  },
+  "Auth": {
+    "header": {
+      "loginTitle": "مرحباً بعودتك",
+      "loginSubtitle": "استمر في تعلم لغتك المفضلة",
+      "registerTitle": "ابدأ رحلتك",
+      "registerSubtitle": "انضم إلى الآلاف الذين يتعلمون اللغات معنا"
+    },
+    "form": {
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "••••••••"
+    },
+    "buttons": {
+      "signIn": "تسجيل الدخول",
+      "signUp": "إنشاء حساب",
+      "signingIn": "جاري تسجيل الدخول...",
+      "signingUp": "جاري إنشاء الحساب...",
+      "googleSignIn": "المتابعة باستخدام Google",
+      "githubSignIn": "المتابعة باستخدام GitHub",
+      "facebookSignIn": "المتابعة باستخدام Facebook",
+      "showPassword": "إظهار كلمة المرور",
+      "hidePassword": "إخفاء كلمة المرور"
+    },
+    "social": {
+      "continueWith": "المتابعة باستخدام",
+      "google": "Google",
+      "github": "GitHub",
+      "facebook": "Facebook"
+    },
+    "validation": {
+      "requiredFields": "يرجى ملء جميع الحقول المطلوبة",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "passwordLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+      "emptyEmail": "البريد الإلكتروني مطلوب",
+      "emptyPassword": "كلمة المرور مطلوبة"
+    },
+    "errors": {
+      "authError": "خطأ في المصادقة",
+      "googleError": "خطأ في تسجيل الدخول باستخدام Google",
+      "githubError": "خطأ في تسجيل الدخول باستخدام GitHub",
+      "facebookError": "خطأ في تسجيل الدخول باستخدام Facebook",
+      "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى.",
+      "serverError": "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً.",
+      "unknownError": "حدث خطأ غير متوقع"
+    },
+    "divider": {
+      "text": "أو المتابعة باستخدام"
+    },
+    "switch": {
+      "registerPrompt": "ليس لديك حساب؟",
+      "loginPrompt": "لديك حساب بالفعل؟",
+      "register": "إنشاء حساب",
+      "login": "تسجيل الدخول"
+    },
+    "terms": "بإنشائك حساباً، فإنك توافق على شروط الخدمة وسياسة الخصوصية الخاصة بنا",
+    "success": {
+      "login": "تم تسجيل الدخول بنجاح!",
+      "register": "تم إنشاء الحساب بنجاح! جاري التوجيه..."
+    }
+  },
+  "HomePage": {
+    "loading": "جاري التحميل...",
+    "hero": {
+      "badge": "جديد: التعلم المدعوم بالذكاء الاصطناعي",
+      "title": {
+        "part1": "أتقن اللغات بمساعدة",
+        "part2": "الذكاء",
+        "part3": "الاصطناعي"
+      },
+      "subtitle": "تعلم العربية من خلال دروس مخصصة، وتمارين تفاعلية، وتغذية راجعة فورية مدعومة بالذكاء الاصطناعي.",
+      "cta": {
+        "primary": "ابدأ التعلم مجاناً",
+        "secondary": "جرب درس تجريبي"
+      }
+    },
+    "stats": {
+      "lessons": "دروس تفاعلية",
+      "vocabulary": "كلمة مفردات",
+      "satisfaction": "معدل النجاح",
+      "users": "متعلم نشط"
+    },
+    "features": {
+      "title": "لماذا تختار منصتنا",
+      "subtitle": "كل ما تحتاجه لإتقان لغة جديدة، مدعوماً بأحدث تقنيات الذكاء الاصطناعي",
+      "lessons": {
+        "title": "دروس منظمة",
+        "description": "دروس خطوة بخطوة من المستوى A1 إلى C2 مع مسارات تعلم واضحة"
+      },
+      "grammar": {
+        "title": "إتقان القواعد",
+        "description": "تمارين قواعد تفاعلية مع تغذية راجعة فورية وتفسيرات"
+      },
+      "speaking": {
+        "title": "ممارسة التحدث",
+        "description": "تدرب على النطق مع تقنية التعرف على الكلام المدعومة بالذكاء الاصطناعي"
+      },
+      "favorites": {
+        "title": "حفظ ومراجعة",
+        "description": "احفظ المفردات والقواعد النحوية والدروس لمراجعتها لاحقاً"
+      },
+      "progress": {
+        "title": "تتبع التقدم",
+        "description": "تحليلات مفصلة وتتبع التقدم بنظام نقاط الخبرة"
+      },
+      "multilingual": {
+        "title": "لغة واحدة متميزة",
+        "description": "تعلم العربية بمحتوى متكامل ومتنوع"
+      }
+    },
+    "howItWorks": {
+      "title": "كيف تعمل المنصة",
+      "subtitle": "ابدأ رحلة تعلم اللغة في 3 خطوات بسيطة",
+      "step1": {
+        "title": "اختبر مستواك",
+        "description": "أكمل تقييماً سريعاً لتحديد مستواك الحالي"
+      },
+      "step2": {
+        "title": "خطة مخصصة",
+        "description": "احصل على مسار تعلم مخصص بناءً على أهدافك ومستواك"
+      },
+      "step3": {
+        "title": "تعلم وتدرب",
+        "description": "أكمل الدروس التفاعلية والتمارين مع تغذية راجعة من الذكاء الاصطناعي"
+      }
+    },
+    "cta": {
+      "title": "ابدأ رحلة تعلم اللغة اليوم",
+      "subtitle": "انضم إلى آلاف المتعلمين الذين طوروا مهاراتهم اللغوية مع منصتنا المدعومة بالذكاء الاصطناعي",
+      "button": {
+        "primary": "أنشئ حساباً مجانياً",
+        "secondary": "تسجيل الدخول"
+      }
+    },
+    "footer": {
+      "tagline": "منصة تعلم اللغة العربية المدعومة بالذكاء الاصطناعي",
+      "product": "المنتج",
+      "features": "الميزات",
+      "pricing": "الأسعار",
+      "about": "من نحن",
+      "resources": "الموارد",
+      "blog": "المدونة",
+      "help": "مركز المساعدة",
+      "contact": "اتصل بنا",
+      "legal": "قانوني",
+      "privacy": "سياسة الخصوصية",
+      "terms": "شروط الخدمة",
+      "cookies": "سياسة ملفات تعريف الارتباط",
+      "rights": "جميع الحقوق محفوظة."
+    }
+  }
+}

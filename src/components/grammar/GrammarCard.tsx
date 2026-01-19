@@ -1,11 +1,11 @@
 'use client'
 
-import { CheckCircleIcon, AcademicCapIcon , HeartIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+import { CheckCircleIcon, AcademicCapIcon  } from '@heroicons/react/24/outline'
 import { useTranslations } from 'next-intl'
 
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
 import { renderExamples } from './RenderExamples'
+import { FavoriteButton } from '../ui/FavoriteButton'
 
 interface GrammarCardProps {
   rule: GrammarRule
@@ -28,8 +28,8 @@ export function GrammarCard({
     onToggleComplete?.(rule.id)
   }
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const handleFavorite = () => {
+    // e.stopPropagation()
     onToggleFavorite?.(rule.id)
   }
 
@@ -56,20 +56,10 @@ export function GrammarCard({
                 {rule.rule_name}
               </h3>
 
-              <button
+              <FavoriteButton
+                isFavorite={isFavorite}
                 onClick={handleFavorite}
-                className={`p-2 rounded-full transition ${
-                  isFavorite
-                    ? 'bg-red-100 hover:bg-red-200'
-                    : 'bg-gray-100 hover:bg-gray-200'
-                }`}
-              >
-                {isFavorite ? (
-                  <HeartSolid className="h-4 w-4 text-red-500" />
-                ) : (
-                  <HeartIcon className="h-4 w-4 text-gray-500" />
-                )}
-              </button>
+              />
 
               {completed && (
                 <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">

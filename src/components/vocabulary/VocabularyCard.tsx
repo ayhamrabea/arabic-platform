@@ -1,12 +1,11 @@
 'use client'
 
-import { SpeakerWaveIcon, CheckCircleIcon , HeartIcon  } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
+import { SpeakerWaveIcon, CheckCircleIcon  } from '@heroicons/react/24/outline'
 import { useTranslations } from 'next-intl'
 
 import type { Vocabulary } from '@/store/apis/lessonsApi/types'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
-import { getDifficultyColor } from '../favorites/helpers'
+import { FavoriteButton } from '../ui/FavoriteButton'
 
 interface VocabularyCardProps {
   word: Vocabulary
@@ -29,8 +28,8 @@ export function VocabularyCard({
     onToggleComplete?.(word.id)
   }
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const handleFavorite = () => {
+    // e.stopPropagation()
     onToggleFavorite?.(word.id)
   }
 
@@ -67,34 +66,14 @@ export function VocabularyCard({
               )}
 
               {/* زر المفضلة */}
-              <button
+              <FavoriteButton
+                isFavorite={isFavorite}
                 onClick={handleFavorite}
-                className={`p-2 rounded-full transition ${
-                  isFavorite
-                    ? 'bg-red-100 hover:bg-red-200'
-                    : 'bg-gray-100 hover:bg-gray-200'
-                }`}
-              >
-                {isFavorite ? (
-                  <HeartSolid className="h-4 w-4 text-red-500" />
-                ) : (
-                  <HeartIcon className="h-4 w-4 text-gray-500" />
-                )}
-              </button>
+              />
 
             </div>
 
             <div className="flex items-center gap-3">
-              {word.difficulty_score !== null && word.difficulty_score !== undefined && (
-                <span
-                  className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(
-                    word.difficulty_score
-                  )}`}
-                >
-                  {t('level')} {word.difficulty_score}
-                </span>
-              )}
-
               {completed && (
                 <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
                   {t('learned')}

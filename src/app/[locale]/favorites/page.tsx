@@ -13,12 +13,14 @@ import {
   AcademicCapIcon,
   ChatBubbleLeftRightIcon,
   HeartIcon,
-  TrashIcon,
   FunnelIcon,
   ArrowPathIcon,
   MagnifyingGlassIcon,
   SpeakerWaveIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
+  PlayCircleIcon,
+  CheckCircleIcon,
+  ClockIcon
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import {
@@ -30,8 +32,9 @@ import { RootState } from '@/store/store'
 import { FavoriteVocabularyCard } from '@/components/favorites/FavoriteVocabularyCard'
 import { FavoriteGrammarCard } from '@/components/favorites/FavoriteGrammarCard'
 import { getLevelColor } from '@/components/favorites/helpers'
+import { FavoriteLesson, useGetFavoriteLessonsQuery, useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
 
-type ItemType = 'word' | 'grammar' | 'sentence' | 'all'
+type ItemType = 'word' | 'grammar' | 'sentence' | 'lesson' | 'all'
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
 
 interface SentenceItem {
@@ -55,54 +58,96 @@ export default function FavoritesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedLevels, setSelectedLevels] = useState<string[]>([])
 
+  // Queries for favorite items
   const {
     data: favoritesData,
-    isLoading,
-    isError,
-    error,
-    refetch
+    isLoading: isLoadingItems,
+    isError: isItemsError,
+    error: itemsError,
+    refetch: refetchItems
   } = useGetFavoriteItemsQuery(undefined, {
     skip: !user,
   })
 
+  // Queries for favorite lessons
+  const {
+    data: favoriteLessonsData,
+    isLoading: isLoadingLessons,
+    isError: isLessonsError,
+    error: lessonsError,
+    refetch: refetchLessons
+  } = useGetFavoriteLessonsQuery(undefined, {
+    skip: !user,
+  })
+
   const [toggleFavorite] = useToggleFavoriteMutation()
+  const [toggleLessonFavorite] = useToggleLessonFavoriteMutation()
 
   const [stats, setStats] = useState({
     total: 0,
     words: 0,
     grammar: 0,
-    sentences: 0
+    sentences: 0,
+    lessons: 0
   })
 
   useEffect(() => {
-    if (favoritesData) {
+    if (favoritesData && favoriteLessonsData) {
       const wordsCount = favoritesData.words?.length || 0
       const grammarCount = favoritesData.grammar?.length || 0
       const sentencesCount = favoritesData.sentences?.length || 0
+      const lessonsCount = favoriteLessonsData?.length || 0
 
       setStats({
-        total: wordsCount + grammarCount + sentencesCount,
+        total: wordsCount + grammarCount + sentencesCount + lessonsCount,
         words: wordsCount,
         grammar: grammarCount,
-        sentences: sentencesCount
+        sentences: sentencesCount,
+        lessons: lessonsCount
       })
     }
-  }, [favoritesData])
+  }, [favoritesData, favoriteLessonsData])
 
-  // دالة الحصول على مستوى العنصر (من الدرس)
+  // Get item level
   const getItemLevel = (item: any): string => {
-    return item.lesson_level || ''
+    return item.lesson_level || item.level || ''
   }
 
-  // التصفية والترتيب
+  // Get progress status icon
+  const getProgressStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircleIcon className="h-4 w-4 text-green-500" />
+      case 'started':
+        return <PlayCircleIcon className="h-4 w-4 text-blue-500" />
+      case 'not_started':
+        return <ClockIcon className="h-4 w-4 text-gray-400" />
+      default:
+        return <ClockIcon className="h-4 w-4 text-gray-400" />
+    }
+  }
+
+  const getProgressStatusText = (status: string) => {
+    return t(`progressStatus.${status}`, { defaultValue: status })
+  }
+
+  // Filtering and sorting
   const getFilteredItems = () => {
-    if (!favoritesData) {
-      return { words: [], grammar: [], sentences: [] }
+    const result = {
+      words: [] as any[],
+      grammar: [] as any[],
+      sentences: [] as any[],
+      lessons: [] as FavoriteLesson[]
     }
 
+    if (!favoritesData || !favoriteLessonsData) {
+      return result
+    }
+
+    // Filter regular items
     let items = { ...favoritesData }
 
-    // تصفية حسب النوع
+    // Filter by type
     if (selectedType !== 'all') {
       if (selectedType === 'word') {
         items = { ...items, grammar: [], sentences: [] }
@@ -113,7 +158,7 @@ export default function FavoritesPage() {
       }
     }
 
-    // البحث
+    // Search
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
       items = {
@@ -133,9 +178,16 @@ export default function FavoritesPage() {
           (sentence.context && sentence.context.toLowerCase().includes(query))
         )
       }
+
+      // Filter lessons
+      result.lessons = favoriteLessonsData.filter(lesson =>
+        lesson.title.toLowerCase().includes(query) 
+      )
+    } else {
+      result.lessons = [...favoriteLessonsData]
     }
 
-    // تصفية حسب المستوى (من الدرس)
+    // Filter by level
     if (selectedLevels.length > 0) {
       items = {
         words: items.words.filter(word => {
@@ -146,15 +198,22 @@ export default function FavoritesPage() {
           const level = getItemLevel(rule)
           return level && selectedLevels.includes(level)
         }),
-        sentences: items.sentences.filter(sentence => {
-          // للجمل يمكنك إضافة مستوى إذا كان موجوداً
-          return true // تخطي التصفية للجمل إذا لم يكن هناك مستوى
-        })
+        sentences: items.sentences.filter(sentence => true)
       }
+
+      result.lessons = result.lessons.filter(lesson => {
+        const level = lesson.level
+        return level && selectedLevels.includes(level)
+      })
     }
 
-    // الترتيب
-    const sortItems = <T extends { created_at?: string; word?: string; rule_name?: string; text?: string }>(
+    // Apply filters to regular items
+    result.words = items.words
+    result.grammar = items.grammar
+    result.sentences = items.sentences
+
+    // Sorting
+    const sortItems = <T extends { created_at?: string; word?: string; rule_name?: string; text?: string; title?: string }>(
       items: T[]
     ): T[] => {
       return [...items].sort((a, b) => {
@@ -164,8 +223,8 @@ export default function FavoritesPage() {
           case 'oldest':
             return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
           case 'alphabetical':
-            const aText = a.word || a.rule_name || a.text || ''
-            const bText = b.word || b.rule_name || b.text || ''
+            const aText = a.word || a.rule_name || a.text || a.title || ''
+            const bText = b.word || b.rule_name || b.text || b.title || ''
             return aText.localeCompare(bText)
           default:
             return 0
@@ -173,11 +232,19 @@ export default function FavoritesPage() {
       })
     }
 
-    return {
-      words: sortItems(items.words),
-      grammar: sortItems(items.grammar),
-      sentences: sortItems(items.sentences)
+    // Sort lessons
+    result.lessons = sortItems(result.lessons)
+
+    // Additional filtering by type
+    if (selectedType === 'lesson') {
+      result.words = []
+      result.grammar = []
+      result.sentences = []
+    } else if (selectedType !== 'all') {
+      result.lessons = []
     }
+
+    return result
   }
 
   const filteredItems = getFilteredItems()
@@ -190,46 +257,59 @@ export default function FavoritesPage() {
     }
   }
 
-
+  const handleToggleLessonFavorite = async (lessonId: string) => {
+    try {
+      await toggleLessonFavorite({ lessonId }).unwrap()
+    } catch (error) {
+      console.error(t('removeError'), error)
+    }
+  }
 
   const handleRefresh = () => {
-    refetch()
+    refetchItems()
+    refetchLessons()
   }
 
   const handleViewLesson = (lessonId: string) => {
     router.push(`/lessons/${lessonId}`)
   }
 
-  // دالة الحصول على أيقونة النوع
+  // Get type icon
   const getTypeIcon = (type: ItemType) => {
     const icons = {
       word: BookOpenIcon,
       grammar: AcademicCapIcon,
       sentence: ChatBubbleLeftRightIcon,
+      lesson: StarIcon,
       all: HeartIcon
     }
     return icons[type]
   }
 
-  // دالة الحصول على لون النوع
+  // Get type color
   const getTypeColor = (type: ItemType) => {
     const colors = {
       word: 'bg-blue-50 text-blue-600 border-blue-200',
       grammar: 'bg-purple-50 text-purple-600 border-purple-200',
       sentence: 'bg-green-50 text-green-600 border-green-200',
+      lesson: 'bg-amber-50 text-amber-600 border-amber-200',
       all: 'bg-rose-50 text-rose-600 border-rose-200'
     }
     return colors[type]
   }
 
-  // تشغيل الصوت
+  // Play audio
   const playAudio = (audioUrl?: string) => {
     if (audioUrl) {
       new Audio(audioUrl).play()
     }
   }
 
-  if (isLoading || authLoading) {
+  const isLoading = isLoadingItems || isLoadingLessons || authLoading
+  const isError = isItemsError || isLessonsError
+  const error = itemsError || lessonsError
+
+  if (isLoading) {
     return <LoadingSpinner />
   }
 
@@ -269,7 +349,8 @@ export default function FavoritesPage() {
   const hasFilteredItems =
     filteredItems.words.length > 0 ||
     filteredItems.grammar.length > 0 ||
-    filteredItems.sentences.length > 0
+    filteredItems.sentences.length > 0 ||
+    filteredItems.lessons.length > 0
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50">
@@ -297,14 +378,12 @@ export default function FavoritesPage() {
                 <ArrowPathIcon className="h-4 w-4 mr-2" />
                 {t('refreshButton')}
               </button>
-
-
             </div>
           </div>
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -344,6 +423,16 @@ export default function FavoritesPage() {
               <ChatBubbleLeftRightIcon className="h-8 w-8 text-green-400" />
             </div>
           </div>
+
+          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Favorite Lessons</p>
+                <p className="text-3xl font-bold text-amber-600">{stats.lessons}</p>
+              </div>
+              <StarIcon className="h-8 w-8 text-amber-400" />
+            </div>
+          </div>
         </div>
 
         {/* Filters & Search */}
@@ -365,11 +454,19 @@ export default function FavoritesPage() {
 
             {/* Type Filters */}
             <div className="flex flex-wrap gap-2">
-              {(['all', 'word', 'grammar', 'sentence'] as ItemType[]).map(type => {
+              {(['all', 'word', 'grammar', 'sentence', 'lesson'] as ItemType[]).map(type => {
                 const Icon = getTypeIcon(type)
-                const count = type === 'all' ? stats.total :
+                const count = 
+                  type === 'all' ? stats.total :
                   type === 'word' ? stats.words :
-                    type === 'grammar' ? stats.grammar : stats.sentences
+                  type === 'grammar' ? stats.grammar :
+                  type === 'sentence' ? stats.sentences :
+                  stats.lessons
+
+                // Use existing translations with fallback
+                const typeLabel = type === 'lesson' 
+                  ? 'Lessons' 
+                  : t(`filters.types.${type}`)
 
                 return (
                   <button
@@ -380,7 +477,7 @@ export default function FavoritesPage() {
                       : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'}`}
                   >
                     <Icon className="h-4 w-4 mr-2" />
-                    {t(`filters.types.${type}`)}
+                    {typeLabel}
                     <span className="ml-2 text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">
                       {count}
                     </span>
@@ -462,6 +559,70 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <div className="space-y-8">
+            {/* Lessons Section */}
+            {filteredItems.lessons.length > 0 && (selectedType === 'all' || selectedType === 'lesson') && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                    <StarIcon className="h-6 w-6 text-amber-500 mr-3" />
+                    Favorite Lessons
+                    <span className="ml-3 text-sm font-normal text-gray-500">
+                      ({filteredItems.lessons.length} {t('items')})
+                    </span>
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredItems.lessons.map(lesson => (
+                    <div
+                      key={lesson.id}
+                      className="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50 to-white group"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getLevelColor(lesson.level)}`}>
+                              {lesson.level}
+                            </span>
+                            <div className="flex items-center text-sm text-gray-500">
+                              {getProgressStatusIcon(lesson.progress_status)}
+                              <span className="ml-1">
+                                {getProgressStatusText(lesson.progress_status)}
+                              </span>
+                            </div>
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">
+                            {lesson.title}
+                          </h3>
+                        </div>
+                        <button
+                          onClick={() => handleToggleLessonFavorite(lesson.id)}
+                          className="text-rose-500 hover:text-rose-700 p-1 ml-2"
+                          title={t('removeFavorite')}
+                        >
+                          <HeartIconSolid className="h-5 w-5" />
+                        </button>
+                      </div>
+
+                      <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-100">
+                        <button
+                          onClick={() => handleViewLesson(lesson.id)}
+                          className="text-sm text-amber-600 hover:text-amber-800 flex items-center font-medium"
+                        >
+                          {t('viewLesson')}
+                          <ChevronRightIcon className="h-3 w-3 ml-1" />
+                        </button>
+                        {lesson.duration && (
+                          <div className="text-xs text-gray-500">
+                            {lesson.duration} min
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Words Section */}
             {filteredItems.words.length > 0 && (selectedType === 'all' || selectedType === 'word') && (
               <div className="bg-white rounded-2xl shadow-lg p-6">

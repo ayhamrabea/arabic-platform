@@ -13,18 +13,20 @@ import { MediaPlayer } from '@/components/media/MediaPlayer'
 import { VocabularyCard } from '@/components/vocabulary/VocabularyCard'
 import { GrammarCard } from '@/components/grammar/GrammarCard'
 
-import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
-import { getDifficultyColor, getLevelColor } from '@/components/favorites/helpers'
+import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { getLevelColor } from '@/components/favorites/helpers'
+import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 
 import {
   useGetLessonByIdQuery,
   useUpdateCompletedItemsMutation,
   useCompleteLessonMutation,
-  useToggleFavoriteMutation as useToggleLessonFavoriteMutation
 } from '@/store/apis/lessonsApi'
 
 import { useToggleFavoriteMutation as useToggleWordFavoriteMutation } from '@/store/apis/favoritesApi'
 import { useLessonTimeTracker } from '@/hooks/useLessonTimeTracker'
+import { FavoriteButton } from '@/components/ui/FavoriteButton'
+import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
 
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
@@ -41,7 +43,7 @@ export default function LessonDetailPage() {
     refetch
   } = useGetLessonByIdQuery(id as string)
 
-  const [toggleFavorite] = useToggleLessonFavoriteMutation()
+  const [toggleLessonFavorite] = useToggleLessonFavoriteMutation()
   const [updateCompletedItems] = useUpdateCompletedItemsMutation()
   const [completeLesson] = useCompleteLessonMutation()
   const [toggleFavoriteWordMutation] = useToggleWordFavoriteMutation()
@@ -111,12 +113,14 @@ export default function LessonDetailPage() {
 
   const { lesson, grammar, vocabulary, progress } = lessonData
 
+  
+
   const handleMarkFavorite = async () => {
     try {
-      await toggleFavorite({ lessonId: lesson.id, isFavorite: !progress?.is_favorite }).unwrap()
+      await toggleLessonFavorite({ lessonId: lesson.id }).unwrap()
       refetch()
     } catch (error) {
-      console.error('Failed to toggle favorite:', error)
+      console.error('Failed to toggle lesson favorite:', error)
     }
   }
 
@@ -159,9 +163,7 @@ export default function LessonDetailPage() {
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getLevelColor(lesson.level)}`}>
                   {lesson.level}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(lesson.difficulty?.toLowerCase())}`}>
-                  {lesson.difficulty}
-                </span>
+
                 {lesson.tags?.map(tag => (
                   <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
                     {tag}
@@ -180,13 +182,12 @@ export default function LessonDetailPage() {
                   <StarIcon className="h-5 w-5 mr-2" />
                   <span>{t('lessonNumber', { order: lesson.order_index })}</span>
                 </div>
-                <button
-                  onClick={handleMarkFavorite}
-                  className={`flex items-center ${progress?.is_favorite ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}
-                >
-                  <BookmarkIcon className="h-5 w-5 mr-1" />
-                  {progress?.is_favorite ? t('saved') : t('save')}
-                </button>
+
+                  <FavoriteButton
+                    isFavorite={progress?.is_favorite}
+                    onClick={handleMarkFavorite}
+                  />
+
               </div>
 
               <div className="mb-6">

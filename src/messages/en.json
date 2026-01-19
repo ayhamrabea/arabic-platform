@@ -126,7 +126,7 @@
   },
   "FavoritesPage": {
     "title": "My Favorites",
-    "subtitle": "All your saved words, grammar rules, and sentences in one place",
+    "subtitle": "All your saved words, grammar rules, sentences, and lessons in one place",
     "removeError": "Failed to remove favorite:",
     "clearConfirmation": "Are you sure you want to remove all favorites?",
     "clearError": "Failed to clear all favorites:",
@@ -142,15 +142,17 @@
       "total": "Total Items",
       "words": "Words",
       "grammar": "Grammar",
-      "sentences": "Sentences"
+      "sentences": "Sentences",
+      "lessons": "Lessons"
     },
     "searchPlaceholder": "Search in favorites...",
     "filters": {
       "types": {
         "all": "All",
-        "word": "Word",
+        "word": "Words",
         "grammar": "Grammar",
-        "sentence": "Sentence"
+        "sentence": "Sentences",
+        "lesson": "Lessons"
       },
       "levelLabel": "Filter by Level",
       "clearFilters": "Clear Filters"
@@ -160,9 +162,14 @@
       "oldest": "Oldest First",
       "alphabetical": "A-Z"
     },
+    "progressStatus": {
+      "pending": "Not Started",
+      "in_progress": "In Progress",
+      "completed": "Completed"
+    },
     "emptyState": {
       "title": "No favorites yet",
-      "description": "Start saving words, grammar rules, and sentences by clicking the heart icon on any item",
+      "description": "Start saving words, grammar rules, sentences, and lessons by clicking the heart icon on any item",
       "browseButton": "Browse Lessons"
     },
     "noResults": {
@@ -172,7 +179,8 @@
     "sections": {
       "words": "Favorite Words",
       "grammar": "Favorite Grammar Rules",
-      "sentences": "Favorite Sentences"
+      "sentences": "Favorite Sentences",
+      "lessons": "Favorite Lessons"
     },
     "items": "items",
     "playAudio": "Play audio",
@@ -329,6 +337,96 @@
     "success": {
       "login": "Successfully signed in!",
       "register": "Account created successfully! Redirecting..."
+    }
+  },
+  "HomePage": {
+    "loading": "Loading...",
+    "hero": {
+      "badge": "New: AI-Powered Learning",
+      "title": {
+        "part1": "Master Languages with",
+        "part2": "AI",
+        "part3": "Assistance"
+      },
+      "subtitle": "Learn English and Russian through personalized lessons, interactive exercises, and real-time feedback powered by artificial intelligence.",
+      "cta": {
+        "primary": "Start Learning Free",
+        "secondary": "Try Demo Lesson"
+      }
+    },
+    "stats": {
+      "lessons": "Interactive Lessons",
+      "vocabulary": "Vocabulary Words",
+      "satisfaction": "Success Rate",
+      "users": "Active Learners"
+    },
+    "features": {
+      "title": "Why Choose Our Platform",
+      "subtitle": "Everything you need to master a new language, powered by cutting-edge AI technology",
+      "lessons": {
+        "title": "Structured Lessons",
+        "description": "Step-by-step lessons from A1 to C2 levels with clear learning paths"
+      },
+      "grammar": {
+        "title": "Grammar Mastery",
+        "description": "Interactive grammar exercises with instant feedback and explanations"
+      },
+      "speaking": {
+        "title": "Speaking Practice",
+        "description": "Practice pronunciation with AI-powered speech recognition"
+      },
+      "favorites": {
+        "title": "Save & Review",
+        "description": "Save vocabulary, grammar rules, and lessons to review later"
+      },
+      "progress": {
+        "title": "Track Progress",
+        "description": "Detailed analytics and progress tracking with XP system"
+      },
+      "multilingual": {
+        "title": "Dual Languages",
+        "description": "Learn both English and Russian with parallel content"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Start your language learning journey in just 3 simple steps",
+      "step1": {
+        "title": "Take Level Test",
+        "description": "Complete a quick assessment to determine your current level"
+      },
+      "step2": {
+        "title": "Personalized Plan",
+        "description": "Get a customized learning path based on your goals and level"
+      },
+      "step3": {
+        "title": "Learn & Practice",
+        "description": "Complete interactive lessons and exercises with AI feedback"
+      }
+    },
+    "cta": {
+      "title": "Start Your Language Journey Today",
+      "subtitle": "Join thousands of learners who have improved their language skills with our AI-powered platform",
+      "button": {
+        "primary": "Create Free Account",
+        "secondary": "Sign In"
+      }
+    },
+    "footer": {
+      "tagline": "AI-powered language learning platform for English and Russian",
+      "product": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "about": "About Us",
+      "resources": "Resources",
+      "blog": "Blog",
+      "help": "Help Center",
+      "contact": "Contact",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy",
+      "rights": "All rights reserved."
     }
   }
 

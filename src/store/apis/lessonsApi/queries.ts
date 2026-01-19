@@ -105,7 +105,7 @@ export const lessonQueries = {
           .from('vocabulary')
           .select('*')
           .eq('lesson_id', lessonId)
-          .order('difficulty_score'),
+          .order('created_at'),
         // جلب التقدم
         userId ? supabase
           .from('student_progress')

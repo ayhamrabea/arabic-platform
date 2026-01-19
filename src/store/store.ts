@@ -5,6 +5,7 @@ import profileReducer from './../store/slices/profileSlice'
 import dashboardReducer from './../store/slices/dashboardSlice'
 import { lessonsApi } from "./apis/lessonsApi";
 import { favoritesApi } from "./apis/favoritesApi";
+import { lessonFavoritesApi } from "./apis/lessonsApi/lessonFavoritesApi";
 
 
 export const store = configureStore({
@@ -14,12 +15,14 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     [authApi.reducerPath]: authApi.reducer,
     [lessonsApi.reducerPath]: lessonsApi.reducer,
+    [lessonFavoritesApi.reducerPath]: lessonFavoritesApi.reducer,
     [favoritesApi.reducerPath]: favoritesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
   .concat(authApi.middleware)
   .concat(lessonsApi.middleware)
+  .concat(lessonFavoritesApi.middleware) 
   .concat(favoritesApi.middleware),
 });
 

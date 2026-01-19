@@ -45,7 +45,8 @@ export default function Navbar() {
 
   const languageOptions = [
     { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' }
   ]
 
   if (loading) {

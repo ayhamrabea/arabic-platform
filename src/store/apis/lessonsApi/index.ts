@@ -125,27 +125,6 @@ export const lessonsApi = createApi({
       ]
     }),
 
-    toggleFavorite: builder.mutation<
-      StudentProgress,
-      { lessonId: string; isFavorite: boolean }
-    >({
-      async queryFn({ lessonId, isFavorite }) {
-        try {
-          const data = await lessonMutations.toggleFavorite(lessonId, isFavorite)
-          return { data }
-        } catch (error: any) {
-          return {
-            error: {
-              status: 'CUSTOM_ERROR',
-              error: error.message
-            }
-          }
-        }
-      },
-      invalidatesTags: (result, error, { lessonId }) => [
-        { type: 'Progress', id: lessonId }
-      ]
-    }),
 
     startLesson: builder.mutation<StudentProgress, { lessonId: string }>({
       async queryFn({ lessonId }) {
@@ -169,6 +148,7 @@ export const lessonsApi = createApi({
   })
 })
 
+
 // =============== Exports ===============
 export const {
   useGetLessonsWithProgressQuery,
@@ -176,7 +156,7 @@ export const {
   useGetProgressPercentageQuery,
   useUpdateCompletedItemsMutation,
   useCompleteLessonMutation,
-  useToggleFavoriteMutation,
+  // useToggleFavoriteMutation,
   useStartLessonMutation
 } = lessonsApi
 

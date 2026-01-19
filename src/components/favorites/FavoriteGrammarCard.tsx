@@ -1,11 +1,11 @@
 'use client'
 
 import { AcademicCapIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 import type { GrammarRule } from '@/store/apis/lessonsApi/types'
 import { formatDate, getLevelColor } from './helpers'
 import { useTranslations } from 'next-intl'
 import { renderExamples } from '../grammar/RenderExamples'
+import { FavoriteButton } from '../ui/FavoriteButton'
 
 interface FavoriteGrammarCardProps {
   rule: GrammarRule & {
@@ -30,13 +30,12 @@ export function FavoriteGrammarCard({
           <h3 className="font-bold text-lg text-gray-900 mb-2">{rule.rule_name}</h3>
           <p className="text-gray-600">{rule.explanation}</p>
         </div>
-        <button
-          onClick={() => onRemoveFavorite(rule.id, 'grammar')}
-          className="text-rose-500 hover:text-rose-700 p-1 ml-2 transition-colors"
-          title={t('remove_from_favorites')}
-        >
-          <HeartSolid className="h-5 w-5" />
-        </button>
+        <FavoriteButton
+            variant="remove"
+            size="sm"
+            onClick={() => onRemoveFavorite(rule.id, 'grammar')}
+            title={t('remove_from_favorites')}
+          />
       </div>
 
       {rule.lesson_level && (

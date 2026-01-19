@@ -8,7 +8,6 @@ export interface Lesson {
   duration: number | null
   video_url: string | null
   audio_url: string | null
-  difficulty: string
   prerequisites: any[]
   order_index: number
   tags: string[]
@@ -39,7 +38,6 @@ export interface Vocabulary {
   example_sentence: string | null
   audio_url: string | null
   word_type: string | null
-  difficulty_score: number
   created_at: string
   updated_at: string
   isFavorite?: boolean;

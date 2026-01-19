@@ -19,7 +19,8 @@ export async function generateMetadata(props: Props) {
 
   const metadata: Record<string, { title: string; description: string }> = {
     en: { title: 'AI Platform', description: 'Advanced AI Platform for your needs' },
-    ru: { title: 'AI Платформа', description: 'Продвинутая AI платформа для ваших нужд' }
+    ru: { title: 'AI Платформа', description: 'Продвинутая AI платформа для ваших нужд' },
+    ar: { title: 'منصة تعلم العربية', description: 'منصة تفاعلية لتعلم اللغة العربية' }
   }
 
   return metadata[locale] ?? metadata.en
@@ -47,7 +48,7 @@ export default async function LocaleLayout(props: Props) {
       <ReduxProvider>
         <AuthProvider>
           <Navbar />
-          <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+          <main lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="min-h-[calc(100vh-4rem)]">{children}</main>
           <footer className="border-t bg-white py-6 text-center text-sm text-gray-600">
             © {new Date().getFullYear()} AI Platform
           </footer>

@@ -9,7 +9,6 @@ export interface Lesson {
   type: string;
   level: CEFRLevel;
   duration: number;
-  difficulty: string;
   estimated_xp: number;
   status?: string; // pending, in_progress, completed
   score?: number;
@@ -59,7 +58,6 @@ const fetchUserProgress = async (userId: string) => {
         type,
         level,
         duration,
-        difficulty,
         estimated_xp
       )
     `)
@@ -138,7 +136,6 @@ export const fetchDashboardData = createAsyncThunk(
         type: (p.lessons as any)?.type || 'lesson',
         level: (p.lessons as any)?.level || 'A1',
         duration: (p.lessons as any)?.duration || 0,
-        difficulty: (p.lessons as any)?.difficulty || 'medium',
         estimated_xp: (p.lessons as any)?.estimated_xp || 0,
         status: p.status,
         score: p.score,
@@ -312,7 +309,6 @@ const dashboardSlice = createSlice({
             type: lesson.type || 'lesson',
             level: lesson.level || 'A1',
             duration: lesson.duration || 0,
-            difficulty: lesson.difficulty || 'medium',
             estimated_xp: lesson.estimated_xp || 0,
             status: 'in_progress',
             started_at: action.payload.started_at

@@ -2,11 +2,11 @@
 'use client'
 
 import { SpeakerWaveIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 import type { Vocabulary } from '@/store/apis/lessonsApi/types'
-import { formatDate, getDifficultyColor, getLevelColor } from '@/components/favorites/helpers'
+import { formatDate, getLevelColor } from '@/components/favorites/helpers'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
 import { useTranslations } from 'next-intl'
+import { FavoriteButton } from '../ui/FavoriteButton'
 
 
 interface FavoriteVocabularyCardProps {
@@ -45,13 +45,13 @@ export function FavoriteVocabularyCard({
           </div>
           <p className="text-gray-600 text-sm mb-2">{word.translation}</p>
         </div>
-        <button
-          onClick={() => onRemoveFavorite(word.id, 'word')}
-          className="text-rose-500 hover:text-rose-700 p-1 ml-2 transition-colors"
-          title={t('remove_from_favorites')}
-        >
-          <HeartSolid className="h-5 w-5" />
-        </button>
+
+        <FavoriteButton
+            variant="remove"
+            size="sm"
+            onClick={() => onRemoveFavorite(word.id, 'word')}
+            title={t('remove_from_favorites')}
+          />
       </div>
 
       <div className="flex flex-wrap gap-2 mb-3">
@@ -63,11 +63,6 @@ export function FavoriteVocabularyCard({
         {word.word_type && (
           <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
             {word.word_type}
-          </span>
-        )}
-        {word.difficulty_score !== undefined && (
-          <span className={`px-2 py-1 text-xs rounded-full ${getDifficultyColor(word.difficulty_score)}`}>
-            {t('level')} {word.difficulty_score}
           </span>
         )}
       </div>
