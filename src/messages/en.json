@@ -342,92 +342,139 @@
     }
   },
   "HomePage": {
-    "loading": "Loading...",
+    "nav": {
+      "login": "Sign In",
+      "signup": "Get Started"
+    },
     "hero": {
-      "badge": "New: AI-Powered Learning",
+      "badge": "TOP RATED PLATFORM",
       "title": {
-        "part1": "Master Languages with",
-        "part2": "AI",
-        "part3": "Assistance"
+        "part1": "Learn Arabic",
+        "part2": "Easily",
+        "part3": "for Russian Speakers"
       },
-      "subtitle": "Learn English and Russian through personalized lessons, interactive exercises, and real-time feedback powered by artificial intelligence.",
+      "subtitle": "An interactive platform specially designed for Russian speakers to learn Arabic effectively with AI technology",
       "cta": {
         "primary": "Start Learning Free",
         "secondary": "Try Demo Lesson"
       }
     },
-    "stats": {
-      "lessons": "Interactive Lessons",
-      "vocabulary": "Vocabulary Words",
-      "satisfaction": "Success Rate",
-      "users": "Active Learners"
+    "advantages": {
+      "learnAtYourOwnPace": {
+        "title": "Learn at Your Own Pace",
+        "desc": "Study anytime, anywhere with flexible schedules"
+      },
+      "arabicForRussianSpeakers": {
+        "title": "Arabic for Russian Speakers",
+        "desc": "Content specially designed for Russian speakers"
+      },
+      "aiPoweredExercises": {
+        "title": "AI-Powered Exercises",
+        "desc": "Personalized exercises with artificial intelligence"
+      },
+      "culturalContext": {
+        "title": "Cultural Context",
+        "desc": "Learn Arabic culture along with the language"
+      },
+      "mobileFriendly": {
+        "title": "Mobile Friendly",
+        "desc": "Learn on your phone, tablet or computer"
+      },
+      "certificate": {
+        "title": "Completion Certificate",
+        "desc": "Get an accredited certificate upon completion"
+      }
     },
     "features": {
-      "title": "Why Choose Our Platform",
-      "subtitle": "Everything you need to master a new language, powered by cutting-edge AI technology",
+      "badge": "AMAZING FEATURES",
+      "title": "Everything You Need to Master Arabic",
       "lessons": {
-        "title": "Structured Lessons",
-        "description": "Step-by-step lessons from A1 to C2 levels with clear learning paths"
+        "title": "Interactive Lessons",
+        "description": "Step-by-step lessons designed specifically for Russian speakers"
       },
       "grammar": {
-        "title": "Grammar Mastery",
-        "description": "Interactive grammar exercises with instant feedback and explanations"
+        "title": "Arabic Grammar",
+        "description": "Learn Arabic grammar with Russian explanations"
       },
       "speaking": {
         "title": "Speaking Practice",
-        "description": "Practice pronunciation with AI-powered speech recognition"
+        "description": "Practice speaking with AI and get instant feedback"
       },
-      "favorites": {
-        "title": "Save & Review",
-        "description": "Save vocabulary, grammar rules, and lessons to review later"
+      "pronunciation": {
+        "title": "Pronunciation Training",
+        "description": "Improve your Arabic pronunciation with voice recognition"
       },
       "progress": {
-        "title": "Track Progress",
-        "description": "Detailed analytics and progress tracking with XP system"
+        "title": "Progress Tracking",
+        "description": "Track your progress with detailed analytics and reports"
       },
       "multilingual": {
-        "title": "Dual Languages",
-        "description": "Learn both English and Russian with parallel content"
+        "title": "Multi-Language Support",
+        "description": "Interface and explanations in multiple languages"
       }
+    },
+    "languages": {
+      "title": "SUPPORTED LANGUAGES",
+      "subtitle": "Learn Arabic in Your Native Language",
+      "description": "Our platform supports multiple interface languages to make learning easier"
     },
     "howItWorks": {
       "title": "How It Works",
-      "subtitle": "Start your language learning journey in just 3 simple steps",
+      "subtitle": "Start Your Arabic Learning Journey in 4 Simple Steps",
       "step1": {
-        "title": "Take Level Test",
-        "description": "Complete a quick assessment to determine your current level"
+        "title": "Sign Up & Set Goals",
+        "description": "Create your account and define your Arabic learning goals",
+        "feature1": "Free 7-day trial",
+        "feature2": "Personalized learning plan"
       },
       "step2": {
-        "title": "Personalized Plan",
-        "description": "Get a customized learning path based on your goals and level"
+        "title": "Choose Your Course",
+        "description": "Select from beginner to advanced courses designed for Russian speakers",
+        "feature1": "Course for every level",
+        "feature2": "Focus on daily conversation"
       },
       "step3": {
         "title": "Learn & Practice",
-        "description": "Complete interactive lessons and exercises with AI feedback"
+        "description": "Study interactive lessons and practice with AI-powered exercises",
+        "feature1": "Interactive exercises",
+        "feature2": "AI conversation practice"
+      },
+      "step4": {
+        "title": "Track Progress & Get Certificate",
+        "description": "Monitor your progress and receive a certificate upon completion",
+        "feature1": "Detailed progress reports",
+        "feature2": "Accredited certificate"
+      }
+    },
+    "testimonials": {
+      "badge": "SUCCESS STORIES",
+      "title": "What Our Students Say",
+      "subtitle": "Join thousands of Russian speakers who have mastered Arabic with us",
+      "testimonial1": {
+        "name": "Anna Petrova",
+        "role": "Student from Moscow, 6 months",
+        "quote": "As a Russian speaker, I found the Arabic explanations very clear. The platform really understands our difficulties."
+      },
+      "testimonial2": {
+        "name": "Dmitry Ivanov",
+        "role": "Businessman, Dubai",
+        "quote": "The Arabic for Russian speakers course helped me communicate effectively with my Arab partners."
+      },
+      "testimonial3": {
+        "name": "Maria Smirnova",
+        "role": "University Student",
+        "quote": "The pronunciation exercises with AI feedback were incredibly helpful for improving my Arabic accent."
       }
     },
     "cta": {
-      "title": "Start Your Language Journey Today",
-      "subtitle": "Join thousands of learners who have improved their language skills with our AI-powered platform",
+      "title": "Start Your Arabic Journey Today!",
+      "subtitle": "Join 10,000+ Russian speakers who are learning Arabic with our platform. No credit card required for the free trial.",
       "button": {
-        "primary": "Create Free Account",
-        "secondary": "Sign In"
+        "primary": "Start Free Trial",
+        "secondary": "View Courses"
       }
     },
     "footer": {
-      "tagline": "AI-powered language learning platform for English and Russian",
-      "product": "Product",
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About Us",
-      "resources": "Resources",
-      "blog": "Blog",
-      "help": "Help Center",
-      "contact": "Contact",
-      "legal": "Legal",
-      "privacy": "Privacy Policy",
-      "terms": "Terms of Service",
-      "cookies": "Cookie Policy",
       "rights": "All rights reserved."
     }
   },
