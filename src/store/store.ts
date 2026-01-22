@@ -6,6 +6,7 @@ import dashboardReducer from './../store/slices/dashboardSlice'
 import { lessonsApi } from "./apis/lessonsApi";
 import { favoritesApi } from "./apis/favoritesApi";
 import { lessonFavoritesApi } from "./apis/lessonsApi/lessonFavoritesApi";
+import { quizApi } from "./apis/quizApi";
 
 
 export const store = configureStore({
@@ -17,13 +18,15 @@ export const store = configureStore({
     [lessonsApi.reducerPath]: lessonsApi.reducer,
     [lessonFavoritesApi.reducerPath]: lessonFavoritesApi.reducer,
     [favoritesApi.reducerPath]: favoritesApi.reducer,
+    [quizApi.reducerPath]: quizApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
   .concat(authApi.middleware)
   .concat(lessonsApi.middleware)
   .concat(lessonFavoritesApi.middleware) 
-  .concat(favoritesApi.middleware),
+  .concat(favoritesApi.middleware)
+  .concat(quizApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

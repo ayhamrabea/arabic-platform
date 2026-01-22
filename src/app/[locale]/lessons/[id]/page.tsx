@@ -1,3 +1,5 @@
+// app/[locale]/lessons/[id]/page.tsx
+
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
@@ -5,6 +7,9 @@ import { useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import 'github-markdown-css/github-markdown-light.css';
 
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
@@ -13,7 +18,7 @@ import { MediaPlayer } from '@/components/media/MediaPlayer'
 import { VocabularyCard } from '@/components/vocabulary/VocabularyCard'
 import { GrammarCard } from '@/components/grammar/GrammarCard'
 
-import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { ClockIcon, StarIcon, FireIcon, BookmarkIcon, CheckCircleIcon, HeartIcon, ArrowRightIcon, BookOpenIcon, TrophyIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import { getLevelColor } from '@/components/favorites/helpers'
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid'
 
@@ -27,6 +32,7 @@ import { useToggleFavoriteMutation as useToggleWordFavoriteMutation } from '@/st
 import { useLessonTimeTracker } from '@/hooks/useLessonTimeTracker'
 import { FavoriteButton } from '@/components/ui/FavoriteButton'
 import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
+import Link from 'next/link'
 
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
@@ -234,8 +240,25 @@ export default function LessonDetailPage() {
             {lesson.content && (
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('lessonContent')}</h2>
-                <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {typeof lesson.content === 'string' ? lesson.content : JSON.stringify(lesson.content, null, 2)}
+                <div className="markdown-body">
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      // تخصيص المكونات إذا لزم الأمر
+                      h1: ({node, ...props}) => <h1 className="text-3xl font-bold mb-4 text-emerald-700" {...props} />,
+                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-8 mb-3 text-gray-800" {...props} />,
+                      table: ({node, ...props}) => (
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full divide-y divide-gray-200 my-4" {...props} />
+                        </div>
+                      ),
+                      code: ({node, ...props}) => (
+                        <code className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm" {...props} />
+                      ),
+                    }}
+                  >
+                    {lesson.content}
+                  </ReactMarkdown>
                 </div>
               </div>
             )}
@@ -292,6 +315,15 @@ export default function LessonDetailPage() {
           >
             {t('backToLessons')}
           </button>
+
+            <Link
+                href={`/lessons/${id}/quizzes`}
+                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center justify-center gap-2"
+              >
+                <ArrowRightIcon className="h-5 w-5" />
+                {t('startQuiz')}
+              </Link>
+
           <button
             onClick={handleCompleteLesson}
             disabled={progress?.status === 'completed'}
@@ -304,6 +336,7 @@ export default function LessonDetailPage() {
             {progress?.status === 'completed' ? t('lessonCompleted') : t('completeLesson')}
           </button>
         </div>
+
       </div>
     </div>
   )

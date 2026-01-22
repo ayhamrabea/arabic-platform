@@ -14,6 +14,7 @@ import {
   XMarkIcon,
   GlobeAltIcon,
   HeartIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
 import Icon from './icon/Icon'
@@ -103,6 +104,15 @@ export default function Navbar() {
               {t('lessons')}
             </Link>
             
+            {/* رابط الأختبارات */}
+            <Link 
+              href="/quizzes" 
+              className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+            >
+              <QuestionMarkCircleIcon className="h-5 w-5 mr-2" />
+              {t('quizzes')}
+            </Link>
+            
             <Link 
               href="/dashboard" 
               className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
@@ -187,6 +197,18 @@ export default function Navbar() {
                           >
                             <HeartIcon className="h-5 w-5 mr-3" />
                             {t('myFavorites')}
+                          </Link>
+                        )}
+                      </MenuItem>
+                      
+                      <MenuItem>
+                        {({ active }) => (
+                          <Link 
+                            href="/quizzes" 
+                            className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
+                          >
+                            <QuestionMarkCircleIcon className="h-5 w-5 mr-3" />
+                            {t('quizzes')}
                           </Link>
                         )}
                       </MenuItem>
@@ -303,6 +325,16 @@ export default function Navbar() {
                   {t('lessons')}
                 </Link>
                 
+                {/* رابط الأختبارات في الموبايل */}
+                <Link 
+                  href="/quizzes" 
+                  className="flex items-center px-4 py-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <QuestionMarkCircleIcon className="h-5 w-5 mr-3" />
+                  {t('quizzes')}
+                </Link>
+                
                 <Link 
                   href="/dashboard" 
                   className="flex items-center px-4 py-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
@@ -364,6 +396,16 @@ export default function Navbar() {
                 >
                   <BookOpenIcon className="h-5 w-5 mr-3" />
                   {t('lessons')}
+                </Link>
+                
+                {/* رابط الأختبارات في الموبايل للزوار */}
+                <Link 
+                  href="/quizzes" 
+                  className="flex items-center px-4 py-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <QuestionMarkCircleIcon className="h-5 w-5 mr-3" />
+                  {t('quizzes')}
                 </Link>
                 
                 <Link 

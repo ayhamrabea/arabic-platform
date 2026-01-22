@@ -15,33 +15,50 @@ export const lessonFavoritesApi = createApi({
   endpoints: (builder) => ({
     /* ===== Get favorite lessons ===== */
     getFavoriteLessons: builder.query<FavoriteLesson[], void>({
-      async queryFn() {
-        const user = (await supabase.auth.getUser()).data.user
-        if (!user) return { data: [] }
+  async queryFn() {
+    const user = (await supabase.auth.getUser()).data.user
+    if (!user) return { data: [] }
 
-        const { data, error } = await supabase
-          .from('student_progress')
-          .select(`
-            status,
-            lessons (*)
-          `)
-          .eq('profile_id', user.id)
-          .eq('is_favorite', true)
+    const { data, error } = await supabase
+      .from('student_progress')
+      .select(`
+        status,
+        lessons (*)
+      `)
+      .eq('profile_id', user.id)
+      .eq('is_favorite', true)
 
-        if (error) throw error
+    if (error) return { error }
 
-        const lessons = (data ?? [])
-          .filter(row => row.lessons)
-          .map(row => ({
-            ...row.lessons,
-            is_favorite: true,
-            progress_status: row.status,
-          }))
+    const lessons: FavoriteLesson[] = (data ?? []).flatMap(row => {
+      if (!row.lessons) return []
 
-        return { data: lessons }
-      },
-      providesTags: ['LessonFavorite'],
-    }),
+      // row.lessons هنا مصفوفة
+      return row.lessons.map((lesson: any) => ({
+        id: lesson.id,
+        title: lesson.title,
+        type: lesson.type,
+        level: lesson.level,
+        content: lesson.content,
+        duration: lesson.duration,
+        video_url: lesson.video_url,
+        audio_url: lesson.audio_url,
+        prerequisites: lesson.prerequisites,
+        order_index: lesson.order_index,
+        tags: lesson.tags,
+        is_active: lesson.is_active,
+        estimated_xp: lesson.estimated_xp,
+        created_at: lesson.created_at,
+        updated_at: lesson.updated_at,
+        is_favorite: true,
+        progress_status: row.status,
+      }))
+    })
+
+    return { data: lessons }
+  },
+  providesTags: ['LessonFavorite'],
+}),
 
     /* ===== Toggle lesson favorite ===== */
     toggleLessonFavorite: builder.mutation<
