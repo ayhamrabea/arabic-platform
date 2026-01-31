@@ -226,9 +226,6 @@ export default function QuizPage() {
   // Calculate progress
   const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100
 
-  // Get options for current question
-  // const currentQuestionOptions = getQuestionOptions(currentQuestion)
-  // const currentQuestionCorrectAnswer = getCorrectAnswer(currentQuestion)
 
   // Loading state
     if (isLoading) return <LoadingSpinner messageKey={'loading'} />
@@ -480,54 +477,56 @@ export default function QuizPage() {
 
 
                   {/* Navigation Buttons */}
-                  <div className="flex justify-between">
+                  <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-0">
                     <button
-                      onClick={() => goToQuestion(currentQuestionIndex - 1)}
-                      disabled={currentQuestionIndex === 0}
-                      className={`
-                        flex items-center px-6 py-3 rounded-lg font-medium transition-colors
-                        ${currentQuestionIndex === 0
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }
-                      `}
-                    >
+                        onClick={() => goToQuestion(currentQuestionIndex - 1)}
+                        disabled={currentQuestionIndex === 0}
+                        className={`
+                          flex items-center justify-center px-4 py-3 md:px-6 md:py-3 rounded-lg font-medium transition-colors
+                          ${currentQuestionIndex === 0
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }
+                        `}
+                      >
                       <ChevronLeftIcon className="h-5 w-5 mr-2" />
                       {t('previous')}
                     </button>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                       {currentQuestionIndex < questions.length - 1 ? (
                         <>
-                          <button
-                            onClick={() => goToQuestion(currentQuestionIndex + 1)}
-                            className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
-                          >
+                          {/* زر التخطي */}
+                            <button
+                              onClick={() => goToQuestion(currentQuestionIndex + 1)}
+                              className="flex items-center justify-center px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                            >
                             {t('skip')}
                             <ChevronRightIcon className="h-5 w-5 ml-2" />
                           </button>
 
                           <button
-                            onClick={handleSubmitAnswer}
-                            disabled={!selectedAnswer}
-                            className={`
-                              flex items-center px-6 py-3 rounded-lg font-medium transition-colors
-                              ${!selectedAnswer
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600'
-                              }
-                            `}
-                          >
-                            {t('submitNext')}
-                            <ChevronRightIcon className="h-5 w-5 ml-2" />
-                          </button>
+                              onClick={handleSubmitAnswer}
+                              disabled={!selectedAnswer}
+                              className={`
+                                flex items-center justify-center px-4 py-3 rounded-lg font-medium transition-colors
+                                ${!selectedAnswer
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                  : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600'
+                                }
+                              `}
+                            >
+                              <span className="hidden sm:inline">{t('submitNext')}</span>
+                              <span className="sm:hidden">{t('submitNext')}</span>
+                              <ChevronRightIcon className="h-5 w-5 ml-2 hidden sm:block" />
+                            </button>
                         </>
                       ) : (
                         <button
                           onClick={handleSubmitAnswer}
                           disabled={!selectedAnswer}
                           className={`
-                            flex items-center px-6 py-3 rounded-lg font-medium transition-colors
+                            flex items-center justify-center px-4 py-3 rounded-lg font-medium transition-colors w-full
                             ${!selectedAnswer
                               ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                               : 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700'

@@ -41,7 +41,7 @@ export default function LessonDetailPage() {
   const router = useRouter()
   const dispatch = useDispatch()
   const { user } = useSelector((state: RootState) => state.auth)
-
+  
   const { 
     data: lessonData, 
     isLoading, 
@@ -104,9 +104,15 @@ export default function LessonDetailPage() {
   // حساب الوقت المنقضي 
   useLessonTimeTracker(user?.id)
 
-
+  if (!user) {
+    // يمكنك إعادة توجيهه إلى صفحة التسجيل
+    router.push('/auth/login?redirect=/lessons/' + id)
+    return <LoadingSpinner messageKey="redirecting" />
+  }
+  
   if (isLoading) return <LoadingSpinner messageKey={'loading'} />
 
+  
 
   if (isError || !lessonData?.lesson) {
     return (

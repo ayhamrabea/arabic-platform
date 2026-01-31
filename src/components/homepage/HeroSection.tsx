@@ -72,7 +72,7 @@ export default function HeroSection() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/signup"
+                href="/quizzes"
                 className="group px-8 py-4 rounded-xl text-white font-semibold bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center gap-2"
               >
                 {t('cta.primary')}

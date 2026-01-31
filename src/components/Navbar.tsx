@@ -213,17 +213,6 @@ export default function Navbar() {
                         )}
                       </MenuItem>
                       
-                      <MenuItem>
-                        {({ active }) => (
-                          <Link 
-                            href="/settings" 
-                            className={`${active ? 'bg-gray-50 text-indigo-600' : 'text-gray-700'} flex items-center px-4 py-3 transition-colors`}
-                          >
-                            <Icon className="h-5 w-5 mr-3" name="settings" />
-                            {t('settings')}
-                          </Link>
-                        )}
-                      </MenuItem>
                       
                       <div className="px-4 py-3 border-t border-gray-100">
                         <LogoutButton variant="menu" />
@@ -362,15 +351,7 @@ export default function Navbar() {
                   <UserCircleIcon className="h-5 w-5 mr-3" />
                   {t('profile')}
                 </Link>
-                
-                <Link 
-                  href="/settings" 
-                  className="flex items-center px-4 py-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Icon className="h-5 w-5 mr-3" name="settings" />
-                  {t('settings')}
-                </Link>
+
 
                 <div className="pt-4 border-t">
                   <div className="px-4">

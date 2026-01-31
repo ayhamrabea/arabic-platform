@@ -96,7 +96,7 @@ export default function DashboardPage() {
       titleKey: 'grammarQuiz', 
       descriptionKey: 'grammarQuizDesc',
       emoji: '✍️',
-      href: '/grammar',
+      href: '/quizzes',
       gradientFrom: '#f0fdf4',
       gradientTo: '#d1fae5'
     },
@@ -104,7 +104,7 @@ export default function DashboardPage() {
       titleKey: 'vocabularyBuilder', 
       descriptionKey: 'vocabularyBuilderDesc',
       emoji: '🔤',
-      href: '/vocabulary',
+      href: '/favorites',
       gradientFrom: '#faf5ff',
       gradientTo: '#fce7f3'
     },
@@ -112,7 +112,7 @@ export default function DashboardPage() {
       titleKey: 'speakingPractice', 
       descriptionKey: 'speakingPracticeDesc',
       emoji: '🎤',
-      href: '/speaking',
+      href: '/favorites',
       gradientFrom: '#fffbeb',
       gradientTo: '#fef3c7'
     }
