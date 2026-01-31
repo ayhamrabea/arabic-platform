@@ -137,9 +137,6 @@ export default function QuizResultsPage() {
     'response'
   ]
   
-  // Debug: عرض كل مفاتيح الإجابة
-  console.log('All answer keys:', Object.keys(answer))
-  console.log('Full answer object:', answer)
   
   const userAnswer = getValue(answer, possibleKeys)
   
@@ -187,14 +184,6 @@ export default function QuizResultsPage() {
     const timeSpent = getValue(answer, ['time_spent', 'timeSpent']) || 0
     const pointsAwarded = getValue(answer, ['points_awarded', 'pointsAwarded']) || 0
     
-    // Debug log
-    console.log('Answer debug:', {
-      answer: answer,
-      questionType: questionType,
-      userAnswer: userAnswer,
-      correctAnswer: correctAnswer,
-      isCorrect: isCorrect
-    })
     
     // محاولة تحديد نوع السؤال من محتوى الإجابة
     let detectedQuestionType = questionType

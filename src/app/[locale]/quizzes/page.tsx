@@ -145,18 +145,6 @@ export default function AllQuizzesPage() {
     skip: !profileId 
   })
 
-  // Debug logging
-  useEffect(() => {
-    console.log('=== DEBUG INFO ===')
-    console.log('User Profile ID:', profileId)
-    console.log('Total quizzes:', allQuizzes.length)
-    console.log('User attempts data:', userAttemptsData)
-    console.log('User stats data:', userStatsData)
-    console.log('Is loading quizzes:', isLoadingQuizzes)
-    console.log('Is loading attempts:', isLoadingAttempts)
-    console.log('Is loading stats:', isLoadingStats)
-    console.log('=== END DEBUG ===')
-  }, [profileId, allQuizzes, userAttemptsData, userStatsData, isLoadingQuizzes, isLoadingAttempts, isLoadingStats])
 
   // Combine loading states
   const isLoading = isLoadingQuizzes || isLoadingAttempts || isLoadingStats
@@ -266,7 +254,6 @@ export default function AllQuizzesPage() {
       const maxAttempts = quiz.max_attempts || 3
       const remainingAttempts = Math.max(0, maxAttempts - attemptsCount)
       
-      console.log(`Quiz ${quizId}: attempts=${attemptsCount}, bestScore=${bestScore}, status=${status}`)
       
       return {
         quiz,

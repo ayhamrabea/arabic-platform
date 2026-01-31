@@ -11,7 +11,6 @@ export async function GET(
     // استخراج الـ id من params
     const { id } = await params
     
-    console.log('🔍 GET /api/quizzes/[id] - Quiz ID:', id)
 
     // التحقق من وجود ID
     if (!id || id.trim() === '') {
@@ -65,7 +64,6 @@ export async function GET(
       )
     }
 
-    console.log('✅ Quiz fetched successfully:', data.id)
     return NextResponse.json(data)
     
   } catch (error: any) {
@@ -93,7 +91,6 @@ export async function PUT(
     const { id } = await params
     const body = await req.json()
     
-    console.log('🔧 PUT /api/quizzes/[id] - Updating quiz:', id)
 
     if (!id || id.trim() === '') {
       return NextResponse.json(
@@ -135,7 +132,6 @@ export async function PUT(
       )
     }
 
-    console.log('✅ Quiz updated successfully:', data.id)
     return NextResponse.json(data)
     
   } catch (error: any) {
@@ -155,7 +151,6 @@ export async function DELETE(
   try {
     const { id } = await params
     
-    console.log('🗑️ DELETE /api/quizzes/[id] - Deleting quiz:', id)
 
     if (!id || id.trim() === '') {
       return NextResponse.json(
@@ -178,7 +173,6 @@ export async function DELETE(
       )
     }
 
-    console.log('✅ Quiz deleted successfully:', id)
     return NextResponse.json(
       { message: 'Quiz deleted successfully' },
       { status: 200 }

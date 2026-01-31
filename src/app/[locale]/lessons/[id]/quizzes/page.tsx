@@ -162,16 +162,6 @@ export default function LessonQuizzesPage() {
     skip: !profileId 
   })
 
-  // Debug logging
-  useEffect(() => {
-    console.log('=== LESSON QUIZZES DEBUG ===')
-    console.log('Lesson ID:', lessonId)
-    console.log('User Profile ID:', profileId)
-    console.log('Total lesson quizzes:', lessonQuizzes.length)
-    console.log('User attempts data:', userAttemptsData)
-    console.log('User stats data:', userStatsData)
-    console.log('=== END DEBUG ===')
-  }, [lessonId, profileId, lessonQuizzes, userAttemptsData, userStatsData])
 
   // Combine loading states
   const isLoading = isLoadingQuizzes || isLoadingAttempts || isLoadingStats

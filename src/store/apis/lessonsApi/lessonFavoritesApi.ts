@@ -30,30 +30,32 @@ export const lessonFavoritesApi = createApi({
 
     if (error) return { error }
 
-    const lessons: FavoriteLesson[] = (data ?? []).flatMap(row => {
-      if (!row.lessons) return []
+    const lessons: FavoriteLesson[] = (data ?? [])
+  .filter(row => row.lessons)
+  .flatMap(row => {
+    const lessonsArray = Array.isArray(row.lessons) ? row.lessons : [row.lessons]
+    return lessonsArray.map((lesson: Lesson) => ({
+      id: lesson.id,
+      title: lesson.title,
+      type: lesson.type,
+      level: lesson.level,
+      content: lesson.content,
+      duration: lesson.duration,
+      video_url: lesson.video_url,
+      audio_url: lesson.audio_url,
+      prerequisites: lesson.prerequisites,
+      order_index: lesson.order_index,
+      tags: lesson.tags,
+      is_active: lesson.is_active,
+      estimated_xp: lesson.estimated_xp,
+      created_at: lesson.created_at,
+      updated_at: lesson.updated_at,
 
-      // row.lessons هنا مصفوفة
-      return row.lessons.map((lesson: any) => ({
-        id: lesson.id,
-        title: lesson.title,
-        type: lesson.type,
-        level: lesson.level,
-        content: lesson.content,
-        duration: lesson.duration,
-        video_url: lesson.video_url,
-        audio_url: lesson.audio_url,
-        prerequisites: lesson.prerequisites,
-        order_index: lesson.order_index,
-        tags: lesson.tags,
-        is_active: lesson.is_active,
-        estimated_xp: lesson.estimated_xp,
-        created_at: lesson.created_at,
-        updated_at: lesson.updated_at,
-        is_favorite: true,
-        progress_status: row.status,
-      }))
-    })
+      is_favorite: true,
+      progress_status: row.status,
+    }))
+  })
+
 
     return { data: lessons }
   },
@@ -75,7 +77,7 @@ export const lessonFavoritesApi = createApi({
           .select('is_favorite')
           .eq('profile_id', user.id)
           .eq('lesson_id', lessonId)
-          .single()
+          .maybeSingle()
 
         if (getError) throw getError
 

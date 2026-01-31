@@ -97,7 +97,6 @@ export const quizApi = createApi({
     // ===== USER ATTEMPTS =====
     getUserAttempts: builder.query({
       query: ({ profileId, quizId }: { profileId: string; quizId?: string }) => {
-        console.log('API: getUserAttempts called with:', { profileId, quizId })
         const params = new URLSearchParams()
         params.append('profile_id', profileId)
         
@@ -108,7 +107,6 @@ export const quizApi = createApi({
         return `/quiz-attempts?${params.toString()}`
       },
       transformResponse: (response: any) => {
-        console.log('API: getUserAttempts transformResponse:', response)
         return response || []
       },
       providesTags: ['QuizAttempt'],
@@ -117,13 +115,11 @@ export const quizApi = createApi({
     // ===== USER QUIZ STATS =====
     getUserQuizStats: builder.query({
       query: (profileId: string) => {
-        console.log('API: getUserQuizStats for profileId:', profileId)
         const params = new URLSearchParams()
         params.append('profile_id', profileId)
         return `/quiz-attempts/stats?${params.toString()}`
       },
       transformResponse: (response: any) => {
-        console.log('API: getUserQuizStats raw response:', response)
         
         if (response && typeof response === 'object') {
           return {
@@ -155,7 +151,6 @@ export const quizApi = createApi({
     // ===== COMPLETED QUIZZES INFO =====
     getUserCompletedInfo: builder.query({
       query: (profileId: string) => {
-        console.log('API: getUserCompletedInfo for profileId:', profileId)
         
         // هذا يستخدم endpoint الموجود بالفعل
         return {
@@ -168,7 +163,6 @@ export const quizApi = createApi({
         }
       },
       transformResponse: (response: any) => {
-        console.log('API: getUserCompletedInfo response:', response)
         
         // حساب الإحصائيات من البيانات
         if (Array.isArray(response)) {

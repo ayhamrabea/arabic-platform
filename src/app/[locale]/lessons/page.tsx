@@ -100,7 +100,6 @@ export default function LessonsPage() {
             title={t('ctaTitle')}
             description={t('ctaDescription')}
             buttonText={t('ctaButton')}
-            onButtonClick={() => console.log('Upgrade clicked')}
           />
         </div>
       </div>

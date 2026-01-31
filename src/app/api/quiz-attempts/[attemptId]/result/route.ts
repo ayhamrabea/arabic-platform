@@ -11,7 +11,6 @@ export async function GET(
     // استخدام await للحصول على params
     const { attemptId } = await params
 
-    console.log('Fetching result for attempt ID:', attemptId)
 
     if (!attemptId) {
       return NextResponse.json({ error: 'attemptId is required' }, { status: 400 })
@@ -114,7 +113,6 @@ export async function GET(
       }
     }
 
-    console.log('Returning quiz result:', { attemptId, score: result.score })
     return NextResponse.json(result)
   } catch (error: any) {
     console.error('Error in quiz result API:', error)

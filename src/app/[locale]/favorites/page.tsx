@@ -118,9 +118,9 @@ export default function FavoritesPage() {
     switch (status) {
       case 'completed':
         return <CheckCircleIcon className="h-4 w-4 text-green-500" />
-      case 'started':
+      case 'in_progress':
         return <PlayCircleIcon className="h-4 w-4 text-blue-500" />
-      case 'not_started':
+      case 'pending':
         return <ClockIcon className="h-4 w-4 text-gray-400" />
       default:
         return <ClockIcon className="h-4 w-4 text-gray-400" />
@@ -351,6 +351,8 @@ export default function FavoritesPage() {
     filteredItems.grammar.length > 0 ||
     filteredItems.sentences.length > 0 ||
     filteredItems.lessons.length > 0
+
+  console.log('LESSONS IN UI:', filteredItems.lessons)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50">

@@ -15,7 +15,6 @@ export async function GET(req: Request) {
       )
     }
 
-    console.log('Stats API: Fetching stats for profile:', profileId)
 
     // ======================================================
     // 1️⃣ جلب جميع محاولات المستخدم
@@ -41,7 +40,6 @@ export async function GET(req: Request) {
       throw attemptsError
     }
 
-    console.log('Stats API: Found', attempts?.length || 0, 'attempts')
 
     // ======================================================
     // 2️⃣ جلب معلومات الاختبارات
@@ -50,7 +48,6 @@ export async function GET(req: Request) {
     let quizzes: any[] = []
     
     if (quizIds.length > 0) {
-      console.log('Stats API: Fetching quizzes:', quizIds)
       const { data: quizzesData, error: quizzesError } = await supabase
         .from('quizzes')
         .select(`
@@ -68,7 +65,6 @@ export async function GET(req: Request) {
         console.error('Stats API: Error fetching quizzes:', quizzesError)
       } else {
         quizzes = quizzesData || []
-        console.log('Stats API: Found', quizzes.length, 'quizzes')
       }
     }
 
@@ -172,7 +168,6 @@ export async function GET(req: Request) {
       timestamp: new Date().toISOString()
     }
 
-    console.log('Stats API: Returning response:', response)
     return NextResponse.json(response)
 
   } catch (error: any) {

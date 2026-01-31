@@ -82,7 +82,7 @@ export function VocabularyCard({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+          <div className="grid grid-cols-1  gap-4 mb-3">
             <div>
               <p className="text-xs text-gray-500 mb-1">{t('translation')}</p>
               <p className={`font-medium ${completed ? 'text-blue-700' : 'text-gray-900'}`}>
@@ -111,7 +111,7 @@ export function VocabularyCard({
 
           {word.example_sentence && (
             <div
-              className={`p-3 rounded-lg border ${
+              className={`p-3 rounded-lg border mb-[50px] ${
                 completed ? 'bg-blue-50 border-blue-100' : 'bg-gray-50 border-gray-100'
               }`}
             >

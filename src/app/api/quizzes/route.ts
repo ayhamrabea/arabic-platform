@@ -8,7 +8,6 @@ export async function GET(req: Request) {
     const url = new URL(req.url)
     const lessonId = url.searchParams.get('lesson_id')
     
-    console.log('🔍 GET /api/quizzes - lessonId:', lessonId)
 
     // إنشاء query أساسي
     let query = supabase
@@ -19,7 +18,6 @@ export async function GET(req: Request) {
     // إضافة فلتر lesson_id إذا كان موجوداً
     if (lessonId && lessonId.trim() !== '' && lessonId !== 'undefined' && lessonId !== 'null') {
       query = query.eq('lesson_id', lessonId)
-      console.log('📊 Filtering quizzes by lesson_id:', lessonId)
     }
 
     // تنفيذ query
@@ -43,7 +41,6 @@ export async function GET(req: Request) {
       )
     }
 
-    console.log(`✅ Successfully fetched ${data?.length || 0} quizzes`)
     
     // إرجاع النتائج
     return NextResponse.json(data || [])
@@ -69,7 +66,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     
-    console.log('🔧 POST /api/quizzes - Creating new quiz:', body)
 
     const { data, error } = await supabase
       .from('quizzes')
@@ -89,7 +85,6 @@ export async function POST(req: Request) {
       )
     }
 
-    console.log('✅ Quiz created successfully:', data.id)
     return NextResponse.json(data, { status: 201 })
     
   } catch (error: any) {

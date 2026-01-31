@@ -33,6 +33,7 @@ import { useLessonTimeTracker } from '@/hooks/useLessonTimeTracker'
 import { FavoriteButton } from '@/components/ui/FavoriteButton'
 import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
 import Link from 'next/link'
+import { VocabularySlider } from '@/components/vocabulary/VocabularySlider'
 
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
@@ -274,16 +275,15 @@ export default function LessonDetailPage() {
                   </span>
                 </div>
                 <div className="space-y-4">
-                  {vocabulary.map(word => (
-                    <VocabularyCard
-                      key={word.id}
-                      word={word}
-                      completed={progress?.completed_items?.includes(word.id) || false}
-                      isFavorite={favoriteItems.word[word.id] || false}
-                      onToggleComplete={() => toggleCompleteItem(word.id)}
-                      onToggleFavorite={() => toggleFavoriteItem(word.id, 'word')}
+                  {vocabulary.length > 0 && (
+                    <VocabularySlider
+                      vocabulary={vocabulary}
+                      favoriteWords={favoriteItems.word}
+                      completedItems={progress?.completed_items || []}
+                      onToggleComplete={toggleCompleteItem}
+                      onToggleFavorite={toggleFavoriteItem}
                     />
-                  ))}
+                  )}
                 </div>
               </div>
             )}

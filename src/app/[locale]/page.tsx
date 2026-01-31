@@ -13,6 +13,7 @@ import HowItWorksSection from '@/components/homepage/HowItWorksSection'
 import TestimonialsSection from '@/components/homepage/TestimonialsSection'
 import CTASection from '@/components/homepage/CTASection'
 import HomeFooter from '@/components/homepage/HomeFooter'
+import { updateStreak } from '@/utils/services/streak'
 
 export default function HomePage() {
   const router = useRouter()
@@ -21,7 +22,15 @@ export default function HomePage() {
 
   useEffect(() => {
     setPageLoading(false)
+    
   }, [user, loading, router])
+
+  useEffect(() => {
+      if (!user?.id) return
+      // ✅ تحديث streak 
+      updateStreak(user.id).catch(console.error)
+    }, [user?.id])
+
 
   if (pageLoading) {
     return (

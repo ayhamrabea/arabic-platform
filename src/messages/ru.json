@@ -718,6 +718,7 @@
     "averageTime": "Среднее время",
     "performanceBreakdown": "Анализ результатов",
     "tryAgain": "Попробовать снова",
+    "noAnswersAvailable": "Нет ответов",
     "congratulations": "Поздравляем!"
   }
 }
