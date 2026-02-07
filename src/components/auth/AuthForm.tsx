@@ -17,7 +17,7 @@ import {
 } from '@/store/services/authApi'
 
 import { setUser } from '@/store/slices/authSlice'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 import { AuthHeader } from './AuthHeader'
 import { InputField } from '../form/InputField'
 import { ErrorMessage } from '../ui/ErrorMessage'

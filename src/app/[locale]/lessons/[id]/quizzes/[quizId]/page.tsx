@@ -11,6 +11,7 @@ import {
   useStartQuizAttemptMutation,
   useSubmitQuizAnswerMutation,
   useCompleteQuizAttemptMutation,
+  useGetQuizByIdQuery,
   useGetQuizResultQuery
 } from '@/store/apis/quizApi'
 
@@ -79,6 +80,9 @@ export default function QuizPage() {
   // Fetch quiz result if attemptId exists and quiz is completed
   const { data: quizResult } = useGetQuizResultQuery(attemptId!, { skip: !attemptId || !quizCompleted })
 
+  const { data: QuizzeInfo } = useGetQuizByIdQuery(quizId)
+  
+
   // الحصول على السؤال الحالي
   const currentQuestion = useMemo(() => {
     return questions && questions.length > 0 && currentQuestionIndex < questions.length 
@@ -90,7 +94,7 @@ export default function QuizPage() {
 
   // Initialize quiz timer if time limit exists
   useEffect(() => {
-    const quizTimeLimit = 20 // minutes
+    const quizTimeLimit = QuizzeInfo?.time_limit // minutes
     if (quizStarted && quizTimeLimit) {
       setTimeRemaining(quizTimeLimit * 60)
     }
@@ -122,9 +126,10 @@ export default function QuizPage() {
   const handleStartQuiz = async () => {
       if (!profileId) {
         // المستخدم غير مسجل دخول
+        router.push('/login')
         return
       }
-
+      
       try {
         const result = await startQuizAttempt({ quizId, profileId }).unwrap()
 
@@ -278,7 +283,7 @@ export default function QuizPage() {
                     <ClockIcon className="h-5 w-5 text-blue-500 mr-3" />
                     <div>
                       <p className="text-sm text-gray-500">{t('timeLimit')}</p>
-                      <p className="text-lg font-semibold">20 {t('minutes')}</p>
+                      <p className="text-lg font-semibold">{QuizzeInfo?.time_limit} {t('minutes')} </p>
                     </div>
                   </div>
 
@@ -286,7 +291,7 @@ export default function QuizPage() {
                     <CheckCircleIcon className="h-5 w-5 text-blue-500 mr-3" />
                     <div>
                       <p className="text-sm text-gray-500">{t('passingScore')}</p>
-                      <p className="text-lg font-semibold">70%</p>
+                      <p className="text-lg font-semibold">{QuizzeInfo?.passing_score} %</p>
                     </div>
                   </div>
                 </div>
@@ -442,9 +447,13 @@ export default function QuizPage() {
 
                   {/* Question Text */}
                   <div className="mb-8">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                      {currentQuestion.question_text}
-                    </h2>
+                    <h2
+                      className="text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-relaxed"
+                      dangerouslySetInnerHTML={{
+                        __html: currentQuestion.question_text,
+                      }}
+                    />
+
 
                     {currentQuestion.question_image_url && (
                       <div className="mb-6">
@@ -516,7 +525,7 @@ export default function QuizPage() {
                                 }
                               `}
                             >
-                              <span className="hidden sm:inline">{t('submitNext')}</span>
+                              {/* <span className="hidden sm:inline">{t('submitNext')}</span> */}
                               <span className="sm:hidden">{t('submitNext')}</span>
                               <ChevronRightIcon className="h-5 w-5 ml-2 hidden sm:block" />
                             </button>

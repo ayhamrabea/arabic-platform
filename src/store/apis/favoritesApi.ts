@@ -1,6 +1,6 @@
 // store/apis/favoritesApi.ts
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 import type { Vocabulary, GrammarRule } from './lessonsApi/types'
 import { updateStreak } from '@/utils/services/streak'
 

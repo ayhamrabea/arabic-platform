@@ -1,6 +1,6 @@
 // app/api/quiz-attempts/complete/route.ts
 
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {

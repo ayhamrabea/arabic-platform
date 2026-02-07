@@ -1,6 +1,6 @@
 // store/apis/lessonsApi/helpers
 
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 
 // مساعدات المصادقة
 export const getCurrentUserId = async (): Promise<string> => {

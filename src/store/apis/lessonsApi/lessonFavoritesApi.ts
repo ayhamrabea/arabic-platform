@@ -1,6 +1,6 @@
 // store/apis/lessonFavoritesApi.ts
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 import { Lesson, StudentProgress } from './types'
 
 export interface FavoriteLesson extends Lesson {

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabaseClient"
+import { supabase } from "@/lib/supabase/client"
 
  // حساب الأيام المتتالية
 export const updateStreak = async (userId: string) => {

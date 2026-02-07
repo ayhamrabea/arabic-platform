@@ -15,6 +15,7 @@ export interface Lesson {
   estimated_xp: number
   created_at: string
   updated_at: string
+  premium_pdf_path?: string
 }
 
 export interface GrammarRule {

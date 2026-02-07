@@ -34,13 +34,14 @@ import { FavoriteButton } from '@/components/ui/FavoriteButton'
 import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
 import Link from 'next/link'
 import { VocabularySlider } from '@/components/vocabulary/VocabularySlider'
+import { DownloadLessonButton } from '@/components/lessons/DownloadLessonButton'
 
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
   const { id } = useParams()
   const router = useRouter()
   const dispatch = useDispatch()
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user, loading: authLoading } = useSelector((state: RootState) => state.auth)
   
   const { 
     data: lessonData, 
@@ -64,6 +65,23 @@ export default function LessonDetailPage() {
     grammar: {},
     sentence: {},
   })
+
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+
+  // تحقق من حالة المصادقة عند التحميل الأول
+  useEffect(() => {
+    // انتظر حتى يتم تحميل حالة المصادقة
+    if (!authLoading) {
+      setIsCheckingAuth(false)
+    }
+  }, [authLoading])
+
+  // إعادة التوجيه فقط بعد التأكد من أن حالة المصادقة قد تم تحميلها
+  useEffect(() => {
+    if (!isCheckingAuth && !user) {
+      router.push('/login')
+    }
+  }, [isCheckingAuth, user, router])
 
   useEffect(() => {
     if (!lessonData || !user) return
@@ -104,10 +122,9 @@ export default function LessonDetailPage() {
   // حساب الوقت المنقضي 
   useLessonTimeTracker(user?.id)
 
-  if (!user) {
-    // يمكنك إعادة توجيهه إلى صفحة التسجيل
-    router.push('/auth/login?redirect=/lessons/' + id)
-    return <LoadingSpinner messageKey="redirecting" />
+  // إذا لم يكن هناك مستخدم، اعرض مؤشر التحميل أثناء إعادة التوجيه
+  if (isCheckingAuth || authLoading) {
+    return <LoadingSpinner messageKey="loading" />
   }
   
   if (isLoading) return <LoadingSpinner messageKey={'loading'} />
@@ -321,6 +338,14 @@ export default function LessonDetailPage() {
           >
             {t('backToLessons')}
           </button>
+
+          <DownloadLessonButton
+            pdfPath={lesson.premium_pdf_path}
+            disabled={false} 
+          />
+
+
+
 
             <Link
                 href={`/lessons/${id}/quizzes`}

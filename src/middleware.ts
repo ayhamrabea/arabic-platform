@@ -11,3 +11,4 @@ export const config = {
     '/((?!api|_next|_vercel|.*\\..*).*)'
   ]
 };
+

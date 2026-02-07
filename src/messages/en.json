@@ -19,6 +19,7 @@
     "back": "back",
     "loading": "Loading .....",
     "logout": "Logout",
+    "messageKey":"Loading .....",
     "loggingOut": "Logging out..."
   },
   "LessonsPage": {

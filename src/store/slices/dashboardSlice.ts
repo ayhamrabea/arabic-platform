@@ -1,6 +1,6 @@
 // @/store/slices/dashboardSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabase/client";
 import { CEFRLevel, getLevelByXP, getNextLevel } from "@/utils/levels";
 
 export interface Lesson {

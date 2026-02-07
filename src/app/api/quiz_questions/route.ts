@@ -1,5 +1,5 @@
 // app/api/quiz_questions/route.ts
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase/client'
 import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {

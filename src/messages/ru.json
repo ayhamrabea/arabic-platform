@@ -18,8 +18,10 @@
     "logoAI": "AI",
     "back": "Назад",
     "loading": "Загрузка...",
+    "messageKey":"Загрузка .....",
     "logout": "Выйти",
     "loggingOut": "Выход..."
+    
   },
   "LessonsPage": {
     "headerTitle": "Языковые курсы",
