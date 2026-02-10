@@ -135,7 +135,7 @@ export default function LessonDetailPage() {
     return (
       <div className="max-w-4xl mx-auto">
           <BackButton href="/lessons" textKey={'back'} />
-          <ErrorMessage messageKey={t('error')} />
+          <ErrorMessage messageErrorKey={t('error')} />
         </div>
     )
   }
@@ -331,42 +331,46 @@ export default function LessonDetailPage() {
           </div>
         </div>
 
-        <div className="flex justify-between mt-8">
-          <button
-            onClick={() => router.push('/lessons')}
-            className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            {t('backToLessons')}
-          </button>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-8">
+            {/* زر الرجوع */}
+            <button
+              onClick={() => router.push('/lessons')}
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-center min-w-[140px]"
+            >
+              {t('backToLessons')}
+            </button>
 
-          <DownloadLessonButton
-            pdfPath={lesson.premium_pdf_path}
-            disabled={false} 
-          />
+            {/* زر التحميل */}
+            <DownloadLessonButton
+              pdfPath={lesson.premium_pdf_path}
+              disabled={false}
+              className="flex-1 px-4 py-3 text-center min-w-[140px]"
+            />
 
-
-
-
+            {/* زر الاختبار */}
             <Link
-                href={`/lessons/${id}/quizzes`}
-                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center justify-center gap-2"
-              >
-                <ArrowRightIcon className="h-5 w-5" />
-                {t('startQuiz')}
-              </Link>
+              href={`/lessons/${id}/quizzes`}
+              className="flex-1 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center justify-center gap-2 min-w-[140px]"
+            >
+              <ArrowRightIcon className="h-5 w-5" />
+              <span>{t('startQuiz')}</span>
+            </Link>
 
-          <button
-            onClick={handleCompleteLesson}
-            disabled={progress?.status === 'completed'}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-              progress?.status === 'completed'
-                ? 'bg-green-100 text-green-800 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700'
-            }`}
-          >
-            {progress?.status === 'completed' ? t('lessonCompleted') : t('completeLesson')}
-          </button>
-        </div>
+            {/* زر إكمال الدرس */}
+            <button
+              onClick={handleCompleteLesson}
+              disabled={progress?.status === 'completed'}
+              className={`
+                flex-1 px-4 py-3 rounded-lg font-medium transition-colors text-center min-w-[140px]
+                ${progress?.status === 'completed'
+                  ? 'bg-green-100 text-green-800 cursor-not-allowed'
+                  : 'bg-green-600 text-white hover:bg-green-700'
+                }
+              `}
+            >
+              {progress?.status === 'completed' ? t('lessonCompleted') : t('completeLesson')}
+            </button>
+          </div>
 
       </div>
     </div>

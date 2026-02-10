@@ -241,7 +241,7 @@ export default function QuizPage() {
       return (
         <div className="max-w-4xl mx-auto">
           <BackButton href="/lessons" textKey={'back'} />
-          <ErrorMessage messageKey={t('error')} />
+          <ErrorMessage messageErrorKey={t('error')} />
         </div>
       )
     }

@@ -20,6 +20,7 @@
     "loading": "Loading .....",
     "logout": "Logout",
     "messageKey":"Loading .....",
+    "messageErrorKey":"An error occurred while loading. Please try again.",
     "loggingOut": "Logging out..."
   },
   "LessonsPage": {
@@ -70,6 +71,7 @@
     "grammar": "Grammar Rules",
     "completeLesson": "Complete Lesson",
     "back": "Back",
+    "downloadPDF": "Download PDF",
     "videoLesson": "Video Lesson",
     "audioLesson": "Audio Lesson",
     "startQuiz": "Start Quiz"

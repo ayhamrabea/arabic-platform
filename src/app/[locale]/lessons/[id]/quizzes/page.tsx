@@ -116,8 +116,8 @@ export default function LessonQuizzesPage() {
     sortBy: 'newest'
   })
   const [currentPage, setCurrentPage] = useState(1)
-  const quizzesPerPage = 12
-
+  const quizzesPerPage = 9
+  
   // Fetch quizzes for this lesson
   const { 
     data: lessonQuizzes = [], 

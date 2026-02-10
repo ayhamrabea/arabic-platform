@@ -1,10 +1,17 @@
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
+import { useTranslations } from 'next-intl'
+
 export function DownloadLessonButton({
   pdfPath,
   disabled = false,
+  className = '',
 }: {
   pdfPath?: string | null
   disabled?: boolean
+  className?: string
 }) {
+  const t = useTranslations('LessonDetailPage')
+  
   if (!pdfPath) return null
 
   const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -14,14 +21,24 @@ export function DownloadLessonButton({
     <a
       href={fileUrl}
       target="_blank"
+      rel="noopener noreferrer"
       download
-      className={`px-4 py-2 rounded transition-colors ${
-        disabled
+      className={`
+        ${className}
+        inline-flex items-center justify-center gap-2
+        px-4 py-3 rounded-lg font-medium
+        transition-colors
+        ${disabled
           ? 'bg-gray-300 text-gray-600 cursor-not-allowed pointer-events-none'
-          : 'bg-indigo-600 text-white hover:bg-indigo-700'
-      }`}
+          : 'bg-blue-600 text-white hover:bg-blue-700'
+        }
+      `}
+      aria-disabled={disabled}
     >
-      Download PDF
+      <ArrowDownTrayIcon className="h-5 w-5" />
+      <span className="whitespace-nowrap">
+        {t('downloadPDF') || 'Download PDF'}
+      </span>
     </a>
   )
 }

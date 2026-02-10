@@ -4,12 +4,12 @@ import Icon from "../icon/Icon"
 import { useTranslations } from "next-intl"
 
 interface ErrorMessageProps {
-  messageKey: string   // مفتاح الرسالة من ملفات الرسائل
+  messageErrorKey: string   // مفتاح الرسالة من ملفات الرسائل
   type?: 'error' | 'warning' | 'success'
 }
 
-export function ErrorMessage({ messageKey, type = 'error' }: ErrorMessageProps) {
-  const t = useTranslations("LessonsPage") // أو namespace المناسب حسب الصفحة
+export function ErrorMessage({ messageErrorKey, type = 'error' }: ErrorMessageProps) {
+  const t = useTranslations("General") 
   const styles = {
     error: 'bg-red-50 border-red-200 text-red-600',
     warning: 'bg-yellow-50 border-yellow-200 text-yellow-600',
@@ -28,7 +28,7 @@ export function ErrorMessage({ messageKey, type = 'error' }: ErrorMessageProps) 
         className={`h-5 w-5 mr-2 mt-0.5 ${type === 'error' ? 'text-red-400' : type === 'warning' ? 'text-yellow-400' : 'text-green-400'}`} 
         name={icons[type]} 
       />
-      <p className="text-sm">{t(messageKey)}</p>
+      <p className="text-sm">{t(messageErrorKey)}</p>
     </div>
   )
 }

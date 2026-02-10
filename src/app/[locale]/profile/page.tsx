@@ -98,7 +98,7 @@ export default function ProfilePage() {
   const isLoading = authLoading || profileLoading
 
   if (isLoading || !user || !profile) {
-    return isLoading ? <LoadingSpinner /> : <ErrorMessage messageKey={error?.toString() || t('loadError')} />
+    return isLoading ? <LoadingSpinner /> : <ErrorMessage messageErrorKey={error?.toString() || t('loadError')} />
   }
 
 
@@ -124,7 +124,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Error Message */}
-        {error && <ErrorMessage messageKey={error?.toString() || t('loadError')} />}
+        {error && <ErrorMessage messageErrorKey={error?.toString() || t('loadError')} />}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}

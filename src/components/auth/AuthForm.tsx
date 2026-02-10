@@ -178,7 +178,7 @@ export default function AuthForm({ type }: AuthFormProps) {
               />
             )}
 
-            {error && <ErrorMessage messageKey={error} />}
+            {error && <ErrorMessage messageErrorKey={error} />}
 
             <SubmitButton 
               loading={loading} 

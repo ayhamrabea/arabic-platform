@@ -99,7 +99,7 @@ export default function AllQuizzesPage() {
     sortBy: 'newest'
   })
   const [currentPage, setCurrentPage] = useState(1)
-  const quizzesPerPage = 12
+  const quizzesPerPage = 9
 
   // Fetch all quizzes
   const { 

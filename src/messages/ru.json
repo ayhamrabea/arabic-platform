@@ -20,6 +20,7 @@
     "loading": "Загрузка...",
     "messageKey":"Загрузка .....",
     "logout": "Выйти",
+    "messageErrorKey":"Произошла ошибка. Попробуйте ещё раз.",
     "loggingOut": "Выход..."
     
   },
@@ -71,6 +72,7 @@
     "grammar": "Грамматика",
     "completeLesson": "Завершить урок",
     "back": "Назад",
+    "downloadPDF": "Скачать PDF",
     "videoLesson": "Видеоурок",
     "audioLesson": "Аудиоурок",
     "startQuiz": "Начать тест"

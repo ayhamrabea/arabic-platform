@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
-import { LogoutButton } from './Logout'
 import {
   HomeIcon,
   BookOpenIcon,
@@ -17,7 +16,6 @@ import {
   QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
-import Icon from './icon/Icon'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react'
 
 // استيراد من next-intl - الطريقة الصحيحة
@@ -25,6 +23,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { useRouter, usePathname } from 'next/navigation'
 
 import Link from 'next/link'
+import { LogoutButton } from '../Logout'
 
 export default function Navbar() {
   const { user, loading } = useSelector((state: RootState) => state.auth)

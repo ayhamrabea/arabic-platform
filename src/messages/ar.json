@@ -20,6 +20,7 @@
     "loading": "جاري التحميل .....",
     "messageKey": "جاري التحميل .....",
     "logout": "تسجيل الخروج",
+    "messageErrorKey": "حدث خطأ أثناء التحميل . يرجى المحاولة مرة أخرى.",
     "loggingOut": "جاري تسجيل الخروج..."
   },
   "LessonsPage": {
@@ -70,6 +71,7 @@
     "grammar": "قواعد النحو",
     "completeLesson": "إكمال الدرس",
     "back": "رجوع",
+    "downloadPDF": "تحميل PDF",
     "videoLesson": "درس فيديو",
     "audioLesson": "درس صوتي",
     "startQuiz": "بدء الاختبار"

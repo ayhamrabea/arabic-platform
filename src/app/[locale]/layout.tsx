@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { locales } from '@/i18n/config'
-import Navbar from '@/components/Navbar'
 import ReduxProvider from '@/providers/ReduxProvider'
 import AuthProvider from '@/providers/AuthProvider'
+import Navbar from '@/components/navbar/Navbar'
 
 // تعريف النوع مع Promise
 type Props = {

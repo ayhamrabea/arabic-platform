@@ -318,7 +318,7 @@ export default function FavoritesPage() {
       <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 p-6">
         <div className="max-w-7xl mx-auto">
           <BackButton href="/dashboard" />
-          <ErrorMessage messageKey={error?.toString() || t('loadError')} />
+          <ErrorMessage messageErrorKey={error?.toString() || t('loadError')} />
         </div>
       </div>
     )

@@ -35,7 +35,7 @@ export default function LessonsPage() {
 
   if (isLoading) return <LoadingSpinner messageKey="loading" />
 
-  if (isError) return <ErrorMessage messageKey="error" />
+  if (isError) return <ErrorMessage messageErrorKey="error" />
 
 
   return (
