@@ -32,6 +32,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { BackButton } from '@/components/ui/BackButton'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import QuizHeader from '@/components/quiz/QuizHeader'
+import WarningModal from '@/components/quiz/WarningModal'
 
 interface Question {
   id: string
@@ -67,7 +68,7 @@ export default function QuizPage() {
   const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string>>(new Set())
   const [startTime, setStartTime] = useState<Date | null>(null)
   const [questionStartTime, setQuestionStartTime] = useState<Date | null>(null)
-  
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // API Calls
   const { data: questions = [], isLoading, isError, error } = useGetQuizQuestionsQuery(quizId)
@@ -82,6 +83,8 @@ export default function QuizPage() {
 
   const { data: QuizzeInfo } = useGetQuizByIdQuery(quizId)
   
+  const [showWarningModal, setShowWarningModal] = useState(false)
+
 
   // الحصول على السؤال الحالي
   const currentQuestion = useMemo(() => {
@@ -90,7 +93,10 @@ export default function QuizPage() {
       : null
   }, [questions, currentQuestionIndex])
 
-  
+  // ✅ التحقق من الإجابة على جميع الأسئلة
+  const isAllQuestionsAnswered = useMemo(() => {
+    return questions.length > 0 && Object.keys(answers).length === questions.length
+  }, [questions, answers])
 
   // Initialize quiz timer if time limit exists
   useEffect(() => {
@@ -118,10 +124,6 @@ export default function QuizPage() {
     return () => clearInterval(timer)
   }, [timeRemaining, quizCompleted])
 
-  
-
-
-
   // Start quiz
   const handleStartQuiz = async () => {
       if (!profileId) {
@@ -143,7 +145,6 @@ export default function QuizPage() {
         
     }
   }
-
 
   // Submit answer for current question
   const handleSubmitAnswer = async () => {
@@ -180,24 +181,27 @@ export default function QuizPage() {
     }
   }
 
-  // Complete the entire quiz
+  // ✅ Complete the entire quiz - مع منع إنهاء الاختبار إذا لم تكتمل الإجابات
   const handleCompleteQuiz = async () => {
-  if (!attemptId) return
+    if (!attemptId) return
 
-  try {
-    // تعديل هنا: استدعاء completeQuizAttempt واستقبال البيانات الجديدة
-    const result = await completeQuizAttempt({ attemptId }).unwrap()
-    
-    setQuizCompleted(true)
-    
-
-    // ثم التوجيه لصفحة النتائج
-    router.push(`/${locale}/lessons/${lessonId}/quizzes/${quizId}/results?attempt=${attemptId}`)
-  } catch (error) {
-    console.error('Failed to complete quiz:', error)
+    // ✅ منع إنهاء الاختبار إذا لم يتم الإجابة على كل الأسئلة
+    if (!isAllQuestionsAnswered) {
+      setShowWarningModal(true)
+      return
   }
-}
 
+    try {
+      setIsSubmitting(true)
+      const result = await completeQuizAttempt({ attemptId }).unwrap()
+      setQuizCompleted(true)
+      router.push(`/${locale}/lessons/${lessonId}/quizzes/${quizId}/results?attempt=${attemptId}`)
+    } catch (error) {
+      console.error('Failed to complete quiz:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   // Navigate to specific question
   const goToQuestion = (index: number) => {
@@ -231,7 +235,6 @@ export default function QuizPage() {
   // Calculate progress
   const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100
 
-
   // Loading state
     if (isLoading) return <LoadingSpinner messageKey={'loading'} />
   
@@ -245,8 +248,6 @@ export default function QuizPage() {
         </div>
       )
     }
-
-
 
   // Quiz not started yet
   if (!quizStarted) {
@@ -394,13 +395,31 @@ export default function QuizPage() {
                 </div>
               </div>
 
-              {/* Complete Quiz Button */}
+              {/* ✅ Complete Quiz Button - معطل إذا لم تكتمل الإجابات */}
               <button
                 onClick={handleCompleteQuiz}
-                className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:from-red-600 hover:to-orange-600 transition-all font-medium"
+                disabled={isSubmitting || !isAllQuestionsAnswered}
+                className={`
+                  w-full mt-4 px-4 py-3 rounded-lg transition-all font-medium
+                  ${isAllQuestionsAnswered
+                    ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }
+                `}
               >
-                {t('submitQuiz')}
+                {isSubmitting 
+                  ? t('submitting') 
+                  : isAllQuestionsAnswered 
+                    ? t('submitQuiz') 
+                    : t('answerAllFirst')}
               </button>
+
+              {/* ✅ رسالة توضيحية إذا لم تكتمل الإجابات */}
+              {!isAllQuestionsAnswered && (
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  ⚠️ {t('mustAnswerAll')}
+                </p>
+              )}
             </div>
           </div>
 
@@ -454,7 +473,6 @@ export default function QuizPage() {
                       }}
                     />
 
-
                     {currentQuestion.question_image_url && (
                       <div className="mb-6">
                         <img 
@@ -476,16 +494,13 @@ export default function QuizPage() {
                   </div>
 
                   {/* Answer Options */}
-
                   <QuestionRenderer
                     question={currentQuestion}
                     selectedAnswer={selectedAnswer}
                     onAnswerChange={setSelectedAnswer}
                   />
 
-
-
-                  {/* Navigation Buttons */}
+                  {/* Navigation Buttons - بدون أي تغيير */}
                   <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-0">
                     <button
                         onClick={() => goToQuestion(currentQuestionIndex - 1)}
@@ -505,8 +520,8 @@ export default function QuizPage() {
                     <div className="flex flex-col sm:flex-row gap-4">
                       {currentQuestionIndex < questions.length - 1 ? (
                         <>
-                          {/* زر التخطي */}
-                            <button
+                          {/* ✅ زر التخطي - بدون أي تغيير */}
+                          <button
                               onClick={() => goToQuestion(currentQuestionIndex + 1)}
                               className="flex items-center justify-center px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                             >
@@ -514,6 +529,7 @@ export default function QuizPage() {
                             <ChevronRightIcon className="h-5 w-5 ml-2" />
                           </button>
 
+                          {/* ✅ زر الإرسال - بدون أي تغيير */}
                           <button
                               onClick={handleSubmitAnswer}
                               disabled={!selectedAnswer}
@@ -525,12 +541,12 @@ export default function QuizPage() {
                                 }
                               `}
                             >
-                              {/* <span className="hidden sm:inline">{t('submitNext')}</span> */}
                               <span className="sm:hidden">{t('submitNext')}</span>
                               <ChevronRightIcon className="h-5 w-5 ml-2 hidden sm:block" />
                             </button>
                         </>
                       ) : (
+                        /* ✅ السؤال الأخير - بدون أي تغيير */
                         <button
                           onClick={handleSubmitAnswer}
                           disabled={!selectedAnswer}
@@ -564,8 +580,21 @@ export default function QuizPage() {
             </div>
           </div>
         </div>
+
+        <WarningModal
+          isOpen={showWarningModal}
+          onClose={() => setShowWarningModal(false)}
+          answeredCount={Object.keys(answers).length}
+          totalQuestions={questions.length}
+          translations={{
+            title: t('answerAllQuestionsFirst'),
+            message: t('mustAnswerAll'),
+            answered: t('answered'),
+            remainingQuestions: t('remainingQuestions'),
+            continueQuiz: t('continueQuiz')
+          }}
+        />
       </div>
     </div>
   )
 }
-

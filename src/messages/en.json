@@ -635,10 +635,10 @@
     "loadingQuestions": "Loading questions...",
     "errorLoading": "Error loading questions",
     "errorMessage": "An error occurred while loading questions. Please try again.",
-    "backToQuizzes": "Back to quizzes",
-    "noQuestions": "No questions found",
+    "backToQuizzes": "Back to Quizzes",
+    "noQuestions": "No Questions",
     "noQuestionsDescription": "No questions were found for this quiz.",
-    "quizReady": "Quiz Ready",
+    "quizReady": "Quiz Ready!",
     "totalQuestions": "Total Questions",
     "questions": "questions",
     "timeLimit": "Time Limit",
@@ -651,17 +651,22 @@
     "instruction4": "Keep track of remaining time at the top",
     "instruction5": "Quiz must be completed before time runs out",
     "startQuiz": "Start Quiz",
-    "quizWillStart": "Quiz will start when you click the button",
+    "quizWillStart": "Quiz will start immediately when you click the button",
     "question": "Question",
+    "answerAllQuestionsFirst": "❌ You must answer all questions before submitting the quiz",
+    "answerAllFirst": "Answer all questions first",
+    "mustAnswerAll": "You must answer all questions before completing the quiz",
+    "lastQuestionHint": "📌 This is the last question. Check your answer and click 'Submit Quiz'",
     "of": "of",
     "flagged": "Flagged",
     "flag": "Flag",
     "answered": "Answered",
     "submitQuiz": "Submit Quiz",
+    "submitting": "Submitting...",
     "points": "points",
     "viewImage": "View Image",
     "questionImage": "Question Image",
-    "audioNotSupported": "Browser does not support audio",
+    "audioNotSupported": "Your browser does not support audio",
     "typeYourAnswer": "Type your answer here",
     "answerPlaceholder": "Enter your answer...",
     "matchingInstructions": "Match Arabic phrases with their Russian meanings",
@@ -673,10 +678,14 @@
     "previous": "Previous",
     "skip": "Skip",
     "submitNext": "Submit & Next",
+    "submit": "Submit",
     "submitFinal": "Final Submit",
-    "timeWarning": "Time remaining: {minutes} minutes",
+    "timeWarning": "⚠️ Time remaining: {minutes} minutes",
     "matchingInstructionsDetail": "Matching Instructions:",
-    "selectMatch": "Select correct match"
+    "selectMatch": "Select correct match",
+    "remainingQuestions": "questions remaining",
+    "continueQuiz": "Continue Quiz",
+    "close": "Close"
   },
   "QuizResultsPage": {
     "loadingResults": "Loading results...",
@@ -723,6 +732,36 @@
     "tryAgain": "Try Again",
     "noAnswersAvailable": "no Answers Available",
     "congratulations": "Congratulations!"
+  },
+  "QuizCelebration": {
+    "close": "Close",
+    "autoClose": "Auto-closing in 10 seconds...",
+    "tapToClose": "Tap anywhere to close",
+    "score": "{correct}/{total} correct answers",
+    "viewDetails": "View Details",
+    "tryAgain": "Try Again",
+    "continue": "Continue",
+    
+    "perfect": {
+      "title": "🎉 Perfect Score!",
+      "message": "Congratulations! You achieved a perfect score of 100%. Amazing achievement!",
+      "funFact": "You're in the top 1%! Keep shining! 🏆"
+    },
+    "excellent": {
+      "title": "🌟 Excellent!",
+      "message": "Excellent result {score}%! Your effort really shows. You're on top!",
+      "funFact": "One step away from perfection! Keep up this level 💪"
+    },
+    "good": {
+      "title": "✅ Passed!",
+      "message": "Congratulations! You passed the test with {score}%. Great job!",
+      "funFact": "Success is not final, failure is not fatal. It's the courage to continue that counts! 📚"
+    },
+    "failed": {
+      "title": "❌ Failed",
+      "message": "Unfortunately, you did not pass the test. Your score is {score}% (70% required). Don't give up!",
+      "funFact": "Thomas Edison failed 1000 times before inventing the light bulb! You're stronger than you think. ✨"
+    }
   }
 
 }
