@@ -331,7 +331,8 @@ export default function QuizPage() {
 
   // Quiz in progress
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
+    <>
+    <div className=" relative min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
       <div className="max-w-6xl mx-auto p-4">
         {/* Quiz Header */}
         <QuizHeader
@@ -579,22 +580,29 @@ export default function QuizPage() {
               )}
             </div>
           </div>
+
+          
         </div>
 
-        <WarningModal
-          isOpen={showWarningModal}
-          onClose={() => setShowWarningModal(false)}
-          answeredCount={Object.keys(answers).length}
-          totalQuestions={questions.length}
-          translations={{
-            title: t('answerAllQuestionsFirst'),
-            message: t('mustAnswerAll'),
-            answered: t('answered'),
-            remainingQuestions: t('remainingQuestions'),
-            continueQuiz: t('continueQuiz')
-          }}
-        />
+        
       </div>
     </div>
+
+    <WarningModal
+        isOpen={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+        answeredCount={Object.keys(answers).length}
+        totalQuestions={questions.length}
+        translations={{
+          title: t('answerAllQuestionsFirst'),
+          message: t('mustAnswerAll'),
+          answered: t('answered'),
+          remainingQuestions: t('remainingQuestions'),
+          continueQuiz: t('continueQuiz')
+        }}
+      />
+    
+    </>
+
   )
 }
