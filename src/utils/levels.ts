@@ -10,12 +10,12 @@ export interface LevelConfig {
 
 
 export const LEVELS: LevelConfig[] = [
-  { key: 'A1',  minXP: 0, maxXP: 99 },
-  { key: 'A2',  minXP: 100, maxXP: 299 },
-  { key: 'B1',  minXP: 300, maxXP: 599 },
-  { key: 'B2',  minXP: 600, maxXP: 999 },
-  { key: 'C1',  minXP: 1000, maxXP: 1499 },
-  { key: 'C2',  minXP: 1500, maxXP: Infinity },
+  { key: 'A1',  minXP: 0, maxXP: 4900 },
+  { key: 'A2',  minXP: 4901, maxXP: 8000 },
+  { key: 'B1',  minXP: 8001, maxXP: 12000 },
+  { key: 'B2',  minXP: 12001, maxXP: 16000 },
+  { key: 'C1',  minXP: 16001, maxXP: 20000 },
+  { key: 'C2',  minXP: 20001, maxXP: Infinity },
 ];
 
 export const LEVEL_COLORS: Record<CEFRLevel, string> = {

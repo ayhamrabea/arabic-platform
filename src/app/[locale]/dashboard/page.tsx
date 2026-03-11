@@ -73,6 +73,10 @@ export default function DashboardPage() {
 
   const isLoading = authLoading || dashboardLoading
 
+  // const [arabicTitle, russianTitle] = lesson.title.includes('<br>') 
+  //   ? lesson.title.split('<br>').map(s => s.trim())
+  //   : [lesson.title, lesson.title]
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-center items-center">

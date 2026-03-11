@@ -173,7 +173,10 @@ export default function LessonDetailPage() {
     }
   }
 
-
+  // استخراج العناوين العربية والروسية
+  const [arabicTitle, russianTitle] = lesson.title.includes('<br>') 
+    ? lesson.title.split('<br>').map(s => s.trim())
+    : [lesson.title, lesson.title]
 
   const totalItems = lessonData.total_items
   const completedItems = progress?.completed_items?.length || 0
@@ -201,7 +204,13 @@ export default function LessonDetailPage() {
                 ))}
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{lesson.title}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-4" dir="rtl">
+                  {arabicTitle}
+                </h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-4" dir="ltr">
+                  {russianTitle}
+                </h1>
+
 
               <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
                 <div className="flex items-center">

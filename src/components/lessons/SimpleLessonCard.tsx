@@ -11,6 +11,9 @@ interface SimpleLessonCardProps {
   onStart?: () => void
 }
 
+
+
+  
 export function SimpleLessonCard({ 
   title, 
   duration, 
@@ -20,6 +23,11 @@ export function SimpleLessonCard({
   onStart 
 }: SimpleLessonCardProps) {
   const t = useTranslations('DashboardPage') 
+
+  const [arabicTitle, russianTitle] = title.includes('<br>') 
+    ? title.split('<br>').map(s => s.trim())
+    : [title, title]
+
 
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -49,7 +57,8 @@ export function SimpleLessonCard({
             )}
           </div>
 
-          <h3 className="font-medium text-gray-900">{title}</h3>
+          <h3 className="font-medium text-gray-900">{arabicTitle}</h3>
+          <h3 className="font-medium text-gray-900">{russianTitle}</h3>
           <p className="text-sm text-gray-500 mt-1">{duration}</p>
 
           {/* Progress Bar */}
