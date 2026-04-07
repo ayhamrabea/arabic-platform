@@ -267,8 +267,8 @@ export default function LessonDetailPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {lesson.video_url && <MediaPlayer type="video" url={lesson.video_url} title={lesson.title} />}
-            {lesson.audio_url && <MediaPlayer type="audio" url={lesson.audio_url} title={lesson.title} />}
+            {lesson.video_url && <MediaPlayer type="video" url={lesson.video_url} title={lesson.title} poster='/soon.jpg'/>}
+            {/* {lesson.audio_url && <MediaPlayer type="audio" url={lesson.audio_url} title={lesson.title} />} */}
 
             {lesson.content && (
               <div className="bg-white rounded-2xl shadow-lg p-6">

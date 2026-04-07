@@ -79,8 +79,9 @@ export default function Navbar() {
                 <GlobeAltIcon className="h-6 w-6 text-white" />
               </div>
               <div>
-                <span className="font-bold text-xl text-gray-900">{tGeneral('logo')}</span>
-                <span className="text-xs text-indigo-600 font-medium ml-1">{tGeneral('logoAI')}</span>
+                <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient-x transition-all duration-500 group-hover:scale-105">
+                  {tGeneral('logo')}
+                </span>
               </div>
             </Link>
           </div>

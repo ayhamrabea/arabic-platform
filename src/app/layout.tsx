@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AI Platform',
-  description: 'Advanced AI Platform'
+  title: 'Путь к арабскому языку',
+  description: 'Платформа для изучения арабского языка для носителей русского языка. Изучайте грамматику, лексику и разговорный арабский легко и увлекательно.'
 }
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html >
+    <html lang="ru">
       <body className={`${inter.className} bg-gray-50 min-h-screen`}>
         {children}
       </body>

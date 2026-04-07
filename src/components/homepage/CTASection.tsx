@@ -30,7 +30,7 @@ export default function CTASection() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/signup"
+              href="/register"
               className="group px-10 py-5 rounded-2xl bg-white text-blue-700 font-bold text-lg hover:bg-gray-100 hover:shadow-2xl transition-all duration-300 flex items-center gap-3"
             >
               {t('button.primary')}

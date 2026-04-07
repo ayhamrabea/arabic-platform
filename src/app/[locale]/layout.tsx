@@ -18,9 +18,18 @@ export async function generateMetadata(props: Props) {
   const { locale } = params
 
   const metadata: Record<string, { title: string; description: string }> = {
-    en: { title: 'AI Platform', description: 'Advanced AI Platform for your needs' },
-    ru: { title: 'AI Платформа', description: 'Продвинутая AI платформа для ваших нужд' },
-    ar: { title: 'منصة تعلم العربية', description: 'منصة تفاعلية لتعلم اللغة العربية' }
+    en: { 
+      title: 'Путь к арабскому языку', 
+      description: 'A platform to learn Arabic for Russian speakers. Learn grammar, vocabulary, and conversational Arabic easily.' 
+    },
+    ru: { 
+      title: 'Путь к арабскому языку', 
+      description: 'Платформа для изучения арабского языка для носителей русского языка. Осваивайте грамматику, лексику и разговорный арабский легко и увлекательно.' 
+    },
+    ar: { 
+      title: 'Путь к арабскому языку', 
+      description: 'منصة لتعلم اللغة العربية للناطقين بالروسية. تعلم القواعد والمفردات والعربية المحكية بسهولة.' 
+    }
   }
 
   return metadata[locale] ?? metadata.en
@@ -31,7 +40,6 @@ export function generateStaticParams() {
 }
 
 export default async function LocaleLayout(props: Props) {
-  // انتظر Promise للحصول على params
   const params = await props.params
   const { locale } = params
   const { children } = props
@@ -48,9 +56,11 @@ export default async function LocaleLayout(props: Props) {
       <ReduxProvider>
         <AuthProvider>
           <Navbar />
-          <main lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="min-h-[calc(100vh-4rem)]">{children}</main>
+          <main lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="min-h-[calc(100vh-4rem)]">
+            {children}
+          </main>
           <footer className="border-t bg-white py-6 text-center text-sm text-gray-600">
-            © {new Date().getFullYear()} AI Platform
+            © {new Date().getFullYear()} Путь к арабскому языку
           </footer>
         </AuthProvider>
       </ReduxProvider>
