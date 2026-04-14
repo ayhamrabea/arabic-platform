@@ -37,9 +37,7 @@ export default function Navbar() {
   const locale = useLocale()
 
   const changeLanguage = (newLocale: string) => {
-    const segments = pathname.split('/')
-    segments[1] = newLocale
-    router.replace(segments.join('/'))
+    router.replace(`/${newLocale}${pathname.replace(/^\/(en|ru|ar)/, '')}`)
   }
 
 
