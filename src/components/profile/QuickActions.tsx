@@ -1,5 +1,5 @@
 // components/profile/QuickActions.tsx
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Icon from '../icon/Icon';
 
 interface QuickActionItem {

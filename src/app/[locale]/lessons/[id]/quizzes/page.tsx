@@ -10,7 +10,6 @@ import {
   useGetUserAttemptsQuery,
   useGetUserQuizStatsQuery
 } from '@/store/apis/quizApi'
-import Link from 'next/link'
 
 // Import Common Components
 import { QuizCard } from '@/components/quizzes/QuizCard'
@@ -32,6 +31,7 @@ import {
   ChevronRightIcon,
   ArrowLeftIcon
 } from '@heroicons/react/24/outline'
+import { Link } from '@/i18n/navigation'
 
 interface Quiz {
   id: string

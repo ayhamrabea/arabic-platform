@@ -32,10 +32,9 @@ import { useToggleFavoriteMutation as useToggleWordFavoriteMutation } from '@/st
 import { useLessonTimeTracker } from '@/hooks/useLessonTimeTracker'
 import { FavoriteButton } from '@/components/ui/FavoriteButton'
 import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
-import Link from 'next/link'
 import { VocabularySlider } from '@/components/vocabulary/VocabularySlider'
 import { DownloadLessonButton } from '@/components/lessons/DownloadLessonButton'
-
+import { Link } from '@/i18n/navigation'
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
   const { id } = useParams()

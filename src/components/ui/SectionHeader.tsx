@@ -1,5 +1,5 @@
 // components/ui/SectionHeader.tsx
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 interface SectionHeaderProps {
   title: string

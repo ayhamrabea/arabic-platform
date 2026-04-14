@@ -1,6 +1,5 @@
 // components/dashboard/QuickActionCard.tsx
-import Link from 'next/link'
-
+import { Link } from '@/i18n/navigation'
 interface QuickActionCardProps {
   title: string
   description: string

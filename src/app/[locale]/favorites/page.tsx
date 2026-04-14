@@ -567,7 +567,7 @@ export default function FavoritesPage() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
                     <StarIcon className="h-6 w-6 text-amber-500 mr-3" />
-                    Favorite Lessons
+                    {t('sections.lessons')}
                     <span className="ml-3 text-sm font-normal text-gray-500">
                       ({filteredItems.lessons.length} {t('items')})
                     </span>

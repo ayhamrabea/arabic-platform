@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { useTranslations } from 'next-intl'
 
@@ -24,6 +23,7 @@ import { ErrorMessage } from '../ui/ErrorMessage'
 import { SubmitButton } from '../form/SubmitButton'
 import { FormDivider } from '../ui/FormDivider'
 import { SocialLoginButton } from './SocialLoginButton'
+import { Link } from '../../i18n/navigation'
 
 interface AuthFormProps {
   type: 'login' | 'register'

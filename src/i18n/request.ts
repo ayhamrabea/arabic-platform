@@ -13,14 +13,14 @@ export default getRequestConfig(async ({ requestLocale }) => {
   try {
     return {
       locale,
-      messages: (await import(`../src/messages/${locale}.json`)).default
+      messages: (await import(`../messages/${locale}.json`)).default
     };
   } catch (error) {
     console.error(`Failed to load messages for locale ${locale}:`, error);
     // إرجاع اللغة الافتراضية في حالة الخطأ
     return {
       locale: routing.defaultLocale,
-      messages: (await import(`../src/messages/${routing.defaultLocale}.json`)).default
+      messages: (await import(`../messages/${routing.defaultLocale}.json`)).default
     };
   }
 });

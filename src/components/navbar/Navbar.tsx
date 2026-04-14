@@ -22,7 +22,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react'
 import { useTranslations, useLocale } from 'next-intl'
 import { useRouter, usePathname } from 'next/navigation'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { LogoutButton } from '../Logout'
 
 export default function Navbar() {

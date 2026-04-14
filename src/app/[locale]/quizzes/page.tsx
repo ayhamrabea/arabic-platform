@@ -10,8 +10,7 @@ import {
   useGetUserAttemptsQuery,
   useGetUserQuizStatsQuery
 } from '@/store/apis/quizApi'
-import Link from 'next/link'
-
+import { Link } from '@/i18n/navigation'
 // Import Common Components
 import { QuizCard } from '@/components/quizzes/QuizCard'
 import { QuizzesFilters } from '@/components/quizzes/QuizzesFilters'
