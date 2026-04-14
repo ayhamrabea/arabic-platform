@@ -18,13 +18,14 @@ export async function generateMetadata(props: Props) {
   const { locale } = params
 
   const metadata: Record<string, { title: string; description: string }> = {
-    en: { 
-      title: 'Путь к арабскому языку', 
-      description: 'A platform to learn Arabic for Russian speakers. Learn grammar, vocabulary, and conversational Arabic easily.' 
-    },
+    
     ru: { 
       title: 'Путь к арабскому языку', 
       description: 'Платформа для изучения арабского языка для носителей русского языка. Осваивайте грамматику, лексику и разговорный арабский легко и увлекательно.' 
+    },
+    en: { 
+      title: 'Путь к арабскому языку', 
+      description: 'A platform to learn Arabic for Russian speakers. Learn grammar, vocabulary, and conversational Arabic easily.' 
     },
     ar: { 
       title: 'Путь к арабскому языку', 

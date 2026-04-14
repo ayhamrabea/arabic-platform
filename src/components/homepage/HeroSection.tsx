@@ -13,6 +13,7 @@ import {
   FlagIcon,
   DevicePhoneMobileIcon
 } from '@heroicons/react/24/outline'
+import VideoPreview from './VideoPreview'
 
 const supportedLanguages = [
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
@@ -111,9 +112,11 @@ export default function HeroSection() {
           </div>
 
           {/* الجانب الأيمن: بطاقة العرض */}
+
           <div className="lg:w-1/2 w-full mt-8 lg:mt-0">
             <div className="relative bg-gradient-to-br from-blue-500/10 to-emerald-500/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-blue-100 shadow-xl sm:shadow-2xl">
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-6">
+              <VideoPreview />
+              {/* <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-6">
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
                   <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-400 flex-shrink-0"></div>
                   <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-400 flex-shrink-0"></div>
@@ -168,15 +171,15 @@ export default function HeroSection() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               
               {/* الأيقونات الزخرفية */}
-              <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-white rounded-full p-2 sm:p-3 shadow-lg">
+              {/* <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-white rounded-full p-2 sm:p-3 shadow-lg">
                 <FlagIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
               </div>
               <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-white rounded-full p-2 sm:p-3 shadow-lg">
                 <DevicePhoneMobileIcon className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
