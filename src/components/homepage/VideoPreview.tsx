@@ -17,7 +17,7 @@ export default function VideoPreview() {
         controls
         playsInline
         preload="metadata"
-        poster="/soon.jpg"
+        // poster="/soon.jpg"
         className="w-full rounded-2xl shadow-2xl"
       >
         <source src="0414.mp4" type="video/mp4" />
