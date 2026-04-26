@@ -47,7 +47,7 @@ export default function HomePage() {
       <FeaturesSection />
       <LanguagesSection />
       <HowItWorksSection />
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
       <CTASection />
       <HomeFooter />
 
