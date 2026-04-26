@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Icon from './icon/Icon'
 
 interface LogoutButtonProps {
@@ -14,14 +14,15 @@ export function LogoutButton({ variant = 'default' }: LogoutButtonProps) {
   const router = useRouter()
   const t = useTranslations('General') // استخدام ملف الرسائل العام
   const [loading, setLoading] = useState(false)
-
+  const locale = useLocale()
+  
   const handleLogout = async () => {
     setLoading(true)
     await supabase.auth.signOut()
     
     // تأخير قليل ثم إعادة التوجيه
     setTimeout(() => {
-      router.push('/login')
+      router.push(`/${locale}/login`)
       router.refresh()
     }, 100)
   }

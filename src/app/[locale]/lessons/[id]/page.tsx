@@ -3,7 +3,7 @@
 'use client'
 
 import { useParams, useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/store'
@@ -35,12 +35,17 @@ import { useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonF
 import { VocabularySlider } from '@/components/vocabulary/VocabularySlider'
 import { DownloadLessonButton } from '@/components/lessons/DownloadLessonButton'
 import { Link } from '@/i18n/navigation'
+
+
+
+
 export default function LessonDetailPage() {
   const t = useTranslations('LessonDetailPage')
   const { id } = useParams()
   const router = useRouter()
   const dispatch = useDispatch()
   const { user, loading: authLoading } = useSelector((state: RootState) => state.auth)
+  const locale = useLocale()
   
   const { 
     data: lessonData, 
@@ -78,7 +83,7 @@ export default function LessonDetailPage() {
   // إعادة التوجيه فقط بعد التأكد من أن حالة المصادقة قد تم تحميلها
   useEffect(() => {
     if (!isCheckingAuth && !user) {
-      router.push('/login')
+      router.push(`/${locale}/login`)
     }
   }, [isCheckingAuth, user, router])
 

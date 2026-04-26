@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 import {
   EnvelopeIcon,
@@ -33,7 +33,8 @@ export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter()
   const dispatch = useDispatch()
   const t = useTranslations('Auth')
-
+  const locale = useLocale()
+  
   const [signIn] = useSignInMutation()
   const [signUp] = useSignUpMutation()
 
@@ -80,7 +81,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         if ('error' in res) throw res.error
 
         dispatch(setUser(res.data!))
-        router.push('/dashboard')
+        router.push(`/${locale}/dashboard`)
         router.refresh()
       } else {
         const res = await signUp({
@@ -90,7 +91,7 @@ export default function AuthForm({ type }: AuthFormProps) {
 
         if ('error' in res) throw res.error
 
-        router.push('/dashboard')
+        router.push(`/${locale}/dashboard`)
         router.refresh()
       }
     } catch (err: any) {

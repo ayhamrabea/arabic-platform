@@ -115,7 +115,7 @@ export const QuizCard = memo(function QuizCard({
   if (compact) {
     return (
       <Link 
-        href={`/${locale}/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
+        href={`/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
         className={`block bg-white rounded-xl shadow-md border hover:shadow-lg transition-all duration-200 ${getBorderColor()}`}
       >
         <div className={`h-1 ${getStatusBarColor()}`} />
@@ -294,14 +294,14 @@ export const QuizCard = memo(function QuizCard({
           ) : status === 'completed' ? (
             <div className="grid grid-cols-2 gap-3">
               <Link
-                href={`/${locale}/lessons/${quiz.lesson_id}/quizzes/${quiz.id}/review`}
+                href={`/lessons/${quiz.lesson_id}/quizzes/${quiz.id}/review`}
                 className="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700 text-center"
               >
                 {tAll('review')}
               </Link>
               {remainingAttempts > 0 && (
                 <Link
-                  href={`/${locale}/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
+                  href={`/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
                   className="px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all font-medium text-center"
                 >
                   {tAll('retake')}
@@ -310,7 +310,7 @@ export const QuizCard = memo(function QuizCard({
             </div>
           ) : (
             <Link
-              href={`/${locale}/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
+              href={`/lessons/${quiz.lesson_id}/quizzes/${quiz.id}`}
               className={`block w-full px-4 py-3 rounded-lg font-medium text-center transition-all ${
                 remainingAttempts === 0
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'

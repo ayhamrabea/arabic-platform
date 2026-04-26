@@ -527,7 +527,7 @@ export default function AllQuizzesPage() {
                 {tAll('refresh')}
               </button>
               <Link
-                href={`/${locale}/lessons`}
+                href={`/lessons`}
                 className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-700 font-medium"
               >
                 <BookOpenIcon className="h-5 w-5 mr-2" />
