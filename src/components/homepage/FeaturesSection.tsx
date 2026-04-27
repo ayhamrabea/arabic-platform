@@ -83,15 +83,7 @@ export default function FeaturesSection() {
                     {t(`${feature.key}.description`)}
                   </p>
                   
-                  <div className="mt-6">
-                    <Link 
-                      href={`/features#${feature.key}`}
-                      className="inline-flex items-center gap-2 text-blue-600 font-medium hover:gap-3 transition-all"
-                    >
-                      تعرف أكثر
-                      <ArrowRightIcon className="h-4 w-4" />
-                    </Link>
-                  </div>
+
                 </div>
               </div>
             )

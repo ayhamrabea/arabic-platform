@@ -40,38 +40,22 @@ export default function HomeFooter() {
             <p className="text-sm">
               منصة تعلم العربية الأولى للناطقين بالروسية
             </p>
-            {/* Social Links */}
-            <div className="flex gap-4 pt-2">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-gray-400 transition-all duration-300 hover:scale-110 ${social.color}`}
-                  aria-label={social.name}
-                >
-                  <social.icon size={20} />
-                </a>
-              ))}
-            </div>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4">روابط سريعة</h4>
             <ul className="space-y-2">
-              <li><Link href="/courses" className="hover:text-white transition">الدورات</Link></li>
-              <li><Link href="/pricing" className="hover:text-white transition">الأسعار</Link></li>
-              <li><Link href="/blog" className="hover:text-white transition">المدونة</Link></li>
+              <li><Link href="/" className="hover:text-white transition">الدورات</Link></li>
+              <li><Link href="/" className="hover:text-white transition">الأسعار</Link></li>
+              <li><Link href="/about" className="hover:text-white transition">من نحن</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4">قانوني</h4>
             <ul className="space-y-2">
-              <li><Link href="/privacy" className="hover:text-white transition">الخصوصية</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition">الشروط</Link></li>
-              <li><Link href="/cookies" className="hover:text-white transition">الكوكيز</Link></li>
+              <li><Link href="/" className="hover:text-white transition">الخصوصية</Link></li>
+              <li><Link href="/" className="hover:text-white transition">الشروط</Link></li>
             </ul>
           </div>
 
@@ -93,9 +77,19 @@ export default function HomeFooter() {
         <div className="border-t border-gray-800 pt-8 text-center">
           <p className="mb-4">© {new Date().getFullYear()} الطريق الى العربية. {t('rights')}</p>
           <div className="flex gap-4 justify-center">
-            <Link href="/ru" className="hover:text-white transition">Русский</Link>
-            <Link href="/en" className="hover:text-white transition">English</Link>
-            <Link href="/ar" className="hover:text-white transition">العربية</Link>
+            {/* Social Links */}
+            {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-gray-400 transition-all duration-300 hover:scale-110 ${social.color}`}
+                  aria-label={social.name}
+                >
+                  <social.icon size={20} />
+                </a>
+              ))}
           </div>
         </div>
       </div>

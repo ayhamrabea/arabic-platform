@@ -24,9 +24,9 @@ export default function CTASection() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             {t('title')}
           </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+          {/* <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
             {t('subtitle')}
-          </p>
+          </p> */}
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
@@ -45,7 +45,7 @@ export default function CTASection() {
             </Link>
           </div>
           
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex items-center justify-center gap-3">
               <CalendarIcon className="h-8 w-8 text-blue-200" />
               <div className="text-left">
@@ -69,7 +69,7 @@ export default function CTASection() {
                 <p className="text-blue-200">رضا العملاء</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

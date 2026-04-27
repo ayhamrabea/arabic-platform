@@ -88,7 +88,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-1">
             <Link 
               href="/" 
-              className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              className="flex items-center px-2 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <HomeIcon className="h-5 w-5 mr-2" />
               {t('home')}
@@ -96,7 +96,7 @@ export default function Navbar() {
             
             <Link 
               href="/lessons" 
-              className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              className="flex items-center px-2 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <BookOpenIcon className="h-5 w-5 mr-2" />
               {t('lessons')}
@@ -105,15 +105,24 @@ export default function Navbar() {
             {/* رابط الأختبارات */}
             <Link 
               href="/quizzes" 
-              className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              className="flex items-center px-2 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <QuestionMarkCircleIcon className="h-5 w-5 mr-2" />
               {t('quizzes')}
             </Link>
+
+            {/* من نحن  */}
+            <Link 
+              href="/about" 
+              className="flex items-center px-2 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+            >
+              {/* <QuestionMarkCircleIcon className="h-5 w-5 mr-2" /> */}
+              {t('about')}
+            </Link>
             
             <Link 
               href="/dashboard" 
-              className="flex items-center px-4 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+              className="flex items-center px-2 py-2 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
             >
               <ChartBarIcon className="h-5 w-5 mr-2" />
               {t('dashboard')}

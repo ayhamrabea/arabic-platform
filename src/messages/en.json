@@ -11,7 +11,8 @@
     "signedInAs": "Signed in as",
     "welcomeBack": "Welcome back",
     "myFavorites": "My Favorites",
-    "quizzes": "quizzes"
+    "quizzes": "quizzes",
+    "about": "aboutUs"
   },
   "General": {
     "logo": "Путь к арабскому",
@@ -762,6 +763,46 @@
       "message": "Unfortunately, you did not pass the test. Your score is {score}% (70% required). Don't give up!",
       "funFact": "Thomas Edison failed 1000 times before inventing the light bulb! You're stronger than you think. ✨"
     }
+  },
+    "AboutPage": {
+    "title": "About Us",
+    "subtitle": "The Story of Arabic Academy",
+    "founderStory": "🇺🇸 Founder's Story",
+    "founderName": "My name is Ayham rabae",
+    "story1": "founder of Arabic Academy.",
+    "story2": "It all started with a simple question: 'Why is it so hard to find clear, high-quality materials for learning Arabic specifically for Russian speakers?'",
+    "story3": "Most courses are either too expensive, not adapted, or require translation from English. I decided to change this. My goal is to create an accessible, clear, and modern platform where every Russian speaker can learn Arabic without stress and huge costs.",
+    "philosophy": "My philosophy is simple: quality education should be accessible to everyone. That's why all lessons are currently completely free. Join us, learn, and help improve the platform with your feedback!",
+    "ourValues": "Our Values",
+    "mission": "Mission",
+    "missionDesc": "Teach Arabic to Russian speakers in a modern and simple way",
+    "vision": "Vision",
+    "visionDesc": "Help 10 million Russian speakers master Arabic",
+    "values": "Values",
+    "valuesDesc": "Quality, Accessibility, Continuous Learning",
+    "whatWeOfferNow": "What We Offer Now",
+    "completelyFree": "Completely Free",
+    "freePDFs": "Free PDF Lessons",
+    "freePDFsDesc": "Download and print lessons and exercises",
+    "interactivePlatform": "Interactive Platform",
+    "interactivePlatformDesc": "Track progress and learning statistics",
+    "russianExplanations": "Explanations in Russian",
+    "russianExplanationsDesc": "Grammar and vocabulary translated into Russian",
+    "comingSoon": "Coming Soon... AI Features",
+    "comingSoonDesc": "These features are in development and will be available soon",
+    "aiConversation": "AI Conversation",
+    "aiConversationDesc": "Practice speaking with artificial intelligence",
+    "voiceRecognition": "Pronunciation Training",
+    "voiceRecognitionDesc": "Voice recognition and pronunciation improvement",
+    "personalizedExercises": "Personalized Exercises",
+    "personalizedExercisesDesc": "Exercises that adapt to your level",
+    "ctaTitle": "Join Us Now",
+    "ctaDesc": "All lessons are completely free",
+    "earlyBird": "First 1000 users will get AI features free forever",
+    "startNow": "Start Free Now",
+    "browseLessons": "Browse Lessons",
+    "contactVia": "Contact us via",
+    "footerText": "Learn Arabic easily for Russian speakers"
   }
 
 }

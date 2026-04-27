@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ErrorMessage } from '@/components/ui/ErrorMessage'
 import { BackButton } from '@/components/ui/BackButton'
@@ -33,6 +33,7 @@ import { FavoriteVocabularyCard } from '@/components/favorites/FavoriteVocabular
 import { FavoriteGrammarCard } from '@/components/favorites/FavoriteGrammarCard'
 import { getLevelColor } from '@/components/favorites/helpers'
 import { FavoriteLesson, useGetFavoriteLessonsQuery, useToggleLessonFavoriteMutation } from '@/store/apis/lessonsApi/lessonFavoritesApi'
+import { Link } from '@/i18n/navigation'
 
 type ItemType = 'word' | 'grammar' | 'sentence' | 'lesson' | 'all'
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -50,6 +51,7 @@ interface SentenceItem {
 
 export default function FavoritesPage() {
   const router = useRouter()
+  const locale = useLocale()
   const t = useTranslations('FavoritesPage')
   const { user, loading: authLoading } = useSelector((state: RootState) => state.auth)
 
@@ -544,12 +546,13 @@ export default function FavoritesPage() {
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               {t('emptyState.description')}
             </p>
-            <button
-              onClick={() => router.push('/lessons')}
+            <Link
+              // onClick={() => router.push(`${locale}/lessons`)}
+              href={`/lessons`}
               className="px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
             >
               {t('emptyState.browseButton')}
-            </button>
+            </Link>
           </div>
         ) : !hasFilteredItems ? (
           <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
