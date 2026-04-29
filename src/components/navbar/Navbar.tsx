@@ -47,19 +47,19 @@ export default function Navbar() {
   ]
 
   // الروابط العامة (تظهر للجميع)
-  const publicLinks = [
-    // { href: '/', icon: HomeIcon, key: 'home' },
-    { href: '/lessons', icon: BookOpenIcon, key: 'lessons' },
-    { href: '/quizzes', icon: QuestionMarkCircleIcon, key: 'quizzes' },
-    { href: '/about', icon: InformationCircleIcon, key: 'about' },
-    { href: '/pricing', icon: CreditCardIcon, key: 'pricing' },
-  ]
+    const publicLinks = [
+      // { href: '/', icon: HomeIcon, key: 'home', color: 'indigo' },
+      { href: '/lessons', icon: BookOpenIcon, key: 'lessons', color: 'indigo' },
+      { href: '/quizzes', icon: QuestionMarkCircleIcon, key: 'quizzes', color: 'indigo' },
+      { href: '/about', icon: InformationCircleIcon, key: 'about', color: 'indigo' },
+      { href: '/pricing', icon: CreditCardIcon, key: 'pricing', color: 'indigo' },
+    ]
 
-  // الروابط الخاصة (تظهر فقط للمستخدمين المسجلين)
-  const privateLinks = [
-    { href: '/dashboard', icon: ChartBarIcon, key: 'dashboard' },
-    { href: '/favorites', icon: HeartIcon, key: 'favorites', solidIcon: HeartIconSolid, color: 'rose' },
-  ]
+    // الروابط الخاصة (تظهر فقط للمستخدمين المسجلين)
+    const privateLinks = [
+      { href: '/dashboard', icon: ChartBarIcon, key: 'dashboard', color: 'indigo' },
+      { href: '/favorites', icon: HeartIcon, key: 'favorites', solidIcon: HeartIconSolid, color: 'rose' },
+    ]
 
   if (loading) {
     return (
