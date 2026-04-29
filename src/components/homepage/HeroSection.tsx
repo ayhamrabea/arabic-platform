@@ -94,20 +94,14 @@ export default function HeroSection() {
             {/* أزرار CTA */}
             <div className="flex flex-col xs:flex-row gap-3 sm:gap-4 w-full">
               <Link
-                href="/quizzes"
+                href="/lessons"
                 className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-white font-semibold bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 flex items-center justify-center gap-2 min-w-0 xs:min-w-[200px] text-center whitespace-nowrap flex-1"
               >
                 <span className="truncate">{t('cta.primary')}</span>
                 <ArrowRightIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform flex-shrink-0" />
               </Link>
 
-              <Link
-                href="/lessons"
-                className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-gray-300 font-semibold text-gray-700 hover:border-blue-400 hover:bg-blue-50 transition flex items-center justify-center gap-2 min-w-0 xs:min-w-[200px] text-center whitespace-nowrap flex-1"
-              >
-                <PlayCircleIcon className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                <span className="truncate">{t('cta.secondary')}</span>
-              </Link>
+              
             </div>
           </div>
 

@@ -33,8 +33,9 @@ export async function generateMetadata(props: Props) {
     }
   }
 
-  return metadata[locale] ?? metadata.en
+  return metadata[locale] ?? metadata.ru
 }
+
 
 export function generateStaticParams() {
   return locales.map(locale => ({ locale }))

@@ -54,7 +54,7 @@ export default function HomeFooter() {
           <div>
             <h4 className="text-white font-bold mb-4">قانوني</h4>
             <ul className="space-y-2">
-              <li><Link href="/" className="hover:text-white transition">الخصوصية</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition">الخصوصية</Link></li>
               <li><Link href="/" className="hover:text-white transition">الشروط</Link></li>
             </ul>
           </div>
