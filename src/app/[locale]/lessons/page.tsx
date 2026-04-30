@@ -12,6 +12,7 @@ import { LessonCard } from '@/components/lessons/LessonCard'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { CTACard } from '@/components/ui/CTACard'
 import { useGetLessonsWithProgressQuery } from '@/store/apis/lessonsApi'
+import router from 'next/router'
 
 // دالة حساب النسبة المئوية بدقة
 const calculateAccurateProgress = (progress: any, totalItems: number) => {

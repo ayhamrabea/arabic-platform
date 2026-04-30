@@ -1,3 +1,5 @@
+import { Link } from "@/i18n/navigation"
+
 // components/ui/CTACard.tsx
 interface CTACardProps {
   title: string
@@ -12,7 +14,6 @@ export function CTACard({
   title, 
   description, 
   buttonText, 
-  onButtonClick,
   gradientFrom = '#4f46e5',
   gradientTo = '#9333ea'
 }: CTACardProps) {
@@ -23,12 +24,12 @@ export function CTACard({
     >
       <h3 className="text-2xl font-bold mb-4">{title}</h3>
       <p className="mb-6 text-indigo-100">{description}</p>
-      <button 
-        onClick={onButtonClick}
+      <Link 
+        href={'/pricing'}
         className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors"
       >
         {buttonText}
-      </button>
+      </Link>
     </div>
   )
 }

@@ -346,12 +346,12 @@ export default function LessonDetailPage() {
 
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 mt-8">
             {/* زر الرجوع */}
-            <button
-              onClick={() => router.push('/lessons')}
+            <Link
+               href={`/lessons`}
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-center min-w-[140px]"
             >
               {t('backToLessons')}
-            </button>
+            </Link>
 
             {/* زر التحميل */}
             <DownloadLessonButton

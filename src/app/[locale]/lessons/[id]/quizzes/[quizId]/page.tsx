@@ -128,7 +128,7 @@ export default function QuizPage() {
   const handleStartQuiz = async () => {
       if (!profileId) {
         // المستخدم غير مسجل دخول
-        router.push('/login')
+        router.push(`/${locale}/login`)
         return
       }
       
